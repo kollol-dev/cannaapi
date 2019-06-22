@@ -1,0 +1,21 @@
+1. /auth/registerGrow
+    Canna Grow Registration
+    Request Type : Post
+    Expected json:{
+        'name': *'data'
+        'yearlyRevenue': *'data'
+        'license': *'data'
+        'licenseType': *'data'
+        'ownerNameLast': *'data'
+        'ownerNameLast': *'data'
+        'deliver': *'data'
+        'sharingInventory': *'data'
+        'RecreationalOrMedicinal': *'data'
+    }
+    return response.status(200).json({
+         'success': true,
+          'message': 'Registration fully Completed ! ',
+          "user": user,
+          'dispensary': dispensary ,
+          "token": accessToken.token
+    })

@@ -1,0 +1,21 @@
+1. /auth/register
+    User Registration
+    Request Type : Post
+    Expected json:{
+        'name': *'data'
+        'email': *'data'
+        'password': *'data'
+        'img': *'data'
+        'country': *'data'
+        'state': *'data'
+        'birthday': *'data'
+        'phone': *'data'
+        'userType': *'data'
+    }
+    return response.status(200).json({
+        'success': true,
+        'message': 'Registration Successfull please complete second step',
+        "user": user,
+        "token": accessToken.token
+    })
+

@@ -1,0 +1,16 @@
+1. /auth/registerGo
+    Canna Go Registration
+    Request Type : Post
+    Expected json:{
+        'userId': *'data'
+        'medicalCannabis': *'data'
+        'medicalCannabisExpiration': *'data'
+    }
+    return response.status(200).json({
+         'success': true,
+          'message': 'Registration fully Completed ! ',
+          "user": user,
+          'cannago': cannago ,
+          "token": accessToken.token
+    })
+

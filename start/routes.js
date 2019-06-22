@@ -18,6 +18,16 @@ const Route = use('Route')
 
 Route.on('/').render('welcome')
 Route.get('/app/test', 'AuthController.test')
+
 Route.post('/auth/register', 'AuthController.register')
-Route.post('/auth/login', 'AuthController.login')
+Route.post('/auth/registerGo', 'AuthController.registerGo')
+Route.post('/auth/registerDrive', 'AuthController.registerDrive')
+Route.post('/auth/registerGrow', 'AuthController.registerGrow')
+Route.post('/auth/registerDep', 'AuthController.registerDep')
+
+Route.post('/auth/loginGo', 'AuthController.loginGo')
+Route.post('/auth/loginDrive', 'AuthController.loginDrive')
+Route.post('/auth/loginGrow', 'AuthController.loginGrow')
+Route.post('/auth/loginDep', 'AuthController.loginDep')
+
 Route.get('/auth/getUser', 'AuthController.getUser')
