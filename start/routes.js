@@ -1,5 +1,5 @@
 'use strict'
-
+require ('./Routes/cannago')
 /*
 |--------------------------------------------------------------------------
 | Routes
@@ -26,8 +26,11 @@ Route.post('/auth/registerGrow', 'AuthController.registerGrow')
 Route.post('/auth/registerDep', 'AuthController.registerDep')
 
 Route.post('/auth/loginGo', 'AuthController.loginGo')
+Route.post('/auth/loginTest', 'AuthController.loginTest')
 Route.post('/auth/loginDrive', 'AuthController.loginDrive')
 Route.post('/auth/loginGrow', 'AuthController.loginGrow')
 Route.post('/auth/loginDep', 'AuthController.loginDep')
+
+Route.post('/auth/logout', 'AuthController.logout')
 
 Route.get('/auth/getUser', 'AuthController.getUser')
