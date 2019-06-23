@@ -21,9 +21,8 @@ class AuthController {
         })
     }
     async registerGo({request, auth, response}) {
-      const data = request.all()
-      
-      try {
+     // try {
+        const data = request.all()
         let user = await auth.getUser()
         await User.query().where('id',user.id).update({'userType':1})
         data.userId = user.id
@@ -37,17 +36,16 @@ class AuthController {
           "token": accessToken.token
         })
 
-      } catch (error) {
-        return response.status(401).json({
-          'success': false,
-          'message': 'You first need to login first!'
-        })
-      }
+      // } catch (error) {
+      //   return response.status(401).json({
+      //     'success': false,
+      //     'message': 'You first need to login first!'
+      //   })
+      // }
     }
     async registerDrive({request, auth, response}) {
-      const data = request.all()
-      
-      try {
+     // try {
+        const data = request.all()
         let user = await auth.getUser()
         await User.query().where('id',user.id).update({'userType':2})
         data.userId = user.id
@@ -60,17 +58,18 @@ class AuthController {
           'cannadrive': cannadrive ,
           "token": accessToken.token
         })
-      } catch (error) {
-        return response.status(401).json({
-          'success': false,
-          'message': 'You first need to login first!'
-        })
-      }
+      // } catch (error) {
+      //   return response.status(401).json({
+      //     'success': false,
+      //     'message': 'You first need to login first!'
+      //   })
+      // }
        
     }
     async registerGrow({request, auth, response}) {
-      const data = request.all()
-        try {
+      
+      //  try {
+          const data = request.all()
           let user = await auth.getUser()
           await User.query().where('id',user.id).update({'userType':3})
           data.userId = user.id
@@ -83,19 +82,18 @@ class AuthController {
             'cannagrow': cannagrow ,
             "token": accessToken.token
           })
-        } catch (error) {
-          return response.status(401).json({
-            'success': false,
-            'message': 'You first need to login first!'
-          })
-        }
+        // } catch (error) {
+        //   return response.status(401).json({
+        //     'success': false,
+        //     'message': 'You first need to login first!'
+        //   })
+        // }
         
     }
     async registerDep({request, auth, response}) {
-      const data = request.all()
-      let user
         try {
-          user = await auth.getUser()
+          const data = request.all()
+          let user = await auth.getUser()
            await User.query().where('id',user.id).update({'userType':4})
           data.userId = user.id
           let dispensary = await Dispensary.create(request.all())
@@ -107,11 +105,11 @@ class AuthController {
             'dispensary': dispensary ,
             "token": accessToken.token
           })
-        } catch (error) {
-          return response.status(401).json({
-            'success': false,
-            'message': 'You first need to login first!'
-          })
+        // } catch (error) {
+        //   return response.status(401).json({
+        //     'success': false,
+        //     'message': 'You first need to login first!'
+        //   })
         }
         
         
@@ -130,14 +128,11 @@ class AuthController {
           return response.json({"user":user,"token": accessToken.token})
          
         }
-
-        
-        
     }
     async loginGo({request, auth, response}) {
         const email = request.input("email")
         const password = request.input("password");
-        try {
+      //  try {
           if (await auth.attempt(email, password)) {
             let user = await User.findBy('email', email)
             let accessToken = await auth.generate(user)
@@ -145,15 +140,14 @@ class AuthController {
             return response.json({"user":user, 'cannago' : cannago,"token": accessToken.token})
           }
 
-        }
-        catch (e) {
-          return response.json({message: 'You first need to register!'})
-        }
+        // } catch (e) {
+        //   return response.json({message: 'You first need to register!'})
+        // }
     }
     async loginDrive({request, auth, response}) {
         const email = request.input("email")
         const password = request.input("password");
-        try {
+       // try {
           if (await auth.attempt(email, password)) {
             let user = await User.findBy('email', email)
             let accessToken = await auth.generate(user)
@@ -161,15 +155,14 @@ class AuthController {
             return response.json({"user":user, 'cannadrive' : cannadrive,"token": accessToken.token})
           }
 
-        }
-        catch (e) {
-          return response.json({message: 'You first need to register!'})
-        }
+        // } catch (e) {
+        //   return response.json({message: 'You first need to register!'})
+        // }
     }
     async loginGrow({request, auth, response}) {
         const email = request.input("email")
         const password = request.input("password");
-        try {
+        //try {
           if (await auth.attempt(email, password)) {
             let user = await User.findBy('email', email)
             let accessToken = await auth.generate(user)
@@ -177,15 +170,14 @@ class AuthController {
             return response.json({"user":user, 'cannagrow' : cannagrow,"token": accessToken.token})
           }
 
-        }
-        catch (e) {
-          return response.json({message: 'You first need to register!'})
-        }
+        // } catch (e) {
+        //   return response.json({message: 'You first need to register!'})
+        // }
     }
     async loginDep({request, auth, response}) {
         const email = request.input("email")
         const password = request.input("password");
-        try {
+      //  try {
           if (await auth.attempt(email, password)) {
             let user = await User.findBy('email', email)
             let accessToken = await auth.generate(user)
@@ -193,10 +185,9 @@ class AuthController {
             return response.json({"user":user, 'dispensary' : dispensary,"token": accessToken.token})
           }
 
-        }
-        catch (e) {
-          return response.json({message: 'You first need to register!'})
-        }
+        // } catch (e) {
+        //   return response.json({message: 'You first need to register!'})
+        // }
     }
     async getUser({request, auth, response}){
 

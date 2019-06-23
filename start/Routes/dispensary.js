@@ -2,11 +2,7 @@
 const Route = use('Route')
 
 // CannaGo Routes
-Route.put('/app/cannago', 'CannaGoController.edit')
-
-// User Report Routes
-
-Route.put('/app/userreport', 'CannaGoController.store')
+Route.put('/app/dispensary', 'DispensaryController.edit')
 
 
 // Questionnaire Routes
