@@ -14,3 +14,60 @@
           "token": accessToken.token
     })
 
+2. /app/itemsAll
+    Canna Grow all Items  
+    Request Type : Get
+     Expected json in query:{
+         'price1': 'lowest price'
+         'price2': 'highst price'
+        'key': 'tag key'
+        'sortType': 'Alphabetical'
+    }
+     return response.status(200).json({
+        'success': true,
+        "allItems": allItems
+    })
+4. /app/items/:id
+    Canna Grow single Items  
+    Request Type : get
+    
+    return response.status(200).json({
+        'success': true,
+        "item": item
+    })
+3. /app/curts
+    Canna Go Curt Registration
+    Request Type : Post
+     Expected json:{
+         'itemId': *'data'
+         'quantity': *'data'
+    }
+     return response.status(200).json({
+        'success': true,
+        'message': 'response stored successfully !', 
+        "curt": curt
+    })
+
+3. /app/curts
+    Canna Go Curt single item delete
+    Request Type : delete
+     Expected json:{
+         'id': *'data'
+    }
+    return response.status(200).json({
+        'success': true,
+        'message': 'response deleted successfully !',
+    })
+4. /app/orders
+    Canna Go Order Registration
+    Request Type : Post
+     Expected json:{
+         'commend`': *'data'
+    }
+    return response.status(200).json({
+        'success': true,
+        'message': 'response stored successfully !', 
+        "order": order
+    })
+
+

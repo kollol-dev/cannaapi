@@ -2,7 +2,7 @@
 const Route = use('Route')
 
 // Curts Routes
-Route.get('/app/curts', 'OrderController.indexCurt')
+Route.get('/app/curts', 'OrderController.indexCurt') 
 Route.post('/app/curts', 'OrderController.storeCurt')
 Route.get('/app/curts/:id', 'OrderController.showCurt') 
 Route.put('/app/curts', 'OrderController.editCurt')

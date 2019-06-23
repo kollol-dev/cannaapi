@@ -32,7 +32,48 @@ class CannaGrowController {
     async indexItem({request,response,auth}){
         //  try {
             //  let user =  await auth.getUser()
-              let allItems =await Item.query().where('userId',7).with('tags').fetch()
+            let allItems =await Item.query().where('userId',7).with('tags').fetch()
+              
+              return response.status(200).json({
+                  'success': true,
+                  "allItems": allItems
+                })
+          //   } catch (error) {
+          //     return response.status(401).json({
+          //         'success': false,
+          //         'message': 'You first need to login first!'
+          //     })
+          //   }
+  
+      }
+    async indexItemAll({request,response,auth}){
+        //  try {
+            //  let user =  await auth.getUser()
+            
+
+              let sortType = request.input('sortType') ? request.input('sortType') : ''
+              let price1 = request.input('price1') ? request.input('price1') : ''
+              let price2 = request.input('price2') ? request.input('price2') : ''
+              let key = request.input('key') ? request.input('key') : ''
+
+              let rawData = Item.query().where('userId',7).with('tags').with('store').with('user')
+              if(price1 && price2){
+                console.log("this is ok")
+                rawData.where('price', '>=', price1)
+                rawData.where('price', '<=', price2)
+                
+              }
+              if(key){
+                  rawData.whereHas('tags', (builder) => {
+                    builder.where('keyword', 'like', '%'+key+'%')
+                  })
+              }
+              if(sortType){
+                if(sortType == 'Alphabetical'){
+                  rawData.orderBy('name', 'asc')
+                }
+              }
+              let allItems = await rawData.fetch()
               return response.status(200).json({
                   'success': true,
                   "allItems": allItems
@@ -47,7 +88,7 @@ class CannaGrowController {
       }
     async showItem({request,response,auth,params}){
         //  try {
-              let item =await Item.query().where('id',params.id).fetch()
+              let item =await Item.query().where('id',params.id).with('tags').with('store').with('user').fetch()
               return response.status(200).json({
                   'success': true,
                   "item": item

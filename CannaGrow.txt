@@ -25,17 +25,54 @@
     Canna Grow Items Registration
     Request Type : Post
     Expected json:{
+        'name': *'data'
         'img': *'data'
         'deliveryFee': *'data'
         'licenseExpiration': *'data'
+        'productPrice': *'data'
         'price': *'data'
         'netPrice': *'data'
-        'tags': *'data'
+        'tags': *'arrayData'
         'description': *'data'
     }
      return response.status(200).json({
         'success': true,
         'message': 'response stored successfully !',
+        "item": item
+    })
+
+2. /app/items
+    Canna Grow Items Edit
+    Request Type : put
+    Expected json:{
+         'id': *'data'
+         'name': *'data'
+        'img': *'data'
+        'deliveryFee': *'data'
+        'licenseExpiration': *'data'
+        'productPrice': *'data'
+        'price': *'data'
+        'netPrice': *'data'
+        'tags': *'arrayData'
+        'description': *'data'
+    }
+     return response.status(200).json({
+        'success': true,
+        'message': 'response updated successfully !',
+        "item": item
+    })
+3. /app/items
+    Canna Grow all Items by user 
+    Request Type : Get
+     return response.status(200).json({
+        'success': true,
+        "item": item
+    })
+4. /app/items/:id
+    Canna Grow show single Item
+    Request Type : get
+     return response.status(200).json({
+        'success': true,
         "item": item
     })
 
