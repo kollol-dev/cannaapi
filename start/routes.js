@@ -3,6 +3,7 @@ require ('./Routes/cannago')
 require ('./Routes/cannadrive')
 require ('./Routes/cannagrow')
 require ('./Routes/dispensary')
+require ('./Routes/order')
 /*
 |--------------------------------------------------------------------------
 | Routes

@@ -5,7 +5,7 @@ const Schema = use('Schema')
 
 class ItemSchema extends Schema {
   up () {
-    this.create('items', (table) => {
+    this.create('items', (table) => { 
       table.increments()
       table.integer('userId')
       table.integer('growId')
@@ -13,6 +13,7 @@ class ItemSchema extends Schema {
       table.string('deliveryFee')
       table.string('price')
       table.string('netPrice')
+      table.string('tags')
       table.string('description')
       table.timestamps()
     })

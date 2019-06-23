@@ -137,7 +137,7 @@ class AuthController {
         const password = request.input("password");
       //  try {
           if (await auth.attempt(email, password)) {
-            let user = await User.findBy('email', email)
+            let user = await User.findBy('email', email) 
             let accessToken = await auth.generate(user)
             let cannago = await Cannago.query().where('userId', user.id ).first()
             return response.json({"user":user, 'cannago' : cannago,"token": accessToken.token})

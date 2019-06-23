@@ -17,6 +17,25 @@
         'success': true,
         'message': 'Registration Successfull please complete second step',
         "user": user,
+        "cannagrow": cannagrow,
         "token": accessToken.token
+    })
+
+1. /app/items
+    Canna Grow Items Registration
+    Request Type : Post
+    Expected json:{
+        'img': *'data'
+        'deliveryFee': *'data'
+        'licenseExpiration': *'data'
+        'price': *'data'
+        'netPrice': *'data'
+        'tags': *'data'
+        'description': *'data'
+    }
+     return response.status(200).json({
+        'success': true,
+        'message': 'response stored successfully !',
+        "item": item
     })
 
