@@ -13,7 +13,6 @@ class ItemSchema extends Schema {
       table.string('deliveryFee')
       table.string('price')
       table.string('netPrice')
-      table.string('tags')
       table.string('description')
       table.timestamps()
     })
