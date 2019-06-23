@@ -1,10 +1,11 @@
-1. /auth/registerGrow
-    Canna Grow Registration
+1. /auth/registerDep
+    Canna Grow Dispensary Registration
     Request Type : Post
     Expected json:{
         'name': *'data'
         'yearlyRevenue': *'data'
         'license': *'data'
+        'licenseExpiration': *'data'
         'licenseType': *'data'
         'ownerNameLast': *'data'
         'ownerNameLast': *'data'

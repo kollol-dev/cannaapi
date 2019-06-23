@@ -97,9 +97,10 @@ class AuthController {
        // try {
           const data = request.all()
           let user = await auth.getUser()
-           await User.query().where('id',user.id).update({'userType':4})
+          await User.query().where('id',user.id).update({'userType':3})
           data.userId = user.id
-          let dispensary = await Dispensary.create(request.all())
+          data.growerType = 2
+          let dispensary = await Cannagrow.create(request.all())
           let accessToken = await auth.generate(user)
           return response.status(200).json({
             'success': true,

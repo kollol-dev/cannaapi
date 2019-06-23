@@ -8,7 +8,7 @@ class ItemTagSchema extends Schema {
     this.create('item_tags', (table) => {
       table.increments()
       table.integer('itemId')
-      table.integer('tagId')
+      table.string('keyword')
       table.timestamps()
     })
   }
