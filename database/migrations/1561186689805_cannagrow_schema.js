@@ -8,6 +8,9 @@ class CannagrowSchema extends Schema {
     this.create('cannagrows', (table) => { 
       table.increments()
       table.integer('userId')
+      table.string('name')
+      table.string('license')
+      table.string('licenseExpiration')
       table.string('licenseType')
       table.string('growingType')
       table.string('seedType')
@@ -15,6 +18,7 @@ class CannagrowSchema extends Schema {
       table.string('ownerNameLast')
       table.boolean('deliver')
       table.boolean('sharingInventory')
+      table.string('yearlyRevenue')
       table.timestamps()
     })
   }
