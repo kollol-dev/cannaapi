@@ -82,6 +82,7 @@ class AuthController {
             'cannagrow': cannagrow ,
             "token": accessToken.token
           })
+
         // } catch (error) {
         //   return response.status(401).json({
         //     'success': false,
@@ -91,7 +92,8 @@ class AuthController {
         
     }
     async registerDep({request, auth, response}) {
-        try {
+
+       // try {
           const data = request.all()
           let user = await auth.getUser()
            await User.query().where('id',user.id).update({'userType':4})
@@ -110,7 +112,7 @@ class AuthController {
         //     'success': false,
         //     'message': 'You first need to login first!'
         //   })
-        }
+       // }
         
         
     }
