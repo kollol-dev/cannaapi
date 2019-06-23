@@ -3,6 +3,8 @@
     Request Type : Post
     Expected json:{
         'name': *'data'
+        'license': *'data'
+        'licenseExpiration': *'data'
         'licenseType': *'data'
         'growingType': *'data'
         'seedType': *'data'

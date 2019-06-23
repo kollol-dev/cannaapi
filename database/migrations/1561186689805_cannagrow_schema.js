@@ -19,6 +19,8 @@ class CannagrowSchema extends Schema {
       table.boolean('deliver')
       table.boolean('sharingInventory')
       table.string('yearlyRevenue')
+      table.boolean('RecreationalOrMedicinal')
+      table.integer('growerType')
       table.timestamps()
     })
   }

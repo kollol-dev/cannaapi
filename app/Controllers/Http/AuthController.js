@@ -73,6 +73,7 @@ class AuthController {
           let user = await auth.getUser()
           await User.query().where('id',user.id).update({'userType':3})
           data.userId = user.id
+          data.growerType = 1
           let cannagrow = await Cannagrow.create(request.all())
           let accessToken = await auth.generate(user)
           return response.status(200).json({
