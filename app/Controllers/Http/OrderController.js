@@ -10,7 +10,7 @@ class OrderController {
               let curt =await Curt.create(data)
               return response.status(200).json({
                   'success': true,
-                  'message': 'response stored successfully !',
+                  'message': 'response stored successfully !', 
                   "curt": curt
                 })
   

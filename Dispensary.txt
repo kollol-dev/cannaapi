@@ -7,7 +7,7 @@
         'license': *'data'
         'licenseExpiration': *'data'
         'licenseType': *'data'
-        'ownerNameLast': *'data'
+        'ownerNameFirst': *'data'
         'ownerNameLast': *'data'
         'deliver': *'data'
         'sharingInventory': *'data'

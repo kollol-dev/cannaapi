@@ -15,7 +15,7 @@
     }
     return response.status(200).json({
         'success': true,
-        'message': 'Registration Successfull please complete second step',
+        'message': 'Registration Successfull please complete second step', 
         "user": user,
         "cannagrow": cannagrow,
         "token": accessToken.token

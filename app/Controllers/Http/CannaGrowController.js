@@ -9,7 +9,7 @@ class CannaGrowController {
               let data = request.all()
               let user =  await auth.getUser()
               data.userId = user.id
-              let grower = await Cannagrow.findBy('userId', user.id)
+              let grower = await Cannagrow.findBy('userId', user.id) 
               data.growId = grower.id
             //   let tags = data.tags
             //   delete data.tags
@@ -32,7 +32,7 @@ class CannaGrowController {
     async indexItem({request,response,auth}){
         //  try {
             //  let user =  await auth.getUser()
-              let allItems =await Item.query().where('userId',user.id).fetch()
+              let allItems =await Item.query().where('userId',7).with('tags').fetch()
               return response.status(200).json({
                   'success': true,
                   "allItems": allItems
@@ -126,7 +126,7 @@ class CannaGrowController {
           //     })
           //   }
   
-      }
+    }
 }
 
 module.exports = CannaGrowController
