@@ -4,8 +4,8 @@
 const Model = use('Model')
 
 class Curt extends Model { 
-    product () {
-        return this.belongsTo('App/Models/Item', 'itemId', 'id')
+    item () {
+        return this.belongsTo('App/Models/Item', 'itemId', 'id') 
     }
 }
 

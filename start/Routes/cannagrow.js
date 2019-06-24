@@ -16,4 +16,7 @@ Route.get('/app/tags', 'CannaGrowController.indexTag')
 Route.post('/app/tags', 'CannaGrowController.storeTag')
 Route.get('/app/tags/:id', 'CannaGrowController.showTag')
 Route.put('/app/tags', 'CannaGrowController.editTag')
-Route.delete('/app/tags', 'CannaGrowController.destroyTag')
+Route.delete('/app/tags', 'CannaGrowController.destroyTag') 
+
+// home Routes
+Route.get('/app/growhome/:id', 'CannaGrowController.growHome')

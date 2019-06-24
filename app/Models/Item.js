@@ -2,6 +2,7 @@
 
 /** @type {typeof import('@adonisjs/lucid/src/Lucid/Model')} */
 const Model = use('Model')
+const Database = use('Database')
 
 class Item extends Model {
     tags () {
@@ -16,6 +17,9 @@ class Item extends Model {
     user () {
         return this.belongsTo('App/Models/User', 'userId', 'id')
     }
+    avgRating () {
+        return this.hasOne('App/Models/ItemReview', 'id', 'itemId').select('id', 'itemId', Database.raw('cast(AVG(rating) as decimal(10,2)) AS averageRating')).groupBy('itemId')
+      }
 }
 
 module.exports = Item

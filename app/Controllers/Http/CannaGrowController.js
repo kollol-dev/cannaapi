@@ -3,6 +3,7 @@ const User = use('App/Models/User');
 const Cannagrow = use('App/Models/Cannagrow');
 const Item = use('App/Models/Item');
 const ItemTag = use('App/Models/ItemTag');
+const Database = use('Database')
 class CannaGrowController {
     async edit({request,response,auth}){
         //  try {
@@ -88,7 +89,7 @@ class CannaGrowController {
       }
     async showItem({request,response,auth,params}){
         //  try {
-              let item =await Item.query().where('id',params.id).with('tags').with('store').with('user').with('reviews').first()
+              let item =await Item.query().where('id',params.id).with('tags').with('store').with('user').with('reviews').with('avgRating').first()
               return response.status(200).json({
                   'success': true,
                   "item": item
@@ -157,8 +158,29 @@ class CannaGrowController {
               await ItemTag.createMany(allTags);
               return response.status(200).json({
                   'success': true,
-                  'message': 'response edited successfully !',
+                  'message': 'response edited successfully !', 
                   "item": item
+                })
+          //   } catch (error) {
+          //     return response.status(401).json({
+          //         'success': false,
+          //         'message': 'You first need to login first!'
+          //     })
+          //   }
+  
+    }
+    async growHome ({request,response,auth,params}){
+        //  try {
+              let totalsales = await User.query().where('id' , params.id).with('totalsales').first()
+              let grower = await Cannagrow.query().where('userId',params.id).first()
+              const mostPopular = await Database.raw('SELECT items.* , cast(AVG(item_reviews.rating) as decimal(10,2)) AS averageRating FROM items LEFT JOIN item_reviews ON items.id = item_reviews.itemId WHERE items.growId = ? GROUP BY items.id ORDER by averageRating desc limit 3 ', [grower.id])
+              const leastPopular = await Database.raw('SELECT items.* , cast(AVG(item_reviews.rating) as decimal(10,2)) AS averageRating FROM items LEFT JOIN item_reviews ON items.id = item_reviews.itemId WHERE items.growId = ? GROUP BY items.id ORDER by averageRating ASC limit 3 ', [grower.id])
+              return response.status(200).json({
+                  'success': true,
+                  'message': 'request data recived successfully !', 
+                  "item": totalsales,
+                  "mostPopular": mostPopular[0],
+                  "leastPopular": leastPopular[0]
                 })
           //   } catch (error) {
           //     return response.status(401).json({
@@ -170,4 +192,4 @@ class CannaGrowController {
     }
 }
 
-module.exports = CannaGrowController
+module.exports = CannaGrowController;

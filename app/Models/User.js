@@ -5,6 +5,7 @@ const Hash = use('Hash')
 
 /** @type {typeof import('@adonisjs/lucid/src/Lucid/Model')} */
 const Model = use('Model')
+const Database = use('Database')
 
 class User extends Model {
   static boot () {
@@ -19,6 +20,9 @@ class User extends Model {
         userInstance.password = await Hash.make(userInstance.password)
       }
     })
+  }
+  totalsales () {
+    return this.hasOne('App/Models/Order', 'id', 'userId').select('id','userId',  Database.raw('sum(price)   AS gross'),  Database.raw('sum(netPrice)   AS net')  ).groupBy('userId')
   }
 
   /**

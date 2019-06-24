@@ -4,6 +4,9 @@
 const Model = use('Model')
 
 class UserReport extends Model {
+    order () {
+        return this.belongsTo('App/Models/Order', 'orderId', 'id') 
+    }
 }
 
 module.exports = UserReport
