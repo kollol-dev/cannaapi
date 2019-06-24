@@ -68,7 +68,7 @@ class OrderController {
           //     })
           //   }
   
-      }
+    }
     async destroyCurt({request,response,auth}){
         //  try {
               let data = request.all()
@@ -85,7 +85,7 @@ class OrderController {
           //     })
           //   }
   
-      }
+    }
 
 }
 

@@ -7,6 +7,9 @@ class Item extends Model {
     tags () {
         return this.hasMany('App/Models/ItemTag', 'id', 'itemId')
     }
+    reviews () {
+        return this.hasMany('App/Models/ItemReview', 'id', 'itemId')
+    }
     store () {
         return this.belongsTo('App/Models/Cannagrow', 'growId', 'id')
     }

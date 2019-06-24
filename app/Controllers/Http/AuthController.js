@@ -25,7 +25,12 @@ class AuthController {
         const data = request.all()
         let user = await auth.getUser()
         await User.query().where('id',user.id).update({'userType':1})
-        data.userId = user.id
+        if(data.userId != user.id){
+          return response.status(401).json({
+                'success': false,
+                'message': 'You are not authenticated user'
+              })
+        }
         let cannago = await Cannago.create(request.all())
         let accessToken = await auth.generate(user)
         return response.status(200).json({
@@ -48,7 +53,12 @@ class AuthController {
         const data = request.all()
         let user = await auth.getUser()
         await User.query().where('id',user.id).update({'userType':2})
-        data.userId = user.id
+        if(data.userId != user.id){
+          return response.status(401).json({
+                'success': false,
+                'message': 'You are not authenticated user'
+              })
+        }
         let cannadrive = await Cannadrive.create(request.all())
         let accessToken = await auth.generate(user)
         return response.status(200).json({
@@ -72,7 +82,12 @@ class AuthController {
           const data = request.all()
           let user = await auth.getUser()
           await User.query().where('id',user.id).update({'userType':3})
-          data.userId = user.id
+          if(data.userId != user.id){
+            return response.status(401).json({
+                  'success': false,
+                  'message': 'You are not authenticated user'
+                })
+          }
           data.growerType = 1
           let cannagrow = await Cannagrow.create(request.all())
           let accessToken = await auth.generate(user)
@@ -98,7 +113,12 @@ class AuthController {
           const data = request.all()
           let user = await auth.getUser()
           await User.query().where('id',user.id).update({'userType':3})
-          data.userId = user.id
+          if(data.userId != user.id){
+            return response.status(401).json({
+                  'success': false,
+                  'message': 'You are not authenticated user'
+                })
+          }
           data.growerType = 2
           let dispensary = await Cannagrow.create(request.all())
           let accessToken = await auth.generate(user)

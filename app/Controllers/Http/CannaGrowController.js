@@ -88,7 +88,7 @@ class CannaGrowController {
       }
     async showItem({request,response,auth,params}){
         //  try {
-              let item =await Item.query().where('id',params.id).with('tags').with('store').with('user').fetch()
+              let item =await Item.query().where('id',params.id).with('tags').with('store').with('user').with('reviews').fetch()
               return response.status(200).json({
                   'success': true,
                   "item": item
