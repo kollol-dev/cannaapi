@@ -23,6 +23,29 @@ class CannaDriveController {
           //   }
   
       }
+    //   async driverHome ({request,response,auth,params}){
+    //     //  try {
+    //         let user =  await auth.getUser()
+    //           let totalsales = await User.query().where('id' , user.id).with('drivertotalsales').first()
+
+    //           let grower = await Cannagrow.query().where('userId',params.id).first()
+    //           const mostPopular = await Database.raw('SELECT items.* , cast(AVG(item_reviews.rating) as decimal(10,2)) AS averageRating FROM items LEFT JOIN item_reviews ON items.id = item_reviews.itemId WHERE items.growId = ? GROUP BY items.id ORDER by averageRating desc limit 3 ', [grower.id])
+    //           const leastPopular = await Database.raw('SELECT items.* , cast(AVG(item_reviews.rating) as decimal(10,2)) AS averageRating FROM items LEFT JOIN item_reviews ON items.id = item_reviews.itemId WHERE items.growId = ? GROUP BY items.id ORDER by averageRating ASC limit 3 ', [grower.id])
+    //           return response.status(200).json({
+    //               'success': true,
+    //               'message': 'request data recived successfully !', 
+    //               "item": totalsales,
+    //               "mostPopular": mostPopular[0],
+    //               "leastPopular": leastPopular[0]
+    //             })
+    //       //   } catch (error) {
+    //       //     return response.status(401).json({
+    //       //         'success': false,
+    //       //         'message': 'You first need to login first!'
+    //       //     })
+    //       //   }
+  
+    // }
 }
 
 module.exports = CannaDriveController

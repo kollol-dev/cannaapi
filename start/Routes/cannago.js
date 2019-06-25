@@ -17,3 +17,4 @@ Route.delete('/app/itemreviews', 'CannaGoController.destroyItemReview')
 
 // Questionnaire Routes
 Route.post('/app/cannago/questionnaire','CannaGoController.storeQuestionnaire')
+

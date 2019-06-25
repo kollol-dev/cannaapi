@@ -57,7 +57,7 @@ class CannaGrowController {
               let price2 = request.input('price2') ? request.input('price2') : ''
               let key = request.input('key') ? request.input('key') : ''
 
-              let rawData = Item.query().where('userId',7).with('tags').with('store').with('user')
+              let rawData = Item.query().where('userId',7).with('tags').with('store').with('user').with('reviews')
               if(price1 && price2){
                 console.log("this is ok")
                 rawData.where('price', '>=', price1)
@@ -183,6 +183,39 @@ class CannaGrowController {
                   "item": totalsales,
                   "mostPopular": mostPopular[0],
                   "leastPopular": leastPopular[0]
+                })
+          //   } catch (error) {
+          //     return response.status(401).json({
+          //         'success': false,
+          //         'message': 'You first need to login first!'
+          //     })
+          //   }
+  
+    }
+    async destroyItem({request,response,auth}){
+      //  try {
+            let data = request.all()
+            let user =  await auth.getUser()
+            await Item.query().where('id',data.id).delete()
+            return response.status(200).json({
+                'success': true,
+                'message': 'response deleted successfully !',
+              })
+        //   } catch (error) {
+        //     return response.status(401).json({
+        //         'success': false,
+        //         'message': 'You first need to login first!'
+        //     })
+        //   }
+
+  }
+    async vendorlist ({request,response,auth,params}){
+        //  try {
+              let growerlist = await Cannagrow.query().with('user').fetch()
+              return response.status(200).json({
+                  'success': true,
+                  'message': 'request data recived successfully !', 
+                  "growerlist": growerlist,
                 })
           //   } catch (error) {
           //     return response.status(401).json({

@@ -20,3 +20,5 @@ Route.delete('/app/tags', 'CannaGrowController.destroyTag')
 
 // home Routes
 Route.get('/app/growhome/:id', 'CannaGrowController.growHome')
+// Map page
+Route.post('/app/vendorlist','CannaGrowController.vendorlist')
