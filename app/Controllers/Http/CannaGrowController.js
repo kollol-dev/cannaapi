@@ -32,7 +32,7 @@ class CannaGrowController {
       }
     async indexItem({request,response,auth}){
         //  try {
-            //  let user =  await auth.getUser()
+              let user =  await auth.getUser()
             let allItems =await Item.query().where('userId',7).with('tags').fetch()
               
               return response.status(200).json({
@@ -90,7 +90,7 @@ class CannaGrowController {
     async showItem({request,response,auth,params}){
         //  try {
               let item =await Item.query().where('id',params.id).with('tags').with('store').with('user').with('reviews')
-              //.with('avgRating')
+              .with('avgRating')
               .first()
               return response.status(200).json({
                   'success': true,
