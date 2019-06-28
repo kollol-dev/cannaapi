@@ -18,7 +18,7 @@ class Item extends Model {
         return this.belongsTo('App/Models/User', 'userId', 'id')
     }
     avgRating () {
-        return this.hasOne('App/Models/ItemReview', 'id', 'itemId').select('id', 'itemId', Database.raw('cast(AVG(rating) as decimal(10,2)) AS averageRating')).groupBy('itemId')
+        return this.hasOne('App/Models/ItemReview', 'id', 'itemId').select('itemId', Database.raw('cast(AVG(rating) as decimal(10,2)) AS averageRating')).groupBy('itemId')
       }
 }
 
