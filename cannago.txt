@@ -14,14 +14,14 @@
           "token": accessToken.token
     })
 
-2. /app/itemsAll
+2. /app/itemsAllSearch
     Canna Grow all Items  
     Request Type : Get
      Expected json in query:{
          'price1': 'lowest price'
          'price2': 'highst price'
         'key': 'tag key'
-        'sortType': 'Alphabetical'
+        'sortType': 'Alphabetical,BestRated,MostPopular'
     }
      return response.status(200).json({
         'success': true,

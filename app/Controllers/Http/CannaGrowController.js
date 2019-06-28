@@ -4,6 +4,7 @@ const Cannagrow = use('App/Models/Cannagrow');
 const Item = use('App/Models/Item');
 const ItemTag = use('App/Models/ItemTag');
 const Database = use('Database')
+var _ = require('lodash')
 class CannaGrowController {
     async edit({request,response,auth}){
         //  try {
@@ -87,9 +88,77 @@ class CannaGrowController {
           //   }
   
       }
+    async itemsAllSearch({request,response,auth}){
+        //  try {
+            //  let user =  await auth.getUser()
+            
+
+              let sortType = request.input('sortType') ? request.input('sortType') : ''
+              let price1 = request.input('price1') ? request.input('price1') : ''
+              let price2 = request.input('price2') ? request.input('price2') : ''
+              let key = request.input('key') ? request.input('key') : ''
+
+              let rawData = Item.query().with('tags').with('store').with('user').with('reviews').withCount('reviews') .with('avgRating')
+              if(price1 && price2){
+                console.log("this is ok")
+                rawData.where('price', '>=', price1)
+                rawData.where('price', '<=', price2)
+                
+              }
+              if(key){
+                  rawData.whereHas('tags', (builder) => {
+                    builder.where('keyword', 'like', '%'+key+'%')
+                  })
+              }
+              let allItems = await rawData.fetch()
+               allItems = JSON.parse(JSON.stringify(allItems))
+               let shopIndex = []
+              for (let d of allItems) {
+                shopIndex.push(d.growId)
+                if (d.avgRating == null) {
+                  d.avgRating = {
+                    averageRating: 0
+                  }
+                }
+              }
+
+                if(sortType){
+                  
+                  if(sortType == 'Alphabetical'){
+                    allItems = _.orderBy(allItems, 'name', 'asc')
+                  }
+                  else if(sortType == 'BestRated'){
+                    console.log('this is ok')
+                    allItems = _.orderBy(allItems, 'avgRating.averageRating', 'desc')
+                  }
+                  else if(sortType == 'MostPopular'){
+                    allItems = _.orderBy(allItems, '__meta__.reviews_count', 'desc')
+                  }
+                }
+                // 
+                var uniqueItems = Array.from(new Set(shopIndex))
+
+                let shop = await Cannagrow.query().whereIn('id',uniqueItems).fetch()
+               
+
+                
+
+                return response.status(200).json({
+                  'success': true,
+                  "allItems": allItems,
+                  "shop": shop,
+                })
+          //   } catch (error) {
+          //     return response.status(401).json({
+          //         'success': false,
+          //         'message': 'You first need to login first!'
+          //     })
+          //   }
+  
+      }
     async showItem({request,response,auth,params}){
         //  try {
-              let item =await Item.query().where('id',params.id).with('tags').with('store').with('user').with('reviews')
+              let item =await Item.query().where('id',params.id).with('tags').with('store').with('user').with('reviews').withCount('reviews')
               .with('avgRating')
               .first()
               return response.status(200).json({
