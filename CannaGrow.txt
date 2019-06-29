@@ -82,7 +82,7 @@
         'success': true,
         "item": item
     })
-5. /app/items
+5. /app/itemsDelete
     Canna Grow delete single Item
     Request Type : delete
      return response.status(200).json({

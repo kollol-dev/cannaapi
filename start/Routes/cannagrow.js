@@ -3,7 +3,7 @@ const Route = use('Route')
 
 // CannaGo Routes
 Route.put('/app/cannagrow', 'CannaGrowController.edit') 
-
+Route.get('/app/cannagrowAllSearch', 'CannaGrowController.cannagrowAllSearch')
 // Items Routes
 Route.get('/app/items', 'CannaGrowController.indexItem')
 Route.get('/app/itemsAll', 'CannaGrowController.indexItemAll')
@@ -11,7 +11,7 @@ Route.get('/app/itemsAllSearch', 'CannaGrowController.itemsAllSearch')
 Route.post('/app/items', 'CannaGrowController.storeItem')
 Route.get('/app/items/:id', 'CannaGrowController.showItem')
 Route.put('/app/items', 'CannaGrowController.editItem')
-Route.delete('/app/items', 'CannaGrowController.destroyItem')
+Route.post('/app/itemsDelete', 'CannaGrowController.destroyItem')
 // Tags Routes
 Route.get('/app/tags', 'CannaGrowController.indexTag')
 Route.post('/app/tags', 'CannaGrowController.storeTag')

@@ -24,9 +24,11 @@
         'sortType': 'Alphabetical,BestRated,MostPopular'
     }
      return response.status(200).json({
-        'success': true,
-        "allItems": allItems
+       'success': true,
+        "allItems": allItems,
+        "shop": shop,
     })
+
 4. /app/items/:id
     Canna Grow single Items  
     Request Type : get
@@ -69,5 +71,16 @@
         'message': 'response stored successfully !', 
         "order": order
     })
-
+8. /app/cannagrowAllSearch
+    All Canna Grow   
+    Request Type : Get
+     Expected json in query:{
+         'price1': 'lowest price'
+         'price2': 'highst price'
+        'sortType': 'Alphabetical,BestRated,MostPopular'
+    }
+     return response.status(200).json({
+       'success': true,
+        "shop": shop,
+    })
 

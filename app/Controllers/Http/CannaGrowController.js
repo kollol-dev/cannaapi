@@ -31,6 +31,55 @@ class CannaGrowController {
           //   }
   
       }
+      async cannagrowAllSearch({request,response,auth}){
+        //  try {
+            //  let user =  await auth.getUser()
+              let sortType = request.input('sortType') ? request.input('sortType') : ''
+              let price1 = request.input('price1') ? request.input('price1') : ''
+              let price2 = request.input('price2') ? request.input('price2') : ''
+              let rawData = Cannagrow.query().with('user').with('reviews').withCount('reviews').with('avgRating').with('avgPrice')
+
+              if(price1 && price2){
+                rawData.whereHas('avgPrice', (builder) => {
+                  builder.where('averagePrice', '>=', price1)
+                  builder.where('averagePrice', '<=', price2)
+                })
+              }
+              let allItems = await rawData.fetch()
+               allItems = JSON.parse(JSON.stringify(allItems))
+              for (let d of allItems) {
+                if (d.avgRating == null) {
+                  d.avgRating = {
+                    averageRating: 0
+                  }
+                }
+              }
+
+                if(sortType){
+                  
+                  if(sortType == 'Alphabetical'){
+                    allItems = _.orderBy(allItems, 'name', 'asc')
+                  }
+                  else if(sortType == 'BestRated'){
+                    console.log('this is ok')
+                    allItems = _.orderBy(allItems, 'avgRating.averageRating', 'desc')
+                  }
+                  else if(sortType == 'MostPopular'){
+                    allItems = _.orderBy(allItems, '__meta__.reviews_count', 'desc')
+                  }
+                }
+                return response.status(200).json({
+                  'success': true,
+                  "shop": allItems,
+                })
+          //   } catch (error) {
+          //     return response.status(401).json({
+          //         'success': false,
+          //         'message': 'You first need to login first!'
+          //     })
+          //   }
+  
+      }
     async indexItem({request,response,auth}){
         //  try {
               let user =  await auth.getUser()
@@ -91,13 +140,10 @@ class CannaGrowController {
     async itemsAllSearch({request,response,auth}){
         //  try {
             //  let user =  await auth.getUser()
-            
-
               let sortType = request.input('sortType') ? request.input('sortType') : ''
               let price1 = request.input('price1') ? request.input('price1') : ''
               let price2 = request.input('price2') ? request.input('price2') : ''
               let key = request.input('key') ? request.input('key') : ''
-
               let rawData = Item.query().with('tags').with('store').with('user').with('reviews').withCount('reviews') .with('avgRating')
               if(price1 && price2){
                 console.log("this is ok")
@@ -136,9 +182,9 @@ class CannaGrowController {
                   }
                 }
                 // 
-                var uniqueItems = Array.from(new Set(shopIndex))
+              //  var uniqueItems = Array.from(new Set(shopIndex))
 
-                let shop = await Cannagrow.query().whereIn('id',uniqueItems).fetch()
+               // let shop = await Cannagrow.query().whereIn('id',uniqueItems).fetch()
                
 
                 
@@ -146,7 +192,7 @@ class CannaGrowController {
                 return response.status(200).json({
                   'success': true,
                   "allItems": allItems,
-                  "shop": shop,
+                 // "shop": shop,
                 })
           //   } catch (error) {
           //     return response.status(401).json({
