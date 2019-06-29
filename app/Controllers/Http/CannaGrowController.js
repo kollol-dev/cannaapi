@@ -106,6 +106,7 @@ class CannaGrowController {
               let price1 = request.input('price1') ? request.input('price1') : ''
               let price2 = request.input('price2') ? request.input('price2') : ''
               let key = request.input('key') ? request.input('key') : ''
+              let txt = request.input('txt') ? request.input('txt') : ''
 
               let rawData = Item.query().with('tags').with('store').with('user').with('reviews')
               if(price1 && price2){
@@ -119,6 +120,10 @@ class CannaGrowController {
                     builder.where('keyword', 'like', '%'+key+'%')
                   })
               }
+              if(txt){
+                rawData.where('keyword', 'like', '%'+txt+'%')
+                rawData.orWhere('description', 'like', '%'+txt+'%')
+            }
               if(sortType){
                 if(sortType == 'Alphabetical'){
                   rawData.orderBy('name', 'asc')

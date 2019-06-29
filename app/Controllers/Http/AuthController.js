@@ -156,7 +156,7 @@ class AuthController {
     async loginGo({request, auth, response}) {
         const email = request.input("email")
         const password = request.input("password");
-      //  try {
+        try {
           if (await auth.attempt(email, password)) {
             let user = await User.findBy('email', email) 
             let accessToken = await auth.generate(user)
@@ -170,14 +170,17 @@ class AuthController {
             })
           }
 
-        // } catch (e) {
-        //   return response.json({message: 'You first need to register!'})
-        // }
+        } catch (e) {
+          return response.status(200).json({
+            'success': false,
+            'message': e,
+          })
+        }
     }
     async loginDrive({request, auth, response}) {
         const email = request.input("email")
         const password = request.input("password");
-       // try {
+        try {
           if (await auth.attempt(email, password)) {
             let user = await User.findBy('email', email)
             let accessToken = await auth.generate(user)
@@ -191,14 +194,17 @@ class AuthController {
             })
           }
 
-        // } catch (e) {
-        //   return response.json({message: 'You first need to register!'})
-        // }
+        } catch (e) {
+          return response.status(200).json({
+            'success': false,
+            'message': e,
+          })
+        }
     }
     async loginGrow({request, auth, response}) {
         const email = request.input("email")
         const password = request.input("password");
-        //try {
+        try {
           if (await auth.attempt(email, password)) {
             let user = await User.findBy('email', email)
             let accessToken = await auth.generate(user)
@@ -212,9 +218,12 @@ class AuthController {
             })
           }
 
-        // } catch (e) {
-        //   return response.json({message: 'You first need to register!'})
-        // }
+        } catch (e) {
+          return response.status(200).json({
+            'success': false,
+            'message': e,
+          })
+        }
     }
     async loginDep({request, auth, response}) {
         const email = request.input("email")

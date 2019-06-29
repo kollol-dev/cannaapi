@@ -84,3 +84,11 @@
         "shop": shop,
     })
 
+8. /app/itemreviewsbyItems/:id
+    Review by Item id   
+    Request Type : Get
+    return response.status(200).json({
+        'success': true,
+        "itemReviews": itemReviews
+    })
+

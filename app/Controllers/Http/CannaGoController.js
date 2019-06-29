@@ -135,10 +135,10 @@ class CannaGoController {
   }
   async indexItemReviewByItems({request,response,auth,params}){
       //  try {
-            let itemReview =await ItemReview.query().where('itemId',params.id).with('item').with('store').with('user').fetch()
+            let itemReview =await ItemReview.query().where('itemId',params.id).with('item').with('user').fetch()
             return response.status(200).json({
                 'success': true,
-                "itemReview": itemReview
+                "itemReviews": itemReview
               })
         //   } catch (error) {
         //     return response.status(401).json({
