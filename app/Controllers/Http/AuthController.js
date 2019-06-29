@@ -161,7 +161,13 @@ class AuthController {
             let user = await User.findBy('email', email) 
             let accessToken = await auth.generate(user)
             let cannago = await Cannago.query().where('userId', user.id ).first()
-            return response.json({"user":user, 'cannago' : cannago,"token": accessToken.token})
+            return response.status(200).json({
+              'success': true,
+              'message': 'Login Complete Successfully ! ',
+              "user": user,
+              'cannago': cannago ,
+              "token": accessToken.token
+            })
           }
 
         // } catch (e) {
@@ -176,7 +182,13 @@ class AuthController {
             let user = await User.findBy('email', email)
             let accessToken = await auth.generate(user)
             let cannadrive = await Cannadrive.query().where('userId', user.id ).first()
-            return response.json({"user":user, 'cannadrive' : cannadrive,"token": accessToken.token})
+            return response.status(200).json({
+              'success': true,
+              'message': 'Login Complete Successfully ! ',
+              "user": user,
+              'cannadrive': cannadrive ,
+              "token": accessToken.token
+            })
           }
 
         // } catch (e) {
@@ -191,7 +203,13 @@ class AuthController {
             let user = await User.findBy('email', email)
             let accessToken = await auth.generate(user)
             let cannagrow = await Cannagrow.query().where('userId', user.id ).first()
-            return response.json({"user":user, 'cannagrow' : cannagrow,"token": accessToken.token})
+            return response.status(200).json({
+              'success': true,
+              'message': 'Login Complete Successfully ! ',
+              "user": user,
+              'cannagrow': cannagrow ,
+              "token": accessToken.token
+            })
           }
 
         // } catch (e) {
@@ -206,7 +224,13 @@ class AuthController {
             let user = await User.findBy('email', email)
             let accessToken = await auth.generate(user)
             let dispensary = await Dispensary.query().where('userId', user.id ).first()
-            return response.json({"user":user, 'dispensary' : dispensary,"token": accessToken.token})
+            return response.status(200).json({
+              'success': true,
+              'message': 'Login Complete Successfully ! ',
+              "user": user,
+              'dispensary': dispensary ,
+              "token": accessToken.token
+            })
           }
 
         // } catch (e) {
