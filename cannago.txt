@@ -29,7 +29,7 @@
         "shop": shop,
     })
 
-4. /app/items/:id
+3. /app/items/:id
     Canna Grow single Items  
     Request Type : get
     
@@ -37,7 +37,7 @@
         'success': true,
         "item": item
     })
-3. /app/curts
+4. /app/curts
     Canna Go Curt Registration
     Request Type : Post
      Expected json:{
@@ -49,10 +49,30 @@
         'message': 'response stored successfully !', 
         "curt": curt
     })
-
+5./app/curts
+    Canna Go  get all user curt
+    Request Type : get
+     
+     return response.status(200).json({
+        'success': true,
+          'message': 'response stored successfully !', 
+          "curt": curt
+    })
 3. /app/curts
+    Canna Go Curt Edit
+    Request Type : put
+     Expected json:{
+        'id': "data"
+         'quantity': *'data'
+    }
+     return response.status(200).json({
+       'success': true,
+        'message': 'response edited successfully !', 
+    })
+
+6. /app/curtsdelete
     Canna Go Curt single item delete
-    Request Type : delete
+    Request Type : post
      Expected json:{
          'id': *'data'
     }
@@ -60,7 +80,7 @@
         'success': true,
         'message': 'response deleted successfully !',
     })
-4. /app/orders
+7. /app/orders
     Canna Go Order Registration
     Request Type : Post
      Expected json:{
@@ -84,7 +104,7 @@
         "shop": shop,
     })
 
-8. /app/itemreviewsbyItems/:id
+9. /app/itemreviewsbyItems/:id
     Review by Item id   
     Request Type : Get
     return response.status(200).json({

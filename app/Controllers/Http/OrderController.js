@@ -183,6 +183,23 @@ class OrderController {
           //     })
           //   }
   
+    } 
+       async editCurt({request,response,auth}){
+        //  try {
+              let data = request.all()
+              let user =  await auth.getUser()
+              await Curt.query().where('id',data.id).update(data)
+              return response.status(200).json({
+                  'success': true,
+                  'message': 'response deleted successfully !',
+                })
+          //   } catch (error) {
+          //     return response.status(401).json({
+          //         'success': false,
+          //         'message': 'You first need to login first!'
+          //     })
+          //   }
+  
     }
 
 }
