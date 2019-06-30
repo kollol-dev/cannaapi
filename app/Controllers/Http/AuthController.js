@@ -21,7 +21,7 @@ class AuthController {
         })
     }
     async registerGo({request, auth, response}) {
-     // try {
+      try {
         const data = request.all()
         let user = await auth.getUser()
         await User.query().where('id',user.id).update({'userType':1})
@@ -41,15 +41,15 @@ class AuthController {
           "token": accessToken.token
         })
 
-      // } catch (error) {
-      //   return response.status(401).json({
-      //     'success': false,
-      //     'message': 'You first need to login first!'
-      //   })
-      // }
+      } catch (error) {
+        return response.status(401).json({
+          'success': false,
+          'message': 'You first need to login first!'
+        })
+      }
     }
     async registerDrive({request, auth, response}) {
-     // try {
+     try {
         const data = request.all()
         let user = await auth.getUser()
         await User.query().where('id',user.id).update({'userType':2})
@@ -68,17 +68,17 @@ class AuthController {
           'cannadrive': cannadrive ,
           "token": accessToken.token
         })
-      // } catch (error) {
-      //   return response.status(401).json({
-      //     'success': false,
-      //     'message': 'You first need to login first!'
-      //   })
-      // }
+      } catch (error) {
+        return response.status(401).json({
+          'success': false,
+          'message': 'You first need to login first!'
+        })
+      }
        
     }
     async registerGrow({request, auth, response}) {
       
-      //  try {
+        try {
           const data = request.all()
           let user = await auth.getUser()
           await User.query().where('id',user.id).update({'userType':3})
@@ -99,17 +99,17 @@ class AuthController {
             "token": accessToken.token
           })
 
-        // } catch (error) {
-        //   return response.status(401).json({
-        //     'success': false,
-        //     'message': 'You first need to login first!'
-        //   })
-        // }
+        } catch (error) {
+          return response.status(401).json({
+            'success': false,
+            'message': 'You first need to login first!'
+          })
+        }
         
     }
     async registerDep({request, auth, response}) {
 
-       // try {
+        try {
           const data = request.all()
           let user = await auth.getUser()
           await User.query().where('id',user.id).update({'userType':3})
@@ -129,12 +129,12 @@ class AuthController {
             'dispensary': dispensary ,
             "token": accessToken.token
           })
-        // } catch (error) {
-        //   return response.status(401).json({
-        //     'success': false,
-        //     'message': 'You first need to login first!'
-        //   })
-       // }
+        } catch (error) {
+          return response.status(401).json({
+            'success': false,
+            'message': 'You first need to login first!'
+          })
+       }
         
         
     }
@@ -171,7 +171,7 @@ class AuthController {
           }
 
         } catch (e) {
-          return response.status(200).json({
+          return response.json({
             'success': false,
             'message': e,
           })
@@ -195,7 +195,7 @@ class AuthController {
           }
 
         } catch (e) {
-          return response.status(200).json({
+          return response.json({
             'success': false,
             'message': e,
           })
@@ -219,7 +219,7 @@ class AuthController {
           }
 
         } catch (e) {
-          return response.status(200).json({
+          return response.json({
             'success': false,
             'message': e,
           })
@@ -243,7 +243,7 @@ class AuthController {
           }
 
         } catch (e) {
-          return response.status(200).json({
+          return response.json({
               'success': false,
               'message': e,
             })
@@ -261,9 +261,16 @@ class AuthController {
       try {
         session.clear()
         await auth.logout()
-        return
+
+        return response.status(200).json({
+              'success': true,
+              'message': 'Logout Successfull ! ',
+            })
       } catch (e) {
-        return false
+        return response.json({
+              'success': false,
+              'message': e,
+            })
       }
     }
 }
