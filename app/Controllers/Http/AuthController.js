@@ -257,10 +257,11 @@ class AuthController {
             response.send(error)
           }
     }
-    async logout ({ auth, session }) {
+    async logout ({ auth, session , response }) {
+
       try {
         session.clear()
-        await auth.logout()
+        //await auth.logout()
 
         return response.status(200).json({
               'success': true,
