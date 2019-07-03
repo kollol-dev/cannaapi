@@ -224,6 +224,23 @@ class CannaGrowController {
           //   }
   
       }
+          async showItemByStore({request,response,auth,params}){
+        //  try {
+              let item =await Item.query().where('growId',params.id).with('tags').with('store').with('user').with('reviews').withCount('reviews')
+              .with('avgRating')
+              .first()
+              return response.status(200).json({
+                  'success': true,
+                  "item": item
+                })
+          //   } catch (error) {
+          //     return response.status(401).json({
+          //         'success': false,
+          //         'message': 'You first need to login first!'
+          //     })
+          //   }
+  
+      }
     async storeItem({request,response,auth}){
         //  try {
               let data = request.all()
