@@ -2,7 +2,7 @@
 const Route = use('Route')
 
 // CannaGo Routes
-Route.put('/app/cannagrow', 'CannaGrowController.edit') 
+Route.post('/app/cannagrowEdit', 'CannaGrowController.edit') 
 Route.get('/app/cannagrowAllSearch', 'CannaGrowController.cannagrowAllSearch')
 // Items Routes
 Route.get('/app/items', 'CannaGrowController.indexItem')

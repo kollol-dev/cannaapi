@@ -2,7 +2,7 @@
 const Route = use('Route')
 
 // CannaGo Routes
-Route.put('/app/cannago', 'CannaGoController.edit')
+Route.post('/app/cannagoEdit', 'CannaGoController.edit')
 
 // Item Reviews Routes
 
