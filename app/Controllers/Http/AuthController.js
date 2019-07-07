@@ -257,7 +257,8 @@ class AuthController {
             let cannago =await User.query().where('id',data.id).update(data)
             return response.status(200).json({
                 'success': true,
-                'message': 'response Updated successfully !'
+                'message': 'response Updated successfully !',
+                'user': data
               })
         //   } catch (error) {
         //     return response.status(401).json({
