@@ -36,6 +36,10 @@ Route.post('/auth/loginDrive', 'AuthController.loginDrive')
 Route.post('/auth/loginGrow', 'AuthController.loginGrow')
 Route.post('/auth/loginDep', 'AuthController.loginDep')
 
+Route.put('/app/user', 'AuthController.editUser')
+
+
+
 Route.post('/auth/logout', 'AuthController.logout')
 
 Route.get('/auth/getUser', 'AuthController.getUser')

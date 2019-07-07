@@ -7,16 +7,12 @@ class CannaGoController {
       //  try {
             let data = request.all()
             let user =  await auth.getUser()
-            data.userId = user.id
-            let questionnaire =await Questionnaire.create(data)
+          //  data.userId = user.id
+            let cannago =await Cannago.query().where('id',data.id).update(data)
             return response.status(200).json({
                 'success': true,
-                'message': 'response stored successfully !',
-                "questionnaire": questionnaire
+                'message': 'response Updated successfully !'
               })
-
-
-
         //   } catch (error) {
         //     return response.status(401).json({
         //         'success': false,

@@ -6,31 +6,25 @@ const ItemTag = use('App/Models/ItemTag');
 const Database = use('Database')
 var _ = require('lodash')
 class CannaGrowController {
-    async edit({request,response,auth}){
-        //  try {
-              let data = request.all()
-              let user =  await auth.getUser()
-              data.userId = user.id
-              let grower = await Cannagrow.findBy('userId', user.id) 
-              data.growId = grower.id
-            //   let tags = data.tags
-            //   delete data.tags
-            data.tags = JSON.stringify(data.tags)
-            let item =await Item.create(data)
-
-              return response.status(200).json({
-                  'success': true,
-                  'message': 'response stored successfully !',
-                  "item": item
-                })
-          //   } catch (error) {
-          //     return response.status(401).json({
-          //         'success': false,
-          //         'message': 'You first need to login first!'
-          //     })
-          //   }
   
-      }
+      async edit({request,response,auth}){
+      //  try {
+            let data = request.all()
+            let user =  await auth.getUser()
+          //  data.userId = user.id
+            let cannago =await Cannagrow.query().where('id',data.id).update(data)
+            return response.status(200).json({
+                'success': true,
+                'message': 'response Updated successfully !'
+              })
+        //   } catch (error) {
+        //     return response.status(401).json({
+        //         'success': false,
+        //         'message': 'You first need to login first!'
+        //     })
+        //   }
+
+    }
       async cannagrowAllSearch({request,response,auth}){
         //  try {
             //  let user =  await auth.getUser()
