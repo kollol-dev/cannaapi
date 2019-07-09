@@ -151,9 +151,9 @@ class OrderController {
 
     async showCurt({request,response,auth}){
         //  try {
-             // let user =  await auth.getUser()
+              let user =  await auth.getUser()
               
-              let curt = await Curt.query().where('userId',1).with('item').fetch()
+              let curt = await Curt.query().where('userId',user.id).with('item').fetch()
               return response.status(200).json({
                   'success': true,
                   'message': 'requested data returnd  successfully !', 
