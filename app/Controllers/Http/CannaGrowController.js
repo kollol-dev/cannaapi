@@ -15,7 +15,8 @@ class CannaGrowController {
             let cannago =await Cannagrow.query().where('id',data.id).update(data)
             return response.status(200).json({
                 'success': true,
-                'message': 'response Updated successfully !'
+                'message': 'response Updated successfully !',
+                'data':data,
               })
         //   } catch (error) {
         //     return response.status(401).json({
