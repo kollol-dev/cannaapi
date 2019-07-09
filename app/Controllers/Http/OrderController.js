@@ -191,8 +191,9 @@ class OrderController {
               await Curt.query().where('id',data.id).update(data)
               return response.status(200).json({
                   'success': true,
-                  'message': 'response deleted successfully !',
-                })
+                  'message': 'response edited successfully !',
+                  'data':data
+            })
           //   } catch (error) {
           //     return response.status(401).json({
           //         'success': false,
