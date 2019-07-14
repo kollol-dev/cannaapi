@@ -24,6 +24,9 @@ class User extends Model {
   totalsales () {
     return this.hasOne('App/Models/Order', 'id', 'userId').select('id','userId',  Database.raw('sum(price)   AS gross'),  Database.raw('sum(netPrice)   AS net')  ).groupBy('userId')
   }
+  buyerProfile(){
+    return this.belongsTo('App/Models/Cannago','id','userId')
+  }
 
   /**
    * A relationship on tokens is required for auth to

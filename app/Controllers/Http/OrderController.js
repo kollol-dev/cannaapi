@@ -20,11 +20,14 @@ class OrderController {
               }
               await Curt.query().where('userId',user.id).delete()
               curtInfo = JSON.parse(JSON.stringify(curtInfo))
+              let sellerId = 1
               for(let d of curtInfo){
                 price = price + (d.item.price*d.quantity)
                 netPrice = netPrice + (d.item.netPrice * d.quantity)
+                  sellerId = d.growId
               }
               data.price = price
+              data.sellerId = sellerId
               data.netPrice = netPrice
               let order =await Order.create(data)
               let allCurtInfo = []
@@ -55,6 +58,24 @@ class OrderController {
               let user =  await auth.getUser()
               
               let order = await Order.query().where('userId',user.id).with('orderdetails').with('orderdetails.item').fetch()
+              return response.status(200).json({
+                  'success': true,
+                  'message': 'requested data returnd  successfully !', 
+                  "order": order
+                })
+          //   } catch (error) {
+          //     return response.status(401).json({
+          //         'success': false,
+          //         'message': 'You first need to login first!'
+          //     })
+          //   }
+  
+    }
+      async indexOrderSeller({request,response,auth}){
+        //  try {
+              let user =  await auth.getUser()
+              
+              let order = await Order.query().where('sellerId',user.id).with('orderdetails').with('orderdetails.item').with('buyer').with('buyer.buyerProfile').fetch()
               return response.status(200).json({
                   'success': true,
                   'message': 'requested data returnd  successfully !', 
