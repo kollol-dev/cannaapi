@@ -4,6 +4,7 @@ const Route = use('Route')
 // CannaGo Routes
 Route.post('/app/cannagrowEdit', 'CannaGrowController.edit') 
 Route.get('/app/cannagrowAllSearch', 'CannaGrowController.cannagrowAllSearch')
+// Route.get('/app/cannagrowAllSearch/:id', 'CannaGrowController.cannagrowAllSearchId')
 // Items Routes
 Route.get('/app/items', 'CannaGrowController.indexItem')
 Route.get('/app/itemsAll', 'CannaGrowController.indexItemAll')
@@ -24,3 +25,6 @@ Route.delete('/app/tags', 'CannaGrowController.destroyTag')
 Route.get('/app/growhome/:id', 'CannaGrowController.growHome')
 // Map page
 Route.post('/app/vendorlist','CannaGrowController.vendorlist')
+
+Route.get('app/allShopItems/:id', 'CannaGrowController.getShopPorudcts')
+Route.get('app/productReview/:id', 'CannaGrowController.getReviewByProductId')

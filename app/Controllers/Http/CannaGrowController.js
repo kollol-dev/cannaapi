@@ -3,6 +3,7 @@ const User = use('App/Models/User');
 const Cannagrow = use('App/Models/Cannagrow');
 const Item = use('App/Models/Item');
 const ItemTag = use('App/Models/ItemTag');
+const ItemReview = use('App/Models/ItemReview');
 const Database = use('Database')
 var _ = require('lodash')
 class CannaGrowController {
@@ -357,6 +358,35 @@ class CannaGrowController {
           //   }
   
     }
+
+    // GET ALL THE PRODUCTS OF A SELLER IN SHOP DETAILS SCREEN 
+    async getShopPorudcts({response,params}){
+        let item =await Item.query().where('growId',params.id).withCount('reviews')
+        .with('avgRating')
+        .fetch()
+        return response.status(200).json({
+            'success': true,
+            "allItems": item
+          })
+    }
+
+    async getReviewByProductId({response,params}){
+      let rev = await ItemReview.query().where('itemId', params.id).with('user').fetch()
+      return response.status(200).json({
+        'success': true,
+        "rev": rev
+      })
+    }
+       
+    
+
+
+
+
+
+
+
+
 }
 
 module.exports = CannaGrowController;
