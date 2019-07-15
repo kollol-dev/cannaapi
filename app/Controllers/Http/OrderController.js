@@ -24,7 +24,7 @@ class OrderController {
               for(let d of curtInfo){
                 price = price + (d.item.price*d.quantity)
                 netPrice = netPrice + (d.item.netPrice * d.quantity)
-                  sellerId = d.growId
+                  sellerId = d.item.growId
               }
               data.price = price
               data.sellerId = sellerId
