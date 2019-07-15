@@ -5,6 +5,7 @@ require ('./Routes/cannagrow')
 require ('./Routes/dispensary')
 require ('./Routes/order')
 require ('./Routes/report')
+require ('./Routes/buyer')
 /*
 |--------------------------------------------------------------------------
 | Routes
