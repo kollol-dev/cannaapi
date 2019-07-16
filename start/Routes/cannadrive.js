@@ -5,4 +5,5 @@ const Route = use('Route')
 Route.put('/app/cannadrive', 'CannaDriveController.edit')
 
 // home Routes
-Route.get('/app/driverhome', 'CannaGrowController.driverHome')
+Route.get('/app/driverhome', 'CannaDriveController.driverHome')
+Route.get('/app/indexSingleDriver/:id', 'CannaDriveController.indexSingleDriver')
