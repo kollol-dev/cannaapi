@@ -1,5 +1,5 @@
 'use strict'
-
+const Cannadrive = use('App/Models/Cannadrive');
 class CannaDriveController {
     async edit({request,response,auth}){
         //  try {
@@ -18,11 +18,28 @@ class CannaDriveController {
           //   } catch (error) {
           //     return response.status(401).json({
           //         'success': false,
-          //         'message': 'You first need to login first!'
+          //         'message': 'You first need to login first!' 
           //     })
           //   }
   
       }
+          async indexSingleDriver({params,response,auth}){
+      //  try {
+          //  let user =  await auth.getUser()
+          let allItems =await Cannadrive.query().where('id',params.id).with('user').fetch()
+            
+            return response.status(200).json({
+                'success': true,
+                "driver": allItems
+              })
+        //   } catch (error) {
+        //     return response.status(401).json({
+        //         'success': false,
+        //         'message': 'You first need to login first!'
+        //     })
+        //   }
+
+    }
     //   async driverHome ({request,response,auth,params}){
     //     //  try {
     //         let user =  await auth.getUser()

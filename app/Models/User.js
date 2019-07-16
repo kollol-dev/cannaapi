@@ -25,7 +25,7 @@ class User extends Model {
     return this.hasOne('App/Models/Order', 'id', 'userId').select('id','userId',  Database.raw('sum(price)   AS gross'),  Database.raw('sum(netPrice)   AS net')  ).groupBy('userId')
   }
   buyerProfile(){
-    return this.belongsTo('App/Models/Cannago','id','userId')
+    return this.belongsTo('App/Models/Cannagrow','id','userId')
   }
 
   /**
