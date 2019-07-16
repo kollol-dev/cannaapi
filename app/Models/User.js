@@ -27,6 +27,9 @@ class User extends Model {
   buyerProfile(){
     return this.belongsTo('App/Models/Cannagrow','id','userId')
   }
+  profile(){
+    return this.belongsTo('App/Models/Cannagrow','id','userId')
+  }
 
   /**
    * A relationship on tokens is required for auth to

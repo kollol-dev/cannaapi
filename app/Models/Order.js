@@ -8,8 +8,12 @@ class Order extends Model {
         return this.hasMany('App/Models/OrderDetail', 'id', 'orderId') 
     }
     buyer(){
+        return this.belongsTo('App/Models/User','userId','id')
+    }
+    seller(){
         return this.belongsTo('App/Models/User','sellerId','id')
     }
+
 }
 
 module.exports = Order

@@ -72,7 +72,7 @@ class OrderController {
   
     }
       async indexOrderSeller({request,response,auth}){
-        //  try {
+        
               let user =  await auth.getUser()
               
               let order = await Order.query().where('sellerId',user.id).with('orderdetails').with('orderdetails.item').with('buyer').with('buyer.buyerProfile').fetch()
@@ -81,12 +81,7 @@ class OrderController {
                   'message': 'requested data returnd  successfully !', 
                   "order": order
                 })
-          //   } catch (error) {
-          //     return response.status(401).json({
-          //         'success': false,
-          //         'message': 'You first need to login first!'
-          //     })
-          //   }
+        
   
     }
       async showOrder({params,response,auth}){
