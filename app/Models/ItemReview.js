@@ -8,7 +8,7 @@ class ItemReview extends Model {
         return this.belongsTo('App/Models/Item', 'itemId', 'id')
     }
     store () {
-        return this.belongsTo('App/Models/Cannagrow', 'growerId', 'id')
+        return this.belongsTo('App/Models/Cannagrow', 'growId', 'id')
     }
     user () {
         return this.belongsTo('App/Models/User', 'userId', 'id')

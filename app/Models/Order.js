@@ -11,7 +11,7 @@ class Order extends Model {
         return this.belongsTo('App/Models/User','userId','id')
     }
     seller(){
-        return this.belongsTo('App/Models/User','sellerId','id')
+        return this.belongsTo('App/Models/Cannagrow','sellerId','id')
     }
 
 } 

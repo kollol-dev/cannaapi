@@ -147,7 +147,7 @@ class CannaGoController {
   }
   async indexItemReviewByGrower({request,response,auth,params}){
       //  try {
-            let itemReview =await ItemReview.query().where('growerId',params.id).with('item').with('store').with('user').fetch()
+            let itemReview =await ItemReview.query().where('growId',params.id).with('item').with('store').with('user').fetch()
             return response.status(200).json({
                 'success': true,
                 "itemReview": itemReview

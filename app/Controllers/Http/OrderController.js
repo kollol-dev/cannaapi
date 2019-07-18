@@ -127,7 +127,7 @@ class OrderController {
               let user =  await auth.getUser()
               data.userId = user.id
               const letCheck = await Curt.findOrCreate({ userId: data.userId, itemId: data.itemId })
-              let curt =await Curt.query().where('id',letCheck.id).update(data)
+              await Curt.query().where('id',letCheck.id).increment('quantity', 1)
               let againCheck = await Curt.query().where('id',letCheck.id).first()
               return response.status(200).json({
                   'success': true,
