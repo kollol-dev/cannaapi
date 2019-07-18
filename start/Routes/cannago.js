@@ -9,6 +9,7 @@ Route.post('/app/cannagoEdit', 'CannaGoController.edit')
 Route.get('/app/itemreviewsbyItems/:id', 'CannaGoController.indexItemReviewByItems')
 Route.get('/app/itemreviewsbyUser/:id', 'CannaGoController.indexItemReviewByUser')
 Route.get('/app/itemreviewsbyGrower/:id', 'CannaGoController.indexItemReviewByGrower')
+
 Route.post('/app/itemreviews', 'CannaGoController.storeItemReview')
 Route.get('/app/itemreviews/:id', 'CannaGoController.showItemReview')
 Route.put('/app/itemreviews', 'CannaGoController.editItemReview')

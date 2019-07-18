@@ -1,5 +1,6 @@
 'use strict'
 const Cannadrive = use('App/Models/Cannadrive');
+const DriverReview = use('App/Models/DriverReview');
 class CannaDriveController {
     async edit({request,response,auth}){
         //  try {
@@ -63,6 +64,93 @@ class CannaDriveController {
     //       //   }
   
     // }
+
+    async showDriverReview({request,response,auth,params}){
+        //  try {
+              let driverreview =await DriverReview.query().where('driverId',params.id).with('driver').with('user').fetch()
+              return response.status(200).json({
+                  'success': true,
+                  "driverreview": driverreview
+                })
+          //   } catch (error) {
+          //     return response.status(401).json({
+          //         'success': false,
+          //         'message': 'You first need to login first!'
+          //     })
+          //   }
+  
+    }
+    async storeDriverReview({request,response,auth}){
+        //  try {
+              let data = request.all()
+              let user =  await auth.getUser()
+              data.userId = user.id
+  
+              let driverreview = await DriverReview.create(data)
+              
+              return response.status(200).json({
+                  'success': true,
+                  'message': 'response stored successfully !',
+                  "driverreview": driverreview
+                })
+          //   } catch (error) {
+          //     return response.status(401).json({
+          //         'success': false,
+          //         'message': 'You first need to login first!'
+          //     })
+          //   }
+  
+      }
+    async editDriverReview ({request,response,auth}){
+        //  try {
+          let data = request.all()
+          let user =  await auth.getUser()
+          if(data.userId == user.id){
+              return response.status(401).json({
+                    'success': false,
+                    'message': 'You are not authenticated user'
+                  })
+          }
+          let driverreview = await DriverReview.query().where('id',data.id).update(data)
+          
+          return response.status(200).json({
+              'success': true,
+              'message': 'response updated successfully !',
+              "driverreview": driverreview
+            })
+          //   } catch (error) {
+          //     return response.status(401).json({
+          //         'success': false,
+          //         'message': 'You first need to login first!'
+          //     })
+          //   }
+  
+    }
+    async destroyDriverReview ({request,response,auth}){
+        //  try {
+          let data = request.all()
+          let user =  await auth.getUser()
+  
+          if(data.userId == user.id){
+            return response.status(401).json({
+                  'success': false,
+                  'message': 'You are not authenticated user'
+                })
+        }
+        await DriverReview.query().where('id',data.id).delete()
+          
+          return response.status(200).json({
+              'success': true,
+              'message': 'response deleted successfully !',
+            })
+          //   } catch (error) {
+          //     return response.status(401).json({
+          //         'success': false,
+          //         'message': 'You first need to login first!'
+          //     })
+          //   }
+  
+    }
 }
 
 module.exports = CannaDriveController

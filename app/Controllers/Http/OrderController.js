@@ -3,6 +3,7 @@ const Cannagrow = use('App/Models/Cannagrow');
 const Curt = use('App/Models/Curt'); 
 const Order = use('App/Models/Order');
 const OrderDetail = use('App/Models/OrderDetail');
+const Database = use('Database')
 class OrderController {
     async storeOrder({request,response,auth}){
         //  try {
@@ -127,7 +128,8 @@ class OrderController {
               let user =  await auth.getUser()
               data.userId = user.id
               const letCheck = await Curt.findOrCreate({ userId: data.userId, itemId: data.itemId })
-              await Curt.query().where('id',letCheck.id).increment('quantity', 1)
+              await Database.table('curts').where('id', letCheck.id).increment('quantity', 1)
+              // await Curt.query().where('id',letCheck.id).increment('quantity', 1)
               let againCheck = await Curt.query().where('id',letCheck.id).first()
               return response.status(200).json({
                   'success': true,

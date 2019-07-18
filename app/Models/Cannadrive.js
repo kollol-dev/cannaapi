@@ -4,9 +4,16 @@
 const Model = use('Model')
 
 class Cannadrive extends Model {
-	 user() {
+	user() {
         return this.belongsTo('App/Models/User', 'userId', 'id')
     }
+    reviews () {
+        return this.hasMany('App/Models/DriverReview', 'id', 'driverId')
+    }
+    avgRating () {
+        return this.hasOne('App/Models/DriverReview', 'id', 'driverId').select('driverId', Database.raw('cast(AVG(rating) as decimal(10,2)) AS averageRating')).groupBy('driverId')
+      }
+    
 }
 
 module.exports = Cannadrive
