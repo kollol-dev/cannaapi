@@ -27,7 +27,7 @@ class User extends Model {
   buyerProfile(){
     return this.belongsTo('App/Models/Cannagrow','id','userId')
   }
-  profile(){
+  sellerProfileprofile(){
     return this.belongsTo('App/Models/Cannagrow','id','userId')
   }
 

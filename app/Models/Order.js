@@ -14,6 +14,5 @@ class Order extends Model {
         return this.belongsTo('App/Models/User','sellerId','id')
     }
 
-}
-
+} 
 module.exports = Order

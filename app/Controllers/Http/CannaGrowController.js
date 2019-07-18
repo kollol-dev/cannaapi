@@ -242,19 +242,20 @@ class CannaGrowController {
               let data = request.all()
               let user =  await auth.getUser()
               data.userId = user.id
-              data.growId = user.id
               let tags = data.tags
               delete data.tags
               let item =await Item.create(data)
               let allTags = []
-              for(let d of tags){
-                let tag = {
-                    itemId: item.id,
-                    keyword: d
+              if(tags){
+                for(let d of tags){
+                  let tag = {
+                      itemId: item.id,
+                      keyword: d
+                  }
+                  allTags.push(tag)
                 }
-                allTags.push(tag)
+                await ItemTag.createMany(allTags);
               }
-              await ItemTag.createMany(allTags);
               return response.status(200).json({
                   'success': true,
                   'message': 'response stored successfully !',
@@ -344,7 +345,7 @@ class CannaGrowController {
   }
     async vendorlist ({request,response,auth,params}){
         //  try {
-              let growerlist = await Cannagrow.query().with('user').fetch()
+              let growerlist = await Cannagrow.query().with('user').fetch() 
               return response.status(200).json({
                   'success': true,
                   'message': 'request data recived successfully !', 

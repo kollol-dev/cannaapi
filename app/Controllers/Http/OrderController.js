@@ -126,11 +126,13 @@ class OrderController {
               let data = request.all()
               let user =  await auth.getUser()
               data.userId = user.id
-              let curt =await Curt.create(data)
+              const letCheck = await Curt.findOrCreate({ userId: data.userId, itemId: data.itemId })
+              let curt =await Curt.query().where('id',letCheck.id).update(data)
+              let againCheck = await Curt.query().where('id',letCheck.id).first()
               return response.status(200).json({
                   'success': true,
                   'message': 'response stored successfully !', 
-                  "curt": curt
+                  "curt": againCheck
                 })
           //   } catch (error) {
           //     return response.status(401).json({
