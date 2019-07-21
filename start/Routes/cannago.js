@@ -12,8 +12,9 @@ Route.get('/app/itemreviewsbyGrower/:id', 'CannaGoController.indexItemReviewByGr
 
 Route.post('/app/itemreviews', 'CannaGoController.storeItemReview')
 Route.get('/app/itemreviews/:id', 'CannaGoController.showItemReview')
-Route.put('/app/itemreviews', 'CannaGoController.editItemReview')
-Route.delete('/app/itemreviews', 'CannaGoController.destroyItemReview')
+Route.get('/app/itemreviewsbygrow/:id', 'CannaGoController.showItemReviewByGrow')
+Route.post('/app/updateitemreviews', 'CannaGoController.editItemReview')
+Route.post('/app/deleteitemreviews', 'CannaGoController.destroyItemReview')
 
 
 // Questionnaire Routes

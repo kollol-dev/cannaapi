@@ -20,7 +20,7 @@ class BuyerController {
    async getBuyerOrderHistory({request,response,auth}){ 
     
         let user =  await auth.getUser()
-        let order = await Order.query().where('userId',user.id).with('orderdetails.item').with('seller.user').orderBy('id', 'desc').fetch()
+        let order = await Order.query().where('userId',user.id).with('orderdetails.item').with('seller.user').with('driver.user').orderBy('id', 'desc').fetch()
         return response.status(200).json({
             'success': true,
             "order": order

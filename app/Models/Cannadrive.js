@@ -11,7 +11,7 @@ class Cannadrive extends Model {
         return this.hasMany('App/Models/DriverReview', 'id', 'driverId')
     }
     avgRating () {
-        return this.hasOne('App/Models/DriverReview', 'id', 'driverId').select('driverId', Database.raw('cast(AVG(rating) as decimal(10,2)) AS averageRating')).groupBy('driverId')
+        return this.hasOne('App/Models/Cannadrive', 'id', 'driverId').select('driverId', Database.raw('cast(AVG(rating) as decimal(10,2)) AS averageRating')).groupBy('driverId')
       }
     
 }

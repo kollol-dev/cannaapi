@@ -12,6 +12,9 @@ class Order extends Model {
     }
     seller(){
         return this.belongsTo('App/Models/Cannagrow','sellerId','id')
+    }   
+    driver(){
+        return this.belongsTo('App/Models/Cannadrive','driverId','id')
     }
 
 } 
