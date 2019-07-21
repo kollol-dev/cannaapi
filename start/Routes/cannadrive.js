@@ -5,11 +5,11 @@ const Route = use('Route')
 Route.put('/app/cannadrive', 'CannaDriveController.edit')
 
 // home Routes
-Route.get('/app/driverhome', 'CannaDriveController.driverHome')
+Route.get('/app/driverhome', 'CannaDriveController.driverHome') 
 Route.get('/app/indexSingleDriver/:id', 'CannaDriveController.indexSingleDriver')
 
- Route.post('/app/driverreviews', 'CannaGoController.storeDriverReview')
- Route.get('/app/driverreviews/:id', 'CannaGoController.showDriverReview')
- Route.get('/app/driverreviews', 'CannaGoController.showDriverReview')
- Route.put('/app/driverreviews', 'CannaGoController.editDriverReview')
- Route.post('/app/deletedriverreviews','CannaGoController.destroyDriverReview')
+ Route.post('/app/driverreviews', 'CannaDriveController.storeDriverReview')
+ Route.get('/app/driverreviews/:id', 'CannaDriveController.showDriverReview')
+ Route.get('/app/driverreviews', 'CannaDriveController.showDriverReview')
+ Route.put('/app/driverreviews', 'CannaDriveController.editDriverReview')
+ Route.post('/app/deletedriverreviews','CannaDriveController.destroyDriverReview')
