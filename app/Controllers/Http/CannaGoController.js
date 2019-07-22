@@ -1,6 +1,7 @@
 'use strict'
 const Questionnaire = use('App/Models/Questionnaire');
 const ItemReview = use('App/Models/ItemReview');
+const Cannago = use('App/Models/Cannago');
 const User = use('App/Models/User');
 class CannaGoController {
     async edit({request,response,auth}){
