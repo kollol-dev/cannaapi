@@ -1,6 +1,7 @@
 'use strict'
 const Cannagrow = use('App/Models/Cannagrow');
 const Curt = use('App/Models/Curt'); 
+const User = use('App/Models/User'); 
 const Order = use('App/Models/Order');
 const OrderDetail = use('App/Models/OrderDetail');
 const Database = use('Database')
@@ -75,7 +76,7 @@ class OrderController {
       async indexOrderSeller({request,response,auth}){
         
               let user =  await auth.getUser()
-              
+              let seller = await User.query().where('id',user.id).with('sellerProfile').first()
               let order = await Order.query().where('sellerId',user.id).with('orderdetails').with('orderdetails.item').with('buyer').with('buyer.buyerProfile').fetch()
               return response.status(200).json({
                   'success': true,
