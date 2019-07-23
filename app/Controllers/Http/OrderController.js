@@ -78,7 +78,7 @@ class OrderController {
               let user =  await auth.getUser()
               let seller = await User.query().where('id',user.id).with('sellerProfile').first()
 
-              let order = await Order.query().where('sellerId',user.sellerProfile.id).with('orderdetails').with('orderdetails.item').with('buyer').with('buyer.buyerProfile').fetch()
+              let order = await Order.query().where('sellerId',seller.sellerProfile.id).with('orderdetails').with('orderdetails.item').with('buyer').with('buyer.buyerProfile').fetch()
               return response.status(200).json({
                   'success': true,
                   'message': 'requested data returnd  successfully !', 
