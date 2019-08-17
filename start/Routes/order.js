@@ -8,6 +8,7 @@ Route.get('/app/curts', 'OrderController.showCurt')
 Route.post('/app/curtsdelete', 'OrderController.destroyCurt')
 // Order Routes
 Route.get('/app/orders', 'OrderController.indexOrder') 
+
 Route.get('/app/ordersSeller', 'OrderController.indexOrderSeller') 
 Route.post('/app/orders', 'OrderController.storeOrder')
 Route.get('/app/orders/:id', 'OrderController.showOrder')

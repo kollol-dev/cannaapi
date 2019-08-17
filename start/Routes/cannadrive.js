@@ -8,6 +8,9 @@ Route.put('/app/cannadrive', 'CannaDriveController.edit')
 Route.get('/app/driverhome', 'CannaDriveController.driverHome') 
 Route.get('/app/indexSingleDriver/:id', 'CannaDriveController.indexSingleDriver')
 
+
+Route.get('/app/getNewOrder', 'CannaDriveController.getNewOrder') 
+Route.post('/app/driverAcceptOrder', 'CannaDriveController.driverAcceptOrder')
  Route.post('/app/driverreviews', 'CannaDriveController.storeDriverReview')
  Route.get('/app/driverreviews/:id', 'CannaDriveController.showDriverReview')
  Route.get('/app/driverreviews', 'CannaDriveController.showDriverReview')

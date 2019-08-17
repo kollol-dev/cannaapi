@@ -70,7 +70,7 @@ class OrderController {
         //  try {
               let user =  await auth.getUser()
               
-              let order = await Order.query().where('userId',user.id).with('orderdetails').with('orderdetails.item').fetch()
+              let order = await Order.query().where('userId',user.id).with('orderdetails').with('driver').with('orderdetails.item').fetch()
               return response.status(200).json({
                   'success': true,
                   'message': 'requested data returnd  successfully !', 
@@ -87,7 +87,7 @@ class OrderController {
       async indexOrderSeller({request,response,auth}){
         
               let user =  await auth.getUser()
-              let seller = await User.query().where('id',user.id).with('sellerProfile').first()
+              let seller = await User.query().where('id',user.id).with('sellerProfile').with('driver').first()
               seller = seller.toJSON();
              
               let order = await Order.query().where('sellerId',seller.sellerProfile.id).with('orderdetails').with('orderdetails.item').with('buyer').with('buyer.buyerProfile').fetch()
@@ -103,7 +103,7 @@ class OrderController {
         //  try {
               let user =  await auth.getUser()
               
-              let order = await Order.query().where('id',params.id).with('orderdetails').with('orderdetails.item').first()
+              let order = await Order.query().where('id',params.id).with('orderdetails').with('driver').with('orderdetails.item').first()
               return response.status(200).json({
                   'success': true,
                   'message': 'requested data returnd  successfully !', 
@@ -117,6 +117,29 @@ class OrderController {
           //   }
   
     }
+    async editOrder({request,response,auth}){
+      //  try {
+            let data = request.all()
+            let user =  await auth.getUser()
+            if(data.userId != user.id){
+              return response.status(401).json({
+                        'success': false,
+                        'message': 'You are not authenticated user!'
+                    })
+            }
+            let order =await Order.query().where('id',data.id).update(data)
+            return response.status(200).json({
+                'success': true,
+                'message': 'response edited successfully !', 
+              })
+        //   } catch (error) {
+        //     return response.status(401).json({
+        //         'success': false,
+        //         'message': 'You first need to login first!'
+        //     })
+        //   }
+
+  }
       async destroyOrder({response,auth,request}){
         
         //  try {
@@ -158,29 +181,7 @@ class OrderController {
           //   }
   
     }
-    async editOrder({request,response,auth}){
-        //  try {
-              let data = request.all()
-              let user =  await auth.getUser()
-              if(data.userId != user.id){
-                return response.status(401).json({
-                          'success': false,
-                          'message': 'You are not authenticated user!'
-                      })
-              }
-              let curt =await Curt.query().where('id',data.id).update(data)
-              return response.status(200).json({
-                  'success': true,
-                  'message': 'response edited successfully !', 
-                })
-          //   } catch (error) {
-          //     return response.status(401).json({
-          //         'success': false,
-          //         'message': 'You first need to login first!'
-          //     })
-          //   }
-  
-    }
+
 
 
     async showCurt({request,response,auth}){

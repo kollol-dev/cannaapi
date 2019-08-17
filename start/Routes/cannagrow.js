@@ -26,5 +26,7 @@ Route.get('/app/growhome/:id', 'CannaGrowController.growHome')
 // Map page
 Route.post('/app/vendorlist','CannaGrowController.vendorlist')
 
+Route.post('/app/sellerStatuschange','CannaGrowController.sellerStatuschange')
+
 Route.get('app/allShopItems/:id', 'CannaGrowController.getShopPorudcts')
 Route.get('app/productReview/:id', 'CannaGrowController.getReviewByProductId')

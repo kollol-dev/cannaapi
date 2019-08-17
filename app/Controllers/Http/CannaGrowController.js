@@ -2,6 +2,8 @@
 const User = use('App/Models/User');
 const Cannagrow = use('App/Models/Cannagrow');
 const Item = use('App/Models/Item');
+const Order = use('App/Models/Order');
+const Noti = use('App/Models/Noti');
 const ItemTag = use('App/Models/ItemTag');
 const ItemReview = use('App/Models/ItemReview');
 const Database = use('Database')
@@ -379,6 +381,36 @@ class CannaGrowController {
         "rev": rev
       })
     }
+
+    async sellerStatuschange({request,response,auth}){
+      let data = request.all()
+      let user =  await auth.getUser()
+      const sellerUserId = await Cannagrow.query().where('userId', user.id).first()
+      
+      let firstinfo =await Order.query().where('id',data.id).first()
+      
+      if(firstinfo.sellerId != sellerUserId.id){
+        return response.status(401).json({
+                  'success': false,
+                  'message': 'You are not authenticated user!'
+              })
+      }
+      
+        let order =await Order.query().where('id',data.id).update(data)
+        
+        
+        Noti.create({
+          'user_id' : firstinfo.userId, 
+          'title' : 'Status Changed', 
+          'msg' : `${sellerUserId.name} change the status to  '${data.status}'! `, 
+        })
+        
+        return response.status(200).json({
+          'success': true,
+          'message': 'Order Status changed !', 
+        })
+
+}
        
     
 

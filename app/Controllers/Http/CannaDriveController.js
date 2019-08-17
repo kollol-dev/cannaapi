@@ -1,6 +1,9 @@
 'use strict'
 const Cannadrive = use('App/Models/Cannadrive');
 const DriverReview = use('App/Models/DriverReview');
+const Noti = use('App/Models/Noti');
+const Cannagrow = use('App/Models/Cannagrow');
+const Order = use('App/Models/Order');
 class CannaDriveController {
     async edit({request,response,auth}){
         //  try {
@@ -151,6 +154,44 @@ class CannaDriveController {
           //   }
   
     }
+
+    async driverAcceptOrder({request,response,auth}){
+        let data = request.all()
+        let user =  await auth.getUser()
+        
+        
+        let firstinfo =await Order.query().where('id',data.id).first()
+        if(firstinfo.driverId == null){
+          let order =await Order.query().where('id',data.id).update(data)
+          const sellerUserId = await Cannagrow.query().where('id', firstinfo.sellerId).first()
+          
+          Noti.create({
+            'user_id' : sellerUserId.userId, 
+            'title' : 'Driver found', 
+            'msg' : `${user.name} will drive this order! `, 
+          })
+          Noti.create({
+            'user_id' : firstinfo.userId, 
+            'title' : 'Driver found', 
+            'msg' : `${user.name} will drive this order! `, 
+          })
+          return response.status(200).json({
+            'success': true,
+            'message': 'Order Accepted !', 
+          })
+        }
+        
+        return response.status(200).json({
+            'success': false,
+            'message': 'Order is accepted by other driver !', 
+          })
+
+  }
+  async getNewOrder({request,response,auth}){
+   
+   
+    return await Order.query().where('status', 'Request for Driver').fetch();
+}
 }
 
 module.exports = CannaDriveController
