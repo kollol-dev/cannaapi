@@ -28,12 +28,13 @@ class CannaGrowController {
 
     }
       async cannagrowAllSearch({request,response,auth}){
+        console.log('all shops')
         //  try {
             //  let user =  await auth.getUser()
               let sortType = request.input('sortType') ? request.input('sortType') : ''
               let price1 = request.input('price1') ? request.input('price1') : ''
               let price2 = request.input('price2') ? request.input('price2') : ''
-              let rawData = Cannagrow.query().with('user').with('reviews').withCount('reviews').with('avgRating').with('avgPrice')
+              let rawData = Cannagrow.query().with('user').with('reviews').withCount('reviews').with('avgRating').with('avgPrice').orderBy('id', 'desc')
 
               if(price1 && price2){
                 rawData.whereHas('avgPrice', (builder) => {

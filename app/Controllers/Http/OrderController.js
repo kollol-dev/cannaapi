@@ -4,6 +4,7 @@ const Curt = use('App/Models/Curt');
 const User = use('App/Models/User'); 
 const Order = use('App/Models/Order');
 const OrderDetail = use('App/Models/OrderDetail');
+const Noti = use('App/Models/Noti');
 const Database = use('Database')
 class OrderController {
     async storeOrder({request,response,auth}){
@@ -41,6 +42,16 @@ class OrderController {
                   }
                   allCurtInfo.push(ob)
               }
+
+              const sellerUserId = await Cannagrow.query().where('id', sellerId).first()
+
+              Noti.create({
+                  'user_id' : sellerUserId.userId, 
+                  'title' : 'New Order', 
+                  'msg' : `You have a new order from ${user.name}`, 
+              })
+
+
               await OrderDetail.createMany(allCurtInfo);
                 return response.status(200).json({
                     'success': true,

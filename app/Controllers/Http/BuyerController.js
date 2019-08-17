@@ -6,6 +6,7 @@ const Item = use('App/Models/Item');
 const ItemTag = use('App/Models/ItemTag');
 const ItemReview = use('App/Models/ItemReview');
 const Order = use('App/Models/Order');
+const Noti = use('App/Models/Noti');
 const Database = use('Database')
 var _ = require('lodash')
 class BuyerController {
@@ -33,6 +34,23 @@ class BuyerController {
         return response.status(200).json({
             'success': true,
             "message": 'Order status has been changed successfully!'
+        })
+    }
+    async updateDeliveryAddress({request, response, auth}){
+        let uid = await auth.user.id
+        console.log('user is id', uid)
+        const data = request.all()
+
+        console.log('data is', data)
+        return  User.query().where('id', uid).update(data)
+    }
+    async getNotification({request, response, auth}){
+        let uid = await auth.user.id
+        console.log(uid)
+        const noti = await Noti.query().where('user_id', uid).fetch()
+        return response.status(200).json({
+            'success': true,
+            "noti": noti
         })
     }
 
