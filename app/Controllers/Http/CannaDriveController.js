@@ -189,8 +189,12 @@ class CannaDriveController {
   }
   async getNewOrder({request,response,auth}){
    
-   
-    return await Order.query().where('status', 'Request for Driver').fetch();
+    let order =  await Order.query().where('status', 'Request for Driver').fetch();
+    return response.status(200).json({
+      'success': true,
+      "orders": order
+    })
+    
 }
 }
 
