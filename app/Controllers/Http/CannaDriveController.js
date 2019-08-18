@@ -160,7 +160,7 @@ class CannaDriveController {
         let user =  await auth.getUser()
         
         
-        let firstinfo =await Order.query().where('id',data.id).first()
+        let firstinfo = await Order.query().where('id',data.id).first()
         if(firstinfo.driverId == null){
           let order =await Order.query().where('id',data.id).update(data)
           const sellerUserId = await Cannagrow.query().where('id', firstinfo.sellerId).first()
@@ -189,7 +189,7 @@ class CannaDriveController {
   }
   async getNewOrder({request,response,auth}){
    
-    let order =  await Order.query().where('status', 'Request for Driver').fetch();
+    let order =  await Order.query().where('status', 'Request for Driver').with('orderdetails').with('buyer').with('seller').fetch();
     return response.status(200).json({
       'success': true,
       "orders": order
