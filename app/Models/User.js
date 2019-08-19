@@ -30,6 +30,9 @@ class User extends Model {
   sellerProfile(){
     return this.belongsTo('App/Models/Cannagrow','id','userId')
   }
+  driverProfile(){
+    return this.belongsTo('App/Models/Cannadrive','id','userId')
+  }
 
   /**
    * A relationship on tokens is required for auth to

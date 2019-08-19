@@ -14,7 +14,7 @@ class NotificationController {
     async getUnseenNotiDetails({request,response,auth}){
         let user =  await auth.getUser()
        
-        let noti =  await Noti.query().where('user_id',user.id).where('seen', 0).fetch();
+        let noti =  await Noti.query().where('user_id',user.id).limit(10).fetch();
         return response.status(200).json({
             'success': true,
             "notification": noti

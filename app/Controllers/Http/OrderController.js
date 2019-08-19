@@ -99,6 +99,21 @@ class OrderController {
         
   
     }
+      async indexDriverSeller({request,response,auth}){
+        
+              let user =  await auth.getUser()
+              let seller = await User.query().where('id',user.id).with('driverProfile').first()
+              seller = seller.toJSON();
+             
+              let order = await Order.query().where('driverId',seller.driverProfile.id).with('seller').with('orderdetails').with('orderdetails.item').with('buyer').with('buyer.buyerProfile').fetch()
+              return response.status(200).json({
+                  'success': true,
+                  'message': 'requested data returnd  successfully !', 
+                  "order": order
+                })
+        
+  
+    }
       async showOrder({params,response,auth}){
         //  try {
               let user =  await auth.getUser()
@@ -237,6 +252,46 @@ class OrderController {
           //   }
   
     }
+
+    async drivrOrderComplete({request,response,auth}){
+      let data = request.all()
+      let user =  await auth.getUser()
+      const cannadriveId = await cannadrive.query().where('userId', user.id).first()
+      
+      let firstinfo =await Order.query().where('id',data.id).first()
+      
+      if(firstinfo.driverId != cannadriveId.id){
+        return response.status(401).json({
+                  'success': false,
+                  'message': 'You are not authenticated user!'
+              })
+      }
+      
+        let order =await Order.query().where('id',data.id).update({
+          status:'Completed'
+        })
+        
+        
+        Noti.create({
+          'user_id' : firstinfo.userId, 
+          'title' : 'Order Completed', 
+          'msg' : `${user.name} Completed Your order ! `, 
+        })
+
+          const sellerUserId = await Cannagrow.query().where('id', firstinfo.sellerId).first()
+
+              Noti.create({
+                  'user_id' : sellerUserId.userId, 
+                  'title' : 'Order Completed', 
+                  'msg' : `${user.name} Completed the Order No ${firstinfo.id}`, 
+              })
+        
+        return response.status(200).json({
+          'success': true,
+          'message': 'Order Status changed !', 
+        })
+
+}
 
 }
 
