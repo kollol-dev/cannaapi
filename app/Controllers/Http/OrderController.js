@@ -1,5 +1,6 @@
 'use strict'
 const Cannagrow = use('App/Models/Cannagrow');
+const Cannadrive = use('App/Models/Cannadrive');
 const Curt = use('App/Models/Curt'); 
 const User = use('App/Models/User'); 
 const Order = use('App/Models/Order');
@@ -256,7 +257,7 @@ class OrderController {
     async drivrOrderComplete({request,response,auth}){
       let data = request.all()
       let user =  await auth.getUser()
-      const cannadriveId = await cannadrive.query().where('userId', user.id).first()
+      const cannadriveId = await Cannadrive.query().where('userId', user.id).first()
       
       let firstinfo =await Order.query().where('id',data.id).first()
       
