@@ -5,28 +5,25 @@ const Noti = use('App/Models/Noti');
 const Cannagrow = use('App/Models/Cannagrow');
 const Order = use('App/Models/Order');
 class CannaDriveController {
-    async edit({request,response,auth}){
-        //  try {
-              let data = request.all()
-              let user =  await auth.getUser()
-              data.userId = user.id
-              let questionnaire =await Questionnaire.create(data)
-              return response.status(200).json({
-                  'success': true,
-                  'message': 'response stored successfully !',
-                  "questionnaire": questionnaire
-                })
-  
-  
-  
-          //   } catch (error) {
-          //     return response.status(401).json({
-          //         'success': false,
-          //         'message': 'You first need to login first!' 
-          //     })
-          //   }
-  
-      }
+  async edit({request,response,auth}){
+    //  try {
+          let data = request.all()
+          let user =  await auth.getUser()
+        //  data.userId = user.id
+          let cannadrive =await Cannadrive.query().where('id',data.id).update(data)
+          return response.status(200).json({
+              'success': true,
+              'message': 'response Updated successfully !',
+              'data':data
+            })
+      //   } catch (error) {
+      //     return response.status(401).json({
+      //         'success': false,
+      //         'message': 'You first need to login first!'
+      //     })
+      //   }
+
+  }
           async indexSingleDriver({params,response,auth}){
       //  try {
           //  let user =  await auth.getUser()

@@ -71,7 +71,7 @@ class OrderController {
         //  try {
               let user =  await auth.getUser()
               
-              let order = await Order.query().where('userId',user.id).with('orderdetails').with('driver').with('orderdetails.item').fetch()
+              let order = await Order.query().where('userId',user.id).with('orderdetails').with('driver').with('orderdetails.item').orderBy('id','desc').fetch()
               return response.status(200).json({
                   'success': true,
                   'message': 'requested data returnd  successfully !', 
@@ -91,7 +91,7 @@ class OrderController {
               let seller = await User.query().where('id',user.id).with('sellerProfile').first()
               seller = seller.toJSON();
              
-              let order = await Order.query().where('sellerId',seller.sellerProfile.id).with('driver').with('orderdetails').with('orderdetails.item').with('buyer').with('buyer.buyerProfile').fetch()
+              let order = await Order.query().where('sellerId',seller.sellerProfile.id).with('driver').with('orderdetails').with('orderdetails.item').with('buyer').with('buyer.buyerProfile').orderBy('id','desc').fetch()
               return response.status(200).json({
                   'success': true,
                   'message': 'requested data returnd  successfully !', 
@@ -106,7 +106,7 @@ class OrderController {
               let seller = await User.query().where('id',user.id).with('driverProfile').first()
               seller = seller.toJSON();
              
-              let order = await Order.query().where('driverId',seller.driverProfile.id).with('seller').with('orderdetails').with('orderdetails.item').with('buyer').with('buyer.buyerProfile').fetch()
+              let order = await Order.query().where('driverId',seller.driverProfile.id).with('seller').with('orderdetails').with('orderdetails.item').with('buyer').with('buyer.buyerProfile').orderBy('id','desc').fetch()
               return response.status(200).json({
                   'success': true,
                   'message': 'requested data returnd  successfully !', 
