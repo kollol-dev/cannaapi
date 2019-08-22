@@ -67,7 +67,8 @@ class CannaDriveController {
 
     async showDriverReview({request,response,auth,params}){
         //  try {
-              let driverreview =await DriverReview.query().where('driverId',params.id).with('driver').with('user').fetch()
+              let driverreview =await Cannadrive.query().where('id',params.id).with('reviews.user').with('avgRating').fetch()
+
               return response.status(200).json({
                   'success': true,
                   "driverreview": driverreview
