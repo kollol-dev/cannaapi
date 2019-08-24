@@ -161,6 +161,13 @@ class AuthController {
             let user = await User.findBy('email', email) 
             let accessToken = await auth.generate(user)
             let cannago = await Cannago.query().where('userId', user.id ).first()
+
+            if(user.userType != 1){
+              return response.json({
+                'success':false,
+                'messeage': 'You are not a buyer!'
+              })
+            }
             return response.status(200).json({
               'success': true,
               'message': 'Login Complete Successfully ! ',
@@ -185,6 +192,12 @@ class AuthController {
             let user = await User.findBy('email', email)
             let accessToken = await auth.generate(user)
             let cannadrive = await Cannadrive.query().where('userId', user.id ).first()
+            if(user.userType != 2){
+              return response.json({
+                'success':false,
+                'messeage': 'You are not a driver!'
+              })
+            }
             return response.status(200).json({
               'success': true,
               'message': 'Login Complete Successfully ! ',
@@ -204,11 +217,20 @@ class AuthController {
     async loginGrow({request, auth, response}) {
         const email = request.input("email")
         const password = request.input("password");
+
         try {
           if (await auth.attempt(email, password)) {
             let user = await User.findBy('email', email)
             let accessToken = await auth.generate(user)
             let cannagrow = await Cannagrow.query().where('userId', user.id ).first()
+            
+           // cannagrow = JSON.parse(JSON.stringify(cannagrow))
+            if(user.userType != 3){
+              return response.json({
+                'success':false,
+                'messeage': 'You are not a Seller!'
+              })
+            }
             return response.status(200).json({
               'success': true,
               'message': 'Login Complete Successfully ! ',
@@ -219,6 +241,7 @@ class AuthController {
           }
 
         } catch (e) {
+          console.log(e)
           return response.json({
             'success': false,
             'message': e,
