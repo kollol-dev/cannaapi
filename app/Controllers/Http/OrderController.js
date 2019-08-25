@@ -91,7 +91,7 @@ class OrderController {
               let seller = await User.query().where('id',user.id).with('sellerProfile').first()
               seller = seller.toJSON();
              
-              let order = await Order.query().where('sellerId',seller.sellerProfile.id).with('driver').with('orderdetails').with('orderdetails.item').with('buyer').with('buyer.buyerProfile').orderBy('id','desc').fetch()
+              let order = await Order.query().where('sellerId',seller.sellerProfile.id).with('driver.user').with('driver.avgRating').with('orderdetails').with('orderdetails.item').with('buyer').with('buyer.buyerProfile').orderBy('id','desc').fetch()
               return response.status(200).json({
                   'success': true,
                   'message': 'requested data returnd  successfully !', 

@@ -4,6 +4,8 @@ const Cannadrive = use('App/Models/Cannadrive');
 const Cannago = use('App/Models/Cannago');
 const Cannagrow = use('App/Models/Cannagrow');
 const Dispensary = use('App/Models/Dispensary');
+const Hash = use('Hash')
+const suid = require('rand-token').suid;
 class AuthController {
     async test(){
         return 'dfsdfsdfsfsd'
@@ -316,6 +318,77 @@ class AuthController {
             })
       }
     }
+      // password Reset
+  async sendResetCodeEmail ({ request, response }) {
+    let email = request.all().email
+    const check = await User.query().where('email', email).getCount()
+    // eslint-disable-next-line eqeqeq
+    if (check == 0) {
+      return response.status(200).json({
+        'success': false,
+        'message': "404 Email doesn't exist!."
+      })
+    }
+    let token = suid(6)
+    let data = {
+      token: token
+    }
+    console.log(data)
+    // await Mail.send('emails.forgotpassword', data, (message) => {
+    //   message
+    //     .to(email)
+    //     .from('Support@worldtradebuddy.com', 'Support @ WorldTradeBuddy')
+    //     .subject('Reset Password')
+    // })
+    await User.query().where('email', email).update({ 'passwordToken': token })
+    return response.status(200).json({
+      'success': true,
+      'message': "A varification code send to your email address!",
+      'token':token
+    })
+  }
+
+  async checkPasswordResetCode ({ request, response }) {
+    let data = request.all()
+    const check = await User.query().where('passwordToken', data.token).getCount()
+    if (check == 0) {
+      return response.status(200).json({
+        'success': false,
+        'message': "404 Code doesn't exist!."
+      })
+    }
+    return response.status(200).json({
+      'success': true,
+      
+      'token':data.token
+    })
+}
+
+  async resetForgotPassword({ request, response }) {
+    let data = request.all()
+    let password = await Hash.make(data.password)
+    let check = await User.query().where('passwordToken', data.token).update({password: password, passwordToken: null})
+    return response.status(200).json({
+      'success': true,
+      'message': "Password Reset !",
+      'check':check
+    })
+}
+
+
+  // Reset Password 
+
+  async resetPassword({ request, response , auth }) {
+    let data = request.all()
+    let user =  await auth.getUser()
+   // let password = await Hash.make(data.password)
+    let check = await User.query().where('password', data.oldPassword).where('id',user.id).update({password: data.password})
+    return response.status(200).json({
+      'success': true,
+      'message': "Password Reset !",
+      'check':check
+    })
+}
 }
 
 module.exports = AuthController

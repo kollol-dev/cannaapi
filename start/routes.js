@@ -40,6 +40,11 @@ Route.post('/auth/loginDep', 'AuthController.loginDep')
 
 Route.post('/app/userEdit', 'AuthController.editUser')
 
+// password Reset sendResetCodeEmail
+Route.post('/auth/sendResetCodeEmail', 'AuthController.sendResetCodeEmail')
+Route.post('/auth/checkPasswordResetCode', 'AuthController.checkPasswordResetCode')
+Route.post('/auth/resetForgotPassword', 'AuthController.resetForgotPassword')
+Route.post('/auth/resetPassword', 'AuthController.resetPassword')
 
 
 Route.post('/auth/logout', 'AuthController.logout')
