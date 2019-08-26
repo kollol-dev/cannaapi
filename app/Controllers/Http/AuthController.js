@@ -380,14 +380,28 @@ class AuthController {
 
   async resetPassword({ request, response , auth }) {
     let data = request.all()
-    let user =  await auth.getUser()
-   // let password = await Hash.make(data.password)
-    let check = await User.query().where('password', data.oldPassword).where('id',user.id).update({password: data.password})
+    let usera =  await auth.getUser()
+    let user =   await  User.query().setVisible(['id','password']).where('id',usera.id).first()
+    
+    const isSame = await Hash.verify(data.oldPassword, user.password)
+    if(!isSame){
+      return response.status(401).json({
+        msg: 'Old password is incorrect. Please provide a correct password'
+      })
+    }
+    
+    // hash the password 
+   let password = await Hash.make(data.password)
+    
+    let check = await User.query().where('id',user.id).update({
+      password: password
+    })
     return response.status(200).json({
       'success': true,
       'message': "Password Reset !",
       'check':check
     })
+    
 }
 }
 
