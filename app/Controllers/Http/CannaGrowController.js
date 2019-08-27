@@ -412,6 +412,31 @@ class CannaGrowController {
 
 }
 
+// Seller Weekly Income
+
+async sellerWeeklyIncome({params}){
+  let d = new Date();
+  let prev = new Date();
+  prev.setDate(d.getDate() - 7);
+  let monthNumber = d.getMonth()+1
+  let pmonthNumber = prev.getMonth()+1
+  monthNumber = ("0" + monthNumber).slice(-2);
+  pmonthNumber = ("0" + pmonthNumber).slice(-2);
+  let dayNumber = d.getDate()
+  let pdayNumber = prev.getDate()
+  pdayNumber = ("0" + pdayNumber).slice(-2);
+  //let today = ${d.getFullYear()}-${monthNumber}-${dayNumber}
+
+  let today = d.getFullYear()+'-'+monthNumber+'-'+dayNumber
+  let laterweek = d.getFullYear()+'-'+pmonthNumber+'-'+pdayNumber
+
+  
+  
+  let data =  Order.query().select(Database.raw(' DATE_FORMAT(created_at, "%Y-%m-%d") AS date, DATE_FORMAT(created_at, "%Y") AS year ,  DATE_FORMAT(created_at, "%m") AS month , DATE_FORMAT(created_at, "%d") AS day '), Database.raw(' sum(deliveryFee) AS total')).whereBetween('created_at', ['2019-07-14', today]).where('sellerId',params.id).groupBy('date').fetch()
+
+  return data
+}
+
        
     
 

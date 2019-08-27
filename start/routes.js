@@ -46,6 +46,8 @@ Route.post('/auth/checkPasswordResetCode', 'AuthController.checkPasswordResetCod
 Route.post('/auth/resetForgotPassword', 'AuthController.resetForgotPassword')
 Route.post('/auth/resetPassword', 'AuthController.resetPassword')
 
+Route.get('/test/test', 'AuthController.test')
+
 
 Route.post('/auth/logout', 'AuthController.logout')
 

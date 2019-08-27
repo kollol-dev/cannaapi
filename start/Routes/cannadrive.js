@@ -16,3 +16,5 @@ Route.post('/app/driverAcceptOrder', 'CannaDriveController.driverAcceptOrder')
  Route.get('/app/driverreviews', 'CannaDriveController.showDriverReview')
  Route.put('/app/driverreviews', 'CannaDriveController.editDriverReview')
  Route.post('/app/deletedriverreviews','CannaDriveController.destroyDriverReview')
+//  buyer 
+ Route.get('/app/driverWeeklyIncome/:id','CannaDriveController.driverWeeklyIncome')
