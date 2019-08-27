@@ -218,15 +218,34 @@ class CannaDriveController {
     pdayNumber = ("0" + pdayNumber).slice(-2);
     //let today = ${d.getFullYear()}-${monthNumber}-${dayNumber}
   
-    let today = d.getFullYear()+'-'+monthNumber+'-'+dayNumber
-    let laterweek = d.getFullYear()+'-'+pmonthNumber+'-'+pdayNumber
+    let today = d.getFullYear()+'-'+monthNumber+'-'+dayNumber;
+    let laterweek = d.getFullYear()+'-'+pmonthNumber+'-'+pdayNumber;
   
     
     
    // let data =  Order.query().select(Database.raw(' DATE_FORMAT(created_at, "%Y-%m-%d") AS date, DATE_FORMAT(created_at, "%Y") AS year ,  DATE_FORMAT(created_at, "%m") AS month , DATE_FORMAT(created_at, "%d") AS day '), Database.raw(' sum(deliveryFee) AS total')).whereBetween('created_at', ['2019-07-14', today]).where('driverId',params.id).groupBy('date').fetch()
-    let data =  Order.query().select(Database.raw(' DATE_FORMAT(created_at, "%Y-%m-%d") AS date'), Database.raw(' sum(deliveryFee) AS total')).whereBetween('created_at', ['2019-07-14', today]).where('driverId',params.id).groupBy('date').fetch()
+    let data = await Order.query().select(Database.raw(' DATE_FORMAT(created_at, "%Y-%m-%d") AS date'), Database.raw(' sum(deliveryFee) AS total')).whereBetween('created_at', ['2019-07-14', today]).where('driverId',params.id).groupBy('date').fetch()
+    
+    
+   // data = data.toJSON()
+    data = JSON.parse(JSON.stringify(data))
+   let another = [];
+   
+    for(let t in data){
+      console.log(data[t])
+      let dd =  new Date(data[t].date);
+      let  ob = {
+        date:data[t].date,
+        total:data[t].total,
+        year:dd.getFullYear(),
+        month: dd.getMonth(),
+        day:dd.getDate()
+      }
+      another.push(ob)
+
+    }
   
-    return data
+    return another;
   }
 
 
