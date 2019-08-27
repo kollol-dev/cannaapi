@@ -223,7 +223,8 @@ class CannaDriveController {
   
     
     
-    let data =  Order.query().select(Database.raw(' DATE_FORMAT(created_at, "%Y-%m-%d") AS date, DATE_FORMAT(created_at, "%Y") AS year ,  DATE_FORMAT(created_at, "%m") AS month , DATE_FORMAT(created_at, "%d") AS day '), Database.raw(' sum(deliveryFee) AS total')).whereBetween('created_at', ['2019-07-14', today]).where('driverId',params.id).groupBy('date').fetch()
+   // let data =  Order.query().select(Database.raw(' DATE_FORMAT(created_at, "%Y-%m-%d") AS date, DATE_FORMAT(created_at, "%Y") AS year ,  DATE_FORMAT(created_at, "%m") AS month , DATE_FORMAT(created_at, "%d") AS day '), Database.raw(' sum(deliveryFee) AS total')).whereBetween('created_at', ['2019-07-14', today]).where('driverId',params.id).groupBy('date').fetch()
+    let data =  Order.query().select(Database.raw(' DATE_FORMAT(created_at, "%Y-%m-%d") AS date'), Database.raw(' sum(deliveryFee) AS total')).whereBetween('created_at', ['2019-07-14', today]).where('driverId',params.id).groupBy('date').fetch()
   
     return data
   }
