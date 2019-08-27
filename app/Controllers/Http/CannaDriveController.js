@@ -232,7 +232,7 @@ class CannaDriveController {
    let another = [];
    
     for(let t in data){
-      console.log(data[t])
+      
       let dd =  new Date(data[t].date);
       let  ob = {
         date:data[t].date,

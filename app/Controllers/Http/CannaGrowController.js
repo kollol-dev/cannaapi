@@ -432,13 +432,13 @@ async sellerWeeklyIncome({params}){
 
   
   
-  let data =  Order.query().select(Database.raw(' DATE_FORMAT(created_at, "%Y-%m-%d") AS date'), Database.raw(' sum(deliveryFee) AS total')).whereBetween('created_at', ['2019-07-14', today]).where('sellerId',params.id).groupBy('date').fetch()
-
+  let data = await Order.query().select(Database.raw(' DATE_FORMAT(created_at, "%Y-%m-%d") AS date'), Database.raw(' sum(deliveryFee) AS total')).whereBetween('created_at', ['2019-07-14', today]).where('sellerId',params.id).groupBy('date').fetch()
+  
   data = JSON.parse(JSON.stringify(data))
   let another = [];
   
    for(let t in data){
-     console.log(data[t])
+     
      let dd =  new Date(data[t].date);
      let  ob = {
        date:data[t].date,
