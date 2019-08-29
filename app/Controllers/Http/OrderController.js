@@ -23,7 +23,7 @@ class OrderController {
       })
     }
     await Curt.query().where('userId', user.id).delete()
-    const sellerUserId = await Cannagrow.query().where('id', sellerId).first()
+    
     curtInfo = JSON.parse(JSON.stringify(curtInfo))
     let sellerId = 1
     for (let d of curtInfo) {
@@ -31,6 +31,7 @@ class OrderController {
       netPrice = netPrice + (d.item.netPrice * d.quantity)
       sellerId = d.item.growId
     }
+    const sellerUserId = await Cannagrow.query().where('id', sellerId).first()
     data.price = price
     data.sellerId = sellerId
     data.netPrice = netPrice
