@@ -540,7 +540,7 @@ class CannaGrowController {
   }
 
   // Seller Yearly Average Income
-  async sellerPreviousMonthIncome({ params }) {
+  async sellerYearlyAverageIncome({ params }) {
     let d = new Date();
 
     let monthNumber = d.getMonth() + 1
