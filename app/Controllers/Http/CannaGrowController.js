@@ -441,10 +441,7 @@ class CannaGrowController {
     let today = d.getFullYear() + '-' + monthNumber + '-' + dayNumber
     let laterweek = d.getFullYear() + '-' + pmonthNumber + '-' + pdayNumber
 
-
-
-    let data = await Order.query().select('sellerId', Database.raw(' sum(price) AS total')).whereBetween('created_at', [laterweek, today]).where('sellerId', params.id).fetch()
-
+    let data = await Order.query().select(Database.raw('DATE_FORMAT(created_at, "%Y-%m-%d") AS date'), Database.raw(' sum(price) AS total')).whereBetween('created_at', [laterweek, today]).where('sellerId', params.id).groupBy('date').fetch()
     data = JSON.parse(JSON.stringify(data))
     
     return data
