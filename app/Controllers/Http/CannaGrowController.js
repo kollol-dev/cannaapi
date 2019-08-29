@@ -18,7 +18,7 @@ class CannaGrowController {
     let user = await auth.getUser()
     //  data.userId = user.id
     let cannago = await Cannagrow.query().where('id', data.id).update(data)
-    if(cannago == 1){
+    if (cannago == 1) {
       return response.status(200).json({
         'success': true,
         'message': 'response Updated successfully !',
@@ -443,8 +443,23 @@ class CannaGrowController {
 
     let data = await Order.query().select(Database.raw('DATE_FORMAT(created_at, "%Y-%m-%d") AS date'), Database.raw(' sum(price) AS total')).whereBetween('created_at', [laterweek, today]).where('sellerId', params.id).groupBy('date').fetch()
     data = JSON.parse(JSON.stringify(data))
-    
-    return data
+    let another = [];
+
+    for (let t in data) {
+
+      let dd = new Date(data[t].date);
+      let ob = {
+        date: data[t].date,
+        total: data[t].total,
+        year: dd.getFullYear(),
+        month: dd.getMonth() + 1,
+        day: dd.getDate()
+      }
+      another.push(ob)
+
+    }
+
+    return another;
   }
 
 
@@ -465,7 +480,7 @@ class CannaGrowController {
 
 
 
-    let data = await Order.query().select('sellerId',  Database.raw(' sum(price) AS total')).whereBetween('created_at', [previousMonth, today]).where('sellerId', params.id).fetch()
+    let data = await Order.query().select('sellerId', Database.raw(' sum(price) AS total')).whereBetween('created_at', [previousMonth, today]).where('sellerId', params.id).fetch()
 
     data = JSON.parse(JSON.stringify(data))
 
@@ -491,12 +506,12 @@ class CannaGrowController {
     let today = d.getFullYear() + '-' + monthNumber + '-' + pdayNumber
     let previousMonth = d.getFullYear() + '-' + pmonthNumber + '-' + '1'
 
-    
+
 
     let data = await Order.query().select('sellerId', Database.raw(' sum(price) AS total')).whereBetween('created_at', [previousMonth, today]).where('sellerId', params.id).fetch()
 
     data = JSON.parse(JSON.stringify(data))
-    
+
     return data
   }
 
@@ -518,9 +533,9 @@ class CannaGrowController {
     let today = d.getFullYear() + '-' + monthNumber + '-' + pdayNumber
     let previousMonth = d.getFullYear() + '-' + '1' + '-' + '1'
 
-    
 
-    let data = await Order.query().select('sellerId',  Database.raw(' avg(price) AS avg')).whereBetween('created_at', [previousMonth, today]).where('sellerId', params.id).fetch()
+
+    let data = await Order.query().select('sellerId', Database.raw(' avg(price) AS avg')).whereBetween('created_at', [previousMonth, today]).where('sellerId', params.id).fetch()
 
     data = JSON.parse(JSON.stringify(data))
     let another = [];

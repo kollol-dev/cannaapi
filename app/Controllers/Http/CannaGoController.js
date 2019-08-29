@@ -1,7 +1,9 @@
 'use strict'
 const Questionnaire = use('App/Models/Questionnaire');
+const Item = use('App/Models/Item');
 const ItemReview = use('App/Models/ItemReview');
 const Cannago = use('App/Models/Cannago');
+const Noti = use('App/Models/Noti');
 const User = use('App/Models/User');
 class CannaGoController {
     async edit({request,response,auth}){
@@ -183,7 +185,15 @@ class CannaGoController {
             data.userId = user.id
 
             let itemReview = await ItemReview.create(data)
+
+            let userId = await Item.query().select('userId').where('id', itemReview.itemId).first()
             
+            await Noti.create({
+              'user_id': userId.userId,
+              'title': 'Review Created',
+              'msg': `You got new review!`,
+            })
+
             return response.status(200).json({
                 'success': true,
                 'message': 'response stored successfully !',

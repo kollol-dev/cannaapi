@@ -90,11 +90,14 @@ class CannaDriveController {
 
 
     let driverreview = await DriverReview.create(data)
-    // Noti.create({
-    //   'user_id': user.id,
-    //   'title': 'New Review Created!',
-    //   'msg': `${user.name} change the status to  '${data.status}'! `,
-    // })
+
+    let driverId = await Cannadrive.query().select('userId').where('id', driverreview.driverId).first()
+    
+    await Noti.create({
+      'user_id': driverId.userId,
+      'title': 'New Review Created!',
+      'msg': `You got a new review'! `,
+    })
 
     return response.status(200).json({
       'success': true,
@@ -260,8 +263,23 @@ class CannaDriveController {
     let data = await Order.query().select('driverId', Database.raw(' sum(deliveryFee) AS total')).whereBetween('created_at', [previousMonth, today]).where('driverId', params.id).fetch()
 
     data = JSON.parse(JSON.stringify(data))
+    let another = [];
 
-    return data;
+    for (let t in data) {
+
+      let dd = new Date(data[t].date);
+      let ob = {
+        date: data[t].date,
+        total: data[t].total,
+        year: dd.getFullYear(),
+        month: dd.getMonth() + 1,
+        day: dd.getDate()
+      }
+      another.push(ob)
+
+    }
+
+    return another;
   }
 
   // Driver Previous Month Income
