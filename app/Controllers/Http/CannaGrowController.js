@@ -414,7 +414,7 @@ class CannaGrowController {
 
   // Seller Weekly Income
 
-  async sellerMonthlyIncome({ params }) {
+  async sellerWeeklyIncome({ params }) {
     let d = new Date();
     let prev = new Date();
     prev.setDate(d.getDate() - 7);
@@ -432,7 +432,7 @@ class CannaGrowController {
 
 
 
-    let data = await Order.query().select(Database.raw(' DATE_FORMAT(created_at, "%Y-%m-%d") AS date'), Database.raw(' sum(deliveryFee) AS total')).whereBetween('created_at', [laterweek, today]).where('sellerId', params.id).groupBy('date').fetch()
+    let data = await Order.query().select(Database.raw(' DATE_FORMAT(created_at, "%Y-%m-%d") AS date'), Database.raw(' sum(price) AS total')).whereBetween('created_at', [laterweek, today]).where('sellerId', params.id).groupBy('date').fetch()
 
     data = JSON.parse(JSON.stringify(data))
     let another = [];
@@ -444,7 +444,7 @@ class CannaGrowController {
         date: data[t].date,
         total: data[t].total,
         year: dd.getFullYear(),
-        month: dd.getMonth(),
+        month: dd.getMonth() + 1,
         day: dd.getDate()
       }
       another.push(ob)
@@ -474,7 +474,7 @@ class CannaGrowController {
 
 
 
-    let data = await Order.query().select(Database.raw(' DATE_FORMAT(created_at, "%Y-%m-%d") AS date'), Database.raw(' sum(deliveryFee) AS total')).whereBetween('created_at', [previousMonth, today]).where('sellerId', params.id).groupBy('date').fetch()
+    let data = await Order.query().select(Database.raw(' DATE_FORMAT(created_at, "%Y-%m-%d") AS date'), Database.raw(' sum(price) AS total')).whereBetween('created_at', [previousMonth, today]).where('sellerId', params.id).groupBy('date').fetch()
 
     data = JSON.parse(JSON.stringify(data))
     let another = [];
@@ -507,19 +507,17 @@ class CannaGrowController {
     monthNumber = ("0" + monthNumber).slice(-2);
     pmonthNumber = ("0" + pmonthNumber).slice(-2);
 
-    let dayNumber = d.getDate()
+
     let pdayNumber = this.daysInMonth(d.getMonth(), d.getFullYear())
-    console.log('sdfsd', pdayNumber)
 
     pdayNumber = ("0" + pdayNumber).slice(-2);
-    //let today = ${d.getFullYear()}-${monthNumber}-${dayNumber}
 
     let today = d.getFullYear() + '-' + monthNumber + '-' + pdayNumber
     let previousMonth = d.getFullYear() + '-' + pmonthNumber + '-' + '1'
 
     
 
-    let data = await Order.query().select(Database.raw(' DATE_FORMAT(created_at, "%Y-%m-%d") AS date'), Database.raw(' sum(deliveryFee) AS total')).whereBetween('created_at', [previousMonth, today]).where('sellerId', params.id).groupBy('date').fetch()
+    let data = await Order.query().select(Database.raw(' DATE_FORMAT(created_at, "%Y-%m-%d") AS date'), Database.raw(' sum(price) AS total')).whereBetween('created_at', [previousMonth, today]).where('sellerId', params.id).groupBy('date').fetch()
 
     data = JSON.parse(JSON.stringify(data))
     let another = [];
@@ -541,6 +539,37 @@ class CannaGrowController {
     return another;
   }
 
+  // Seller Yearly Average Income
+  async sellerPreviousMonthIncome({ params }) {
+    let d = new Date();
+
+    let monthNumber = d.getMonth() + 1
+
+
+    monthNumber = ("0" + monthNumber).slice(-2);
+
+    let pdayNumber = this.daysInMonth(d.getMonth(), d.getFullYear())
+
+
+    pdayNumber = ("0" + pdayNumber).slice(-2);
+    //let today = ${d.getFullYear()}-${monthNumber}-${dayNumber}
+
+    let today = d.getFullYear() + '-' + monthNumber + '-' + pdayNumber
+    let previousMonth = d.getFullYear() + '-' + '1' + '-' + '1'
+
+    
+
+    let data = await Order.query().select('sellerId',  Database.raw(' avg(price) AS avg')).whereBetween('created_at', [previousMonth, today]).where('sellerId', params.id).fetch()
+
+    data = JSON.parse(JSON.stringify(data))
+    let another = [];
+
+    return data
+  }
+
+
+
+  // total days in a month
   daysInMonth(month, year) {
     return new Date(year, month, 0).getDate();
   }

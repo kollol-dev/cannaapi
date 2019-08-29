@@ -26,6 +26,7 @@ Route.get('/app/growhome/:id', 'CannaGrowController.growHome')
 Route.get('/app/sellerWeeklyIncome/:id', 'CannaGrowController.sellerWeeklyIncome')
 Route.get('/app/sellerMonthlyIncome/:id', 'CannaGrowController.sellerMonthlyIncome')
 Route.get('/app/sellerPreviousMonthIncome/:id', 'CannaGrowController.sellerPreviousMonthIncome')
+Route.get('/app/sellerYearlyAverageIncome/:id', 'CannaGrowController.sellerYearlyAverageIncome')
 // Map page
 Route.post('/app/vendorlist','CannaGrowController.vendorlist')
 
