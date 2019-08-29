@@ -13,6 +13,8 @@ class CannaGrowController {
   async edit({ request, response, auth }) {
     //  try {
     let data = request.all()
+
+    console.log('request data', data)
     let user = await auth.getUser()
     //  data.userId = user.id
     let cannago = await Cannagrow.query().where('id', data.id).update(data)
