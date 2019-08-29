@@ -486,7 +486,7 @@ class CannaGrowController {
         date: data[t].date,
         total: data[t].total,
         year: dd.getFullYear(),
-        month: dd.getMonth(),
+        month: dd.getMonth() + 1,
         day: dd.getDate()
       }
       another.push(ob)
@@ -501,23 +501,23 @@ class CannaGrowController {
     let d = new Date();
     let prev = new Date();
 
-    let monthNumber = d.getMonth() + 1
+    let monthNumber = d.getMonth()
     let pmonthNumber = prev.getMonth()
 
     monthNumber = ("0" + monthNumber).slice(-2);
     pmonthNumber = ("0" + pmonthNumber).slice(-2);
 
     let dayNumber = d.getDate()
-    let pdayNumber = this.daysInMonth(d.getMonth(), d.getFullYear)
+    let pdayNumber = this.daysInMonth(d.getMonth(), d.getFullYear())
     console.log('sdfsd', pdayNumber)
 
     pdayNumber = ("0" + pdayNumber).slice(-2);
     //let today = ${d.getFullYear()}-${monthNumber}-${dayNumber}
 
-    let today = d.getFullYear() + '-' + monthNumber + '-' + dayNumber
+    let today = d.getFullYear() + '-' + monthNumber + '-' + pdayNumber
     let previousMonth = d.getFullYear() + '-' + pmonthNumber + '-' + '1'
 
-
+    
 
     let data = await Order.query().select(Database.raw(' DATE_FORMAT(created_at, "%Y-%m-%d") AS date'), Database.raw(' sum(deliveryFee) AS total')).whereBetween('created_at', [previousMonth, today]).where('sellerId', params.id).groupBy('date').fetch()
 
