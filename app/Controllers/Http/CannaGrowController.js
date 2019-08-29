@@ -16,10 +16,18 @@ class CannaGrowController {
     let user = await auth.getUser()
     //  data.userId = user.id
     let cannago = await Cannagrow.query().where('id', data.id).update(data)
+    if(cannago == 1){
+      return response.status(200).json({
+        'success': true,
+        'message': 'response Updated successfully !',
+        'data': data,
+      })
+    }
+
     return response.status(200).json({
-      'success': true,
-      'message': 'response Updated successfully !',
-      'data': data,
+      'success': false,
+      'message': 'Something went wrong !',
+      'data': [],
     })
     //   } catch (error) {
     //     return response.status(401).json({
