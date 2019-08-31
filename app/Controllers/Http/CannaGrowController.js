@@ -482,9 +482,14 @@ class CannaGrowController {
 
     let data = await Order.query().select('sellerId', Database.raw(' sum(price) AS total')).whereBetween('created_at', [previousMonth, today]).where('sellerId', params.id).fetch()
 
+    data.month = pmonthNumber
     data = JSON.parse(JSON.stringify(data))
 
-    return data
+    return {
+      sellerId: data[0].sellerId,
+      total: data[0].total,
+      month: d.getMonth() + 1
+    }
   }
 
   // Seller Previous Month Income
@@ -512,7 +517,11 @@ class CannaGrowController {
 
     data = JSON.parse(JSON.stringify(data))
 
-    return data
+    return {
+      sellerId: data[0].sellerId,
+      total: data[0].total,
+      month: d.getMonth()
+    }
   }
 
   // Seller Yearly Average Income

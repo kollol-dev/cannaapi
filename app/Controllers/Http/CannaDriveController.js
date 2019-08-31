@@ -92,7 +92,7 @@ class CannaDriveController {
     let driverreview = await DriverReview.create(data)
 
     let driverId = await Cannadrive.query().select('userId').where('id', driverreview.driverId).first()
-    
+
     await Noti.create({
       'user_id': driverId.userId,
       'title': 'New Review Created!',
@@ -306,7 +306,12 @@ class CannaDriveController {
     let data = await Order.query().select('driverId', Database.raw(' sum(deliveryFee) AS total')).whereBetween('created_at', [previousMonth, today]).where('driverId', params.id).fetch()
 
     data = JSON.parse(JSON.stringify(data))
-    return data
+    
+    return {
+      sellerId: data[0].driverId,
+      total: data[0].total,
+      month: d.getMonth()
+    }
   }
 
   // Driver Yearly Average Income
