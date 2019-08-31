@@ -238,7 +238,23 @@ class CannaDriveController {
 
     // data = data.toJSON()
     data = JSON.parse(JSON.stringify(data))
-    return data
+    let another = [];
+
+    for (let t in data) {
+
+      let dd = new Date(data[t].date);
+      let ob = {
+        date: data[t].date,
+        total: data[t].total,
+        year: dd.getFullYear(),
+        month: dd.getMonth() + 1,
+        day: dd.getDate()
+      }
+      another.push(ob)
+
+    }
+
+    return another;
   }
 
   // Driver Monthly Income
@@ -263,23 +279,12 @@ class CannaDriveController {
     let data = await Order.query().select('driverId', Database.raw(' sum(deliveryFee) AS total')).whereBetween('created_at', [previousMonth, today]).where('driverId', params.id).fetch()
 
     data = JSON.parse(JSON.stringify(data))
-    let another = [];
 
-    for (let t in data) {
-
-      let dd = new Date(data[t].date);
-      let ob = {
-        date: data[t].date,
-        total: data[t].total,
-        year: dd.getFullYear(),
-        month: dd.getMonth() + 1,
-        day: dd.getDate()
-      }
-      another.push(ob)
-
+    return {
+      driverId: data[0].driverId,
+      total: data[0].total,
+      month: d.getMonth()
     }
-
-    return another;
   }
 
   // Driver Previous Month Income
@@ -308,7 +313,7 @@ class CannaDriveController {
     data = JSON.parse(JSON.stringify(data))
     
     return {
-      sellerId: data[0].driverId,
+      driverId: data[0].driverId,
       total: data[0].total,
       month: d.getMonth()
     }
