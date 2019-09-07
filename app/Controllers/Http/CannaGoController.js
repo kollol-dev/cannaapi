@@ -272,10 +272,10 @@ class CannaGoController {
 
   // BrainTree Payment Request Client Id
   async getBTClientToken({ request, response }) {
-     let res = await gateway.clientToken.generate()
-     return response.json({
-       token: res.clientToken
-     })
+    let res = await gateway.clientToken.generate()
+    return response.json({
+      token: res.clientToken
+    })
     // let token = await gateway.clientToken.generate({
     //   // this needs to be a valid customer id
     //   // customerId: "aCustomerId"
@@ -304,13 +304,30 @@ class CannaGoController {
   }
 
 
+  async BTcheckout({ request, response }) {
 
-  // generateBraintreeClientToken(_callback) {
+    let data = request.all()
 
-  // }
+    let tRestult = await gateway.transaction.sale({
+      amount: data.amount,
+      paymentMethodNonce: data.nonce,
+      options: {
+        submitForSettlement: true
+      }
+    }, function (err, result) {
+      if (result.success) {
+        // See result.transaction for details
+        console.log('transaction', result.transaction)
+      } else {
+        // Handle errors
+        console.log(result.errors);
+      }
+    });
 
-
-
+    // return {
+    //   transaction: tRestult.transaction
+    // }
+  }
 
 
 }

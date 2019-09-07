@@ -19,6 +19,7 @@ Route.post('/app/deleteitemreviews', 'CannaGoController.destroyItemReview')
 
 // BrainTree Payment
 Route.get('/app/getBTClientToken', 'CannaGoController.getBTClientToken')
+Route.post('/app/checkout', 'CannaGoController.BTcheckout')
 
 
 // Questionnaire Routes
