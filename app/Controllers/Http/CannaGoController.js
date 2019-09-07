@@ -276,30 +276,6 @@ class CannaGoController {
     return response.json({
       token: res.clientToken
     })
-    // let token = await gateway.clientToken.generate({
-    //   // this needs to be a valid customer id
-    //   // customerId: "aCustomerId"
-    // }, function (err, res) {
-    //   // error handling for connection issues
-    //   if (err) {
-    //     throw new Error(err);
-    //   }
-
-    //   if (res.success) {
-    //     console.log('clientToken', res.clientToken)
-    //     response.send(res.clientToken);
-
-
-
-    //   } else {
-
-    //     return 'error'
-
-    //   }
-    // })
-
-    // return token
-    // console.log('token', token)
 
   }
 
@@ -308,29 +284,15 @@ class CannaGoController {
 
     let data = request.all()
 
-    await gateway.transaction.sale({
+    let tResult = await gateway.transaction.sale({
       amount: data.amount,
       paymentMethodNonce: data.nonce,
       options: {
         submitForSettlement: true
       }
-    }, function (err, result) {
-      if (result.success) {
-        // See result.transaction for details
-        var settledTransaction = result.transaction;
-        console.log('settleTransection', settledTransaction)
+    })
 
-        return settledTransaction
-        
-      } else {
-        // Handle errors
-        console.log(result.errors);
-      }
-    });
-
-    // return {
-    //   transaction: tRestult
-    // }
+    return tResult
   }
 
 
