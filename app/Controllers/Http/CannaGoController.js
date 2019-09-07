@@ -317,16 +317,17 @@ class CannaGoController {
     }, function (err, result) {
       if (result.success) {
         // See result.transaction for details
-        console.log('transaction', result.transaction)
+        var settledTransaction = result.transaction;
+        console.log('settleTransection', settledTransaction)
       } else {
         // Handle errors
         console.log(result.errors);
       }
     });
 
-    // return {
-    //   transaction: tRestult.transaction
-    // }
+    return {
+      transaction: tRestult
+    }
   }
 
 
