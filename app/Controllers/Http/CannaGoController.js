@@ -308,7 +308,7 @@ class CannaGoController {
 
     let data = request.all()
 
-    let tRestult = await gateway.transaction.sale({
+    await gateway.transaction.sale({
       amount: data.amount,
       paymentMethodNonce: data.nonce,
       options: {
@@ -319,15 +319,18 @@ class CannaGoController {
         // See result.transaction for details
         var settledTransaction = result.transaction;
         console.log('settleTransection', settledTransaction)
+
+        return settledTransaction
+        
       } else {
         // Handle errors
         console.log(result.errors);
       }
     });
 
-    return {
-      transaction: tRestult
-    }
+    // return {
+    //   transaction: tRestult
+    // }
   }
 
 
