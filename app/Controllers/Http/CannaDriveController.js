@@ -88,6 +88,20 @@ class CannaDriveController {
     let user = await auth.getUser()
     data.userId = user.id
 
+    if (await DriverReview.findBy({
+      userId: data.userId
+    })) {
+      await Noti.create({
+        'user_id': data.userId,
+        'title': 'Review Already Submitted',
+        'msg': `You already Submitted a review to this driver'! `,
+      })
+
+      return response.status(200).json({
+        'success': false,
+        'message': 'review already submitted !',
+      })
+    }
 
     let driverreview = await DriverReview.create(data)
 
@@ -283,7 +297,7 @@ class CannaDriveController {
     return {
       driverId: data[0].driverId,
       total: data[0].total,
-      month: d.getMonth()
+      month: d.getMonth() + 1
     }
   }
 
@@ -311,7 +325,7 @@ class CannaDriveController {
     let data = await Order.query().select('driverId', Database.raw(' sum(deliveryFee) AS total')).whereBetween('created_at', [previousMonth, today]).where('driverId', params.id).fetch()
 
     data = JSON.parse(JSON.stringify(data))
-    
+
     return {
       driverId: data[0].driverId,
       total: data[0].total,
