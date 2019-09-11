@@ -88,21 +88,6 @@ class CannaDriveController {
     let user = await auth.getUser()
     data.userId = user.id
 
-    if (await DriverReview.findBy({
-      userId: data.userId
-    })) {
-      await Noti.create({
-        'user_id': data.userId,
-        'title': 'Review Already Submitted',
-        'msg': `You already Submitted a review to this driver'! `,
-      })
-
-      return response.status(200).json({
-        'success': false,
-        'message': 'review already submitted !',
-      })
-    }
-
     let driverreview = await DriverReview.create(data)
 
     let driverId = await Cannadrive.query().select('userId').where('id', driverreview.driverId).first()
