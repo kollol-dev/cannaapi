@@ -3,10 +3,11 @@ const User = use('App/Models/User');
 const Cannagrow = use('App/Models/Cannagrow');
 const Curt = use('App/Models/Curt');
 const Item = use('App/Models/Item');
+const ItemReview = use('App/Models/ItemReview');
 const DriverReview = use('App/Models/DriverReview');
 const ItemTag = use('App/Models/ItemTag');
-const ItemReview = use('App/Models/ItemReview');
 const Order = use('App/Models/Order');
+const OrderDetail = use('App/Models/OrderDetail');
 const Noti = use('App/Models/Noti');
 const Database = use('Database')
 var _ = require('lodash')
@@ -24,29 +25,31 @@ class BuyerController {
         let user = await auth.getUser()
         let driverId = request.input("driverId")
         let order_id = request.input("order_id")
+        let itemId = request.input("itemId")
 
-        let check = await DriverReview.query()
+        let isDriverReviewd = 0
+        let isItemReviewd = 0
+
+        let checkDriverReview = await DriverReview.query()
             .where('order_id', order_id)
             .where('userId', user.id)
             .where('driverId', driverId)
             .first()
-        console.log('check', check)
-        console.log('user', user.id)
 
-        if (check) {
-            let order = await Order.query()
-                .where('userId', user.id)
-                .with('orderdetails.item')
-                .with('seller.user')
-                .with('driver.user')
-                .orderBy('id', 'desc')
-                .fetch()
+        let checkItemReview = await ItemReview.query()
+            .where('order_id', order_id)
+            .where('userId', user.id)
+            .where('itemId', itemId)
+            .first()
 
-            return response.status(200).json({
-                'success': true,
-                "order": order,
-                "isReviewCreated": 1
-            })
+        if (checkDriverReview ) {
+
+            isDriverReviewd = 1
+
+        }
+
+        if (checkItemReview){
+            isItemReviewd = 0
         }
 
         let order = await Order.query()
@@ -57,12 +60,13 @@ class BuyerController {
             .orderBy('id', 'desc')
             .fetch()
 
-   
+
         return response.status(200).json({
             'success': true,
             "order": order,
-            "isReviewCreated": 0
-        })
+            "isReviewCreated": isDriverReviewd,
+            "isItemReviewCreated": isItemReviewd
+            })
     }
     async updateOrderStatus({ request, response, auth }) {
         let uid = await auth.user.id
