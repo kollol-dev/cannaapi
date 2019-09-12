@@ -286,6 +286,8 @@ class CannaGrowController {
     //  try {
     let data = request.all()
     let user = await auth.getUser()
+
+    console.log("request", data)
     if (data.userId != user.id) {
       return response.status(401).json({
         'success': false,
@@ -295,11 +297,13 @@ class CannaGrowController {
     let tags = data.tags
     delete data.tags
     let item = await Item.query().where('id', data.id).update(data)
+
     await ItemTag.query().where('itemId', data.id).delete()
+
     let allTags = []
     for (let d of tags) {
       let tag = {
-        itemId: item.id,
+        itemId: data.id,
         keyword: d
       }
       allTags.push(tag)
