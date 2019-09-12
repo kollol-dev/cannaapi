@@ -37,7 +37,7 @@ class BuyerController {
             .first()
 
         let checkItemReview = await ItemReview.query()
-            .where('order_id', order_id)
+        
             .where('userId', user.id)
             .where('itemId', itemId)
             .first()
