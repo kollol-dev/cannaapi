@@ -232,10 +232,13 @@ class CannaGrowController {
     let price2 = request.input('price2') ? request.input('price2') : ''
     let key = request.input('key') ? request.input('key') : ''
     let shopName = request.input('shopName') ? request.input('shopName') : ''
-    let rawData = Cannagrow.query().with('user').with('reviews').withCount('reviews').with('avgRating').with('avgPrice')
+    let isDeliveryFree = request.input('isDeliveryFree') ? request.input('isDeliveryFree') : ''
+    let delivery = (isDeliveryFree === 'true') ? 'Yes' : 'No'
+
+    let rawData = Cannagrow.query().where('deliver', delivery).with('user').with('reviews').withCount('reviews').with('avgRating').with('avgPrice')
     if (price1 && price2) {
-      rawData.where('price', '>=', price1)
-      rawData.where('price', '<=', price2)
+      rawData.where('deliveryFee', '>=', price1)
+      rawData.where('deliveryFee', '<=', price2)
 
     }
 
@@ -270,6 +273,7 @@ class CannaGrowController {
       "allShops": allShops,
 
     })
+
 
 
   }
