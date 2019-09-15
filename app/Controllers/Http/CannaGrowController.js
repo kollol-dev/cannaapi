@@ -157,6 +157,7 @@ class CannaGrowController {
     let price1 = request.input('price1') ? request.input('price1') : ''
     let price2 = request.input('price2') ? request.input('price2') : ''
     let key = request.input('key') ? request.input('key') : ''
+    // let shopName = request.input('shopName') ? request.input('shopName') : ''
     let rawData = Item.query().with('tags').with('store').with('user').with('reviews').withCount('reviews').with('avgRating')
     if (price1 && price2) {
       rawData.where('price', '>=', price1)
@@ -168,6 +169,13 @@ class CannaGrowController {
         builder.where('keyword', 'like', '%' + key + '%')
       })
     }
+
+    // if(shopName){
+    //   rawData.whereHas('Cannagrow', (builder) => {
+    //     builder.where('name', 'like', '%' + shopName + '%')
+    //   })
+    // }
+
     let allItems = await rawData.fetch()
     allItems = JSON.parse(JSON.stringify(allItems))
     let shopIndex = []
@@ -214,6 +222,58 @@ class CannaGrowController {
     //   }
 
   }
+
+
+  async shopAllSearch({ request, response }) {
+
+
+    let sortType = request.input('sortType') ? request.input('sortType') : ''
+    let price1 = request.input('price1') ? request.input('price1') : ''
+    let price2 = request.input('price2') ? request.input('price2') : ''
+    let key = request.input('key') ? request.input('key') : ''
+    let shopName = request.input('shopName') ? request.input('shopName') : ''
+    let rawData = Cannagrow.query().with('user').with('reviews').withCount('reviews').with('avgRating').with('avgPrice')
+    if (price1 && price2) {
+      rawData.where('price', '>=', price1)
+      rawData.where('price', '<=', price2)
+
+    }
+
+    let allShops = await rawData.fetch()
+    allShops = JSON.parse(JSON.stringify(allShops))
+    let shopIndex = []
+    for (let d of allShops) {
+      shopIndex.push(d.growId)
+      if (d.avgRating == null) {
+        d.avgRating = {
+          averageRating: 0
+        }
+      }
+    }
+
+    if (sortType) {
+
+      if (sortType == 'Alphabetical') {
+        allShops = _.orderBy(allShops, 'name', 'asc')
+      }
+      else if (sortType == 'BestRated') {
+        console.log('this is ok')
+        allShops = _.orderBy(allShops, 'avgRating.averageRating', 'desc')
+      }
+      else if (sortType == 'MostPopular') {
+        allShops = _.orderBy(allShops, '__meta__.reviews_count', 'desc')
+      }
+    }
+    
+    return response.status(200).json({
+      'success': true,
+      "allShops": allShops,
+
+    })
+
+
+  }
+
   async showItem({ request, response, auth, params }) {
     //  try {
     let item = await Item.query().where('id', params.id).with('tags').with('store').with('user').with('reviews').withCount('reviews')

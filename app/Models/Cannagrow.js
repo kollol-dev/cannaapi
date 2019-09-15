@@ -5,18 +5,18 @@ const Model = use('Model')
 const Database = use('Database')
 class Cannagrow extends Model {
 
-    reviews () {
+    reviews() {
         return this.hasMany('App/Models/ItemReview', 'id', 'growId')
     }
-    user () {
+    user() {
         return this.belongsTo('App/Models/User', 'userId', 'id')
     }
-    avgRating () {
+    avgRating() {
         return this.hasOne('App/Models/ItemReview', 'id', 'growId').select('growId', Database.raw('cast(AVG(rating) as decimal(10,2)) AS averageRating')).groupBy('growId')
-      }
-    avgPrice () {
+    }
+    avgPrice() {
         return this.hasOne('App/Models/Item', 'id', 'growId').select('growId', Database.raw('cast(AVG(price) as decimal(10,2)) AS averagePrice')).groupBy('growId')
-      }
+    }
 }
 
 module.exports = Cannagrow
