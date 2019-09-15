@@ -23,34 +23,6 @@ class BuyerController {
     async getBuyerOrderHistory({ request, response, auth }) {
 
         let user = await auth.getUser()
-        let driverId = request.input("driverId")
-        let order_id = request.input("order_id")
-        let itemId = request.input("itemId")
-
-        let isDriverReviewd = 0
-        let isItemReviewd = 0
-
-        let checkDriverReview = await DriverReview.query()
-            .where('order_id', order_id)
-            .where('userId', user.id)
-            .where('driverId', driverId)
-            .first()
-
-        let checkItemReview = await ItemReview.query()
-        
-            .where('userId', user.id)
-            .where('itemId', itemId)
-            .first()
-
-        if (checkDriverReview ) {
-
-            isDriverReviewd = 1
-
-        }
-
-        if (checkItemReview){
-            isItemReviewd = 0
-        }
 
         let order = await Order.query()
             .where('userId', user.id)
@@ -64,9 +36,7 @@ class BuyerController {
         return response.status(200).json({
             'success': true,
             "order": order,
-            "isReviewCreated": isDriverReviewd,
-            "isItemReviewCreated": isItemReviewd
-            })
+        })
     }
     async updateOrderStatus({ request, response, auth }) {
         let uid = await auth.user.id
@@ -96,6 +66,52 @@ class BuyerController {
             "noti": noti
         })
     }
+
+    async getDriverReview({ request, response, params, auth }) {
+
+        let driverId = request.input("driverId")
+        let user = await auth.getUser()
+        let isDriverReviewd = 0
+
+        let checkDriverReview = await DriverReview.query()
+            .where('order_id', params.id)
+            .where('userId', user.id)
+            .where('driverId', driverId)
+            .first()
+
+        if (checkDriverReview) {
+            isDriverReviewd = 1
+        }
+
+        return response.status(200).json({
+            'isDriverReviewGiven': isDriverReviewd
+        })
+
+    }
+
+    async getItemReviewPer({ request, response, params, auth }) {
+
+        let itemId = request.input("itemId")
+        let user = await auth.getUser()
+        let isItemReviewd = 0
+
+        let checkItemReview = await ItemReview.query()
+            .where('order_id', params.id)
+            .where('userId', user.id)
+            .where('itemId', itemId)
+            .first()
+
+        if (checkItemReview) {
+            isItemReviewd = 1
+        }
+
+        return response.status(200).json({
+            'isItemReviewGiven': isItemReviewd
+        })
+
+    }
+
+
 
 }
 

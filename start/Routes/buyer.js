@@ -4,6 +4,8 @@ const Route = use('Route')
 Route.post('app/update-quanitity', 'BuyerController.updateQuantity')
 
 Route.get('app/buyerOrder', 'BuyerController.getBuyerOrderHistory')
+Route.get('app/order/getDriverReview/:id', 'BuyerController.getDriverReview')
+Route.get('app/order/getItemReview/:id', 'BuyerController.getItemReviewPer')
 
 // status change from seller 
 

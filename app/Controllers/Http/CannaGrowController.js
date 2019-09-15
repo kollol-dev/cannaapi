@@ -152,15 +152,13 @@ class CannaGrowController {
 
   }
   async itemsAllSearch({ request, response, auth }) {
-    //  try {
-    //  let user =  await auth.getUser()
+
     let sortType = request.input('sortType') ? request.input('sortType') : ''
     let price1 = request.input('price1') ? request.input('price1') : ''
     let price2 = request.input('price2') ? request.input('price2') : ''
     let key = request.input('key') ? request.input('key') : ''
     let rawData = Item.query().with('tags').with('store').with('user').with('reviews').withCount('reviews').with('avgRating')
     if (price1 && price2) {
-      console.log("this is ok")
       rawData.where('price', '>=', price1)
       rawData.where('price', '<=', price2)
 
