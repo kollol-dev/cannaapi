@@ -242,11 +242,14 @@ class CannaGrowController {
       delivery = 'Yes'
 
 
-    let rawData = Cannagrow.query().where('deliver', delivery).with('user').with('reviews').withCount('reviews').with('avgRating').with('avgPrice')
+    let rawData = Cannagrow.query().with('user').with('reviews').withCount('reviews').with('avgRating').with('avgPrice')
     if (price1 && price2) {
       rawData.where('deliveryFee', '>=', price1)
       rawData.where('deliveryFee', '<=', price2)
+    }
 
+    if(delivery){
+      rawData.where('deliver', delivery)
     }
 
     if (shopName) {
