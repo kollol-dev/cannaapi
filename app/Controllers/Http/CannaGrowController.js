@@ -157,7 +157,6 @@ class CannaGrowController {
     let price1 = request.input('price1') ? request.input('price1') : ''
     let price2 = request.input('price2') ? request.input('price2') : ''
     let key = request.input('key') ? request.input('key') : ''
-    // let shopName = request.input('shopName') ? request.input('shopName') : ''
     let rawData = Item.query().with('tags').with('store').with('user').with('reviews').withCount('reviews').with('avgRating')
     if (price1 && price2) {
       rawData.where('price', '>=', price1)
@@ -244,7 +243,7 @@ class CannaGrowController {
     }
 
     if(shopName){
-      rawData.where('name', shopName)
+      rawData.where('name', 'like', '%' + shopName + '%' )
     }
 
     if(address){
