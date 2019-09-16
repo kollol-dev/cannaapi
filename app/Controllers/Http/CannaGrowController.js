@@ -172,7 +172,7 @@ class CannaGrowController {
 
     if (itemName) {
       rawData.
-        where('keyword', 'like', '%' + itemName + '%')
+        where('name', 'like', '%' + itemName + '%')
     }
 
     let allItems = await rawData.fetch()
