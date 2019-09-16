@@ -157,6 +157,7 @@ class CannaGrowController {
     let price1 = request.input('price1') ? request.input('price1') : ''
     let price2 = request.input('price2') ? request.input('price2') : ''
     let key = request.input('key') ? request.input('key') : ''
+    let itemName = request.input('itemName') ? request.input('itemName') : ''
     let rawData = Item.query().with('tags').with('store').with('user').with('reviews').withCount('reviews').with('avgRating')
     if (price1 && price2) {
       rawData.where('price', '>=', price1)
@@ -169,11 +170,10 @@ class CannaGrowController {
       })
     }
 
-    // if(shopName){
-    //   rawData.whereHas('Cannagrow', (builder) => {
-    //     builder.where('name', 'like', '%' + shopName + '%')
-    //   })
-    // }
+    if (itemName) {
+      rawData.
+        where('keyword', 'like', '%' + itemName + '%')
+    }
 
     let allItems = await rawData.fetch()
     allItems = JSON.parse(JSON.stringify(allItems))
@@ -233,7 +233,14 @@ class CannaGrowController {
     let shopName = request.input('shopName') ? request.input('shopName') : ''
     let isDeliveryFree = request.input('isDeliveryFree') ? request.input('isDeliveryFree') : ''
     let address = request.input('address') ? request.input('address') : ''
-    let delivery = (isDeliveryFree === 'true') ? 'Yes' : 'No'
+    let delivery = ''
+
+    if (isDeliveryFree == 'paid')
+      delivery = 'No'
+
+    if (isDeliveryFree == 'free')
+      delivery = 'Yes'
+
 
     let rawData = Cannagrow.query().where('deliver', delivery).with('user').with('reviews').withCount('reviews').with('avgRating').with('avgPrice')
     if (price1 && price2) {
@@ -242,11 +249,11 @@ class CannaGrowController {
 
     }
 
-    if(shopName){
-      rawData.where('name', 'like', '%' + shopName + '%' )
+    if (shopName) {
+      rawData.where('name', 'like', '%' + shopName + '%')
     }
 
-    if(address){
+    if (address) {
       rawData.where('address', address)
     }
 
@@ -275,7 +282,7 @@ class CannaGrowController {
         allShops = _.orderBy(allShops, '__meta__.reviews_count', 'desc')
       }
     }
-    
+
     return response.status(200).json({
       'success': true,
       "allShops": allShops,
