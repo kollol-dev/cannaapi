@@ -233,6 +233,7 @@ class CannaGrowController {
     let key = request.input('key') ? request.input('key') : ''
     let shopName = request.input('shopName') ? request.input('shopName') : ''
     let isDeliveryFree = request.input('isDeliveryFree') ? request.input('isDeliveryFree') : ''
+    let address = request.input('address') ? request.input('address') : ''
     let delivery = (isDeliveryFree === 'true') ? 'Yes' : 'No'
 
     let rawData = Cannagrow.query().where('deliver', delivery).with('user').with('reviews').withCount('reviews').with('avgRating').with('avgPrice')
@@ -240,6 +241,14 @@ class CannaGrowController {
       rawData.where('deliveryFee', '>=', price1)
       rawData.where('deliveryFee', '<=', price2)
 
+    }
+
+    if(shopName){
+      rawData.where('name', shopName)
+    }
+
+    if(address){
+      rawData.where('address', address)
     }
 
     let allShops = await rawData.fetch()
