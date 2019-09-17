@@ -21,6 +21,7 @@ class OrderController {
   async storeOrder({ request, response, auth }) {
     //  try {
     let data = request.all()
+    console.log('data', data)
     let user = await auth.getUser()
     data.userId = user.id
     let price = 0
