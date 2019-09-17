@@ -21,7 +21,6 @@ class OrderController {
   async storeOrder({ request, response, auth }) {
     //  try {
     let data = request.all()
-    console.log('data', data)
     let user = await auth.getUser()
     data.userId = user.id
     let price = 0
@@ -48,6 +47,7 @@ class OrderController {
     data.netPrice = netPrice
     data.deliveryFee = sellerUserId.deliveryFee
     let order = await Order.create(data)
+    console.log('order', order)
     let allCurtInfo = []
     for (let d of curtInfo) {
       let ob = {
