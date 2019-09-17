@@ -12,6 +12,11 @@ var _ = require('lodash')
 // firebase
 var admin = require('firebase-admin');
 var serviceAccount = require("./FirebaseAdminSDK_PvtKey/cannaapp-87a30-firebase-adminsdk-2zpyz-cbc3a9713e.json");
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: "https://cannaapp-87a30.firebaseio.com"
+});
+
 
 class CannaGrowController {
 
@@ -644,10 +649,6 @@ class CannaGrowController {
 
 
   async sendNotificationToSeller({ request, response }) {
-    admin.initializeApp({
-      credential: admin.credential.cert(serviceAccount),
-      databaseURL: "https://cannaapp-87a30.firebaseio.com"
-    });
 
     let data = request.all()
 
@@ -657,6 +658,10 @@ class CannaGrowController {
       data: {
         score: '850',
         time: '2:45'
+      },
+      notification:{
+        title:"Portugal vs. Denmark",
+        body:"great match!"
       },
       token: registrationToken
     };
@@ -673,18 +678,6 @@ class CannaGrowController {
       });
 
   }
-
-
-
-
-
-
-
-
-
-
-
-
 
 
   // total days in a month
