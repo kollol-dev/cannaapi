@@ -10,7 +10,7 @@ const Database = use('Database')
 
 
 // firebase
-var admin = require('firebase-admin');
+// var admin = require('firebase-admin');
 // var serviceAccount = require("./FirebaseAdminSDK_PvtKey/cannaapp-87a30-firebase-adminsdk-2zpyz-cbc3a9713e.json");
 // admin.initializeApp({
 //   credential: admin.credential.cert(serviceAccount),
