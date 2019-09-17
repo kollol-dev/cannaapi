@@ -660,8 +660,8 @@ class CannaGrowController {
         time: '2:45'
       },
       notification:{
-        title:"Portugal vs. Denmark",
-        body:"great match!"
+        title: data.title,
+        body: data.body
       },
       token: registrationToken
     };
