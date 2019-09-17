@@ -23,6 +23,7 @@ class OrderController {
     let data = request.all()
     let user = await auth.getUser()
     data.userId = user.id
+    console.log('data', data)
     let price = 0
     let netPrice = 0
     let curtInfo = await Curt.query().where('userId', user.id).with('item').fetch()
