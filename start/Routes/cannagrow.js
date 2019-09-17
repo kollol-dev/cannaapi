@@ -38,5 +38,9 @@ Route.get('app/allShopItems/:id', 'CannaGrowController.getShopPorudcts')
 Route.get('app/productReview/:id', 'CannaGrowController.getReviewByProductId')
 
 
-// Firebase Push Notification
-Route.post("/app/seller/notification", 'CannaGrowController.sendNotificationToSeller')
+///////////////////// Firebase Push Notification
+
+
+// checkout Notification
+// Route.post("/app/seller/notification", 'CannaGrowController.sendNotificationToSeller')
+Route.post("/app/checkout/notification", 'CannaGrowController.checkoutPushNotificaiton')

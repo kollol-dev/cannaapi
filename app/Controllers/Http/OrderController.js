@@ -7,6 +7,16 @@ const Order = use('App/Models/Order');
 const OrderDetail = use('App/Models/OrderDetail');
 const Noti = use('App/Models/Noti');
 const Database = use('Database')
+
+
+// firebase
+var admin = require('firebase-admin');
+var serviceAccount = require("./FirebaseAdminSDK_PvtKey/cannaapp-87a30-firebase-adminsdk-2zpyz-cbc3a9713e.json");
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: "https://cannaapp-87a30.firebaseio.com"
+});
+
 class OrderController {
   async storeOrder({ request, response, auth }) {
     //  try {
@@ -23,7 +33,7 @@ class OrderController {
       })
     }
     await Curt.query().where('userId', user.id).delete()
-    
+
     curtInfo = JSON.parse(JSON.stringify(curtInfo))
     let sellerId = 1
     for (let d of curtInfo) {
@@ -47,6 +57,32 @@ class OrderController {
       allCurtInfo.push(ob)
     }
 
+    let token = await User.query().where('id', sellerUserId.userId).select('app_Token').first()
+    console.log('token_id', token)
+    var registrationToken = token.token;
+
+    var message = {
+      data: {
+        score: '850',
+        time: '2:45'
+      },
+      notification: {
+        title: data.title,
+        body: data.body
+      },
+      token: registrationToken
+    };
+
+    // Send a message to the device corresponding to the provided
+    // registration token.
+    admin.messaging().send(message)
+      .then((response) => {
+        // Response is a message ID string.
+        console.log('Successfully sent message:', response);
+      })
+      .catch((error) => {
+        console.log('Error sending message:', error);
+      });
 
 
     Noti.create({
