@@ -27,6 +27,7 @@ class OrderController {
     let price = 0
     let netPrice = 0
     let curtInfo = await Curt.query().where('userId', user.id).with('item').fetch()
+    console.log('curt info', curtInfo)
     if (!curtInfo) {
       return response.status(402).json({
         'success': false,
