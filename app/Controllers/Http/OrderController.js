@@ -10,12 +10,12 @@ const Database = use('Database')
 
 
 // firebase
-var admin = require('firebase-admin');
-var serviceAccount = require("./FirebaseAdminSDK_PvtKey/cannaapp-87a30-firebase-adminsdk-2zpyz-cbc3a9713e.json");
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-  databaseURL: "https://cannaapp-87a30.firebaseio.com"
-});
+// var admin = require('firebase-admin');
+// var serviceAccount = require("./FirebaseAdminSDK_PvtKey/cannaapp-87a30-firebase-adminsdk-2zpyz-cbc3a9713e.json");
+// admin.initializeApp({
+//   credential: admin.credential.cert(serviceAccount),
+//   databaseURL: "https://cannaapp-87a30.firebaseio.com"
+// });
 
 class OrderController {
   async storeOrder({ request, response, auth }) {
@@ -57,32 +57,32 @@ class OrderController {
       allCurtInfo.push(ob)
     }
 
-    let token = await User.query().where('id', sellerUserId.userId).select('app_Token').first()
-    console.log('token_id', token)
-    var registrationToken = token.token;
+    // let token = await User.query().where('id', sellerUserId.userId).select('app_Token').first()
+    // console.log('token_id', token)
+    // var registrationToken = token.token;
 
-    var message = {
-      data: {
-        score: '850',
-        time: '2:45'
-      },
-      notification: {
-        title: data.title,
-        body: data.body
-      },
-      token: registrationToken
-    };
+    // var message = {
+    //   data: {
+    //     score: '850',
+    //     time: '2:45'
+    //   },
+    //   notification: {
+    //     title: data.title,
+    //     body: data.body
+    //   },
+    //   token: registrationToken
+    // };
 
-    // Send a message to the device corresponding to the provided
-    // registration token.
-    admin.messaging().send(message)
-      .then((response) => {
-        // Response is a message ID string.
-        console.log('Successfully sent message:', response);
-      })
-      .catch((error) => {
-        console.log('Error sending message:', error);
-      });
+    // // Send a message to the device corresponding to the provided
+    // // registration token.
+    // admin.messaging().send(message)
+    //   .then((response) => {
+    //     // Response is a message ID string.
+    //     console.log('Successfully sent message:', response);
+    //   })
+    //   .catch((error) => {
+    //     console.log('Error sending message:', error);
+    //   });
 
 
     Noti.create({
@@ -98,16 +98,10 @@ class OrderController {
       'message': 'response stored successfully !',
       "order": order
     })
-    //   } catch (error) {
-    //     return response.status(401).json({
-    //         'success': false,
-    //         'message': 'You first need to login first!'
-    //     })
-    //   }
-
+  
   }
   async indexOrder({ request, response, auth }) {
-    //  try {
+   
     let user = await auth.getUser()
 
     let order = await Order.query().where('userId', user.id).with('orderdetails').with('driver').with('orderdetails.item').orderBy('id', 'desc').fetch()
@@ -116,12 +110,7 @@ class OrderController {
       'message': 'requested data returnd  successfully !',
       "order": order
     })
-    //   } catch (error) {
-    //     return response.status(401).json({
-    //         'success': false,
-    //         'message': 'You first need to login first!'
-    //     })
-    //   }
+  
 
   }
   async indexOrderSeller({ request, response, auth }) {
@@ -155,7 +144,7 @@ class OrderController {
 
   }
   async showOrder({ params, response, auth }) {
-    //  try {
+
     let user = await auth.getUser()
 
     let order = await Order.query().where('id', params.id).with('orderdetails').with('driver').with('orderdetails.item').first()
@@ -164,16 +153,11 @@ class OrderController {
       'message': 'requested data returnd  successfully !',
       "order": order
     })
-    //   } catch (error) {
-    //     return response.status(401).json({
-    //         'success': false,
-    //         'message': 'You first need to login first!'
-    //     })
-    //   }
+
 
   }
   async editOrder({ request, response, auth }) {
-    //  try {
+
     let data = request.all()
     let user = await auth.getUser()
     if (data.userId != user.id) {
@@ -187,17 +171,12 @@ class OrderController {
       'success': true,
       'message': 'response edited successfully !',
     })
-    //   } catch (error) {
-    //     return response.status(401).json({
-    //         'success': false,
-    //         'message': 'You first need to login first!'
-    //     })
-    //   }
+
 
   }
   async destroyOrder({ response, auth, request }) {
 
-    //  try {
+
     let user = await auth.getUser()
     let data = request.all()
     await Order.query().where('id', data.id).delete()
@@ -206,16 +185,11 @@ class OrderController {
       'success': true,
       'message': 'response deleted successfully !',
     })
-    //   } catch (error) {
-    //     return response.status(401).json({
-    //         'success': false,
-    //         'message': 'You first need to login first!'
-    //     })
-    //   }
+
 
   }
   async storeCurt({ request, response, auth }) {
-    //  try {
+
     let data = request.all()
     let user = await auth.getUser()
     data.userId = user.id
@@ -228,19 +202,14 @@ class OrderController {
       'message': 'response stored successfully !',
       "curt": againCheck
     })
-    //   } catch (error) {
-    //     return response.status(401).json({
-    //         'success': false,
-    //         'message': 'You first need to login first!'
-    //     })
-    //   }
+
 
   }
 
 
 
   async showCurt({ request, response, auth }) {
-    //  try {
+
     let user = await auth.getUser()
 
     let curt = await Curt.query().where('userId', user.id).with('item').fetch()
@@ -249,16 +218,10 @@ class OrderController {
       'message': 'requested data returnd  successfully !',
       "curt": curt
     })
-    //   } catch (error) {
-    //     return response.status(401).json({
-    //         'success': false,
-    //         'message': 'You first need to login first!'
-    //     })
-    //   }
 
   }
   async destroyCurt({ request, response, auth }) {
-    //  try {
+
     let data = request.all()
     let user = await auth.getUser()
     await Curt.query().where('id', data.id).delete()
@@ -266,16 +229,11 @@ class OrderController {
       'success': true,
       'message': 'response deleted successfully !',
     })
-    //   } catch (error) {
-    //     return response.status(401).json({
-    //         'success': false,
-    //         'message': 'You first need to login first!'
-    //     })
-    //   }
+   
 
   }
   async editCurt({ request, response, auth }) {
-    //  try {
+
     let data = request.all()
     let user = await auth.getUser()
     await Curt.query().where('id', data.id).update(data)
@@ -284,12 +242,7 @@ class OrderController {
       'message': 'response edited successfully !',
       'data': data
     })
-    //   } catch (error) {
-    //     return response.status(401).json({
-    //         'success': false,
-    //         'message': 'You first need to login first!'
-    //     })
-    //   }
+
 
   }
 
