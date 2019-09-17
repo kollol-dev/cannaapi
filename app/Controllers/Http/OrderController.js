@@ -78,14 +78,14 @@ class OrderController {
 
     // Send a message to the device corresponding to the provided
     // registration token.
-    admin.messaging().send(message)
-      .then((response) => {
-        // Response is a message ID string.
-        console.log('Successfully sent message:', response);
-      })
-      .catch((error) => {
-        console.log('Error sending message:', error);
-      });
+    // admin.messaging().send(message)
+    //   .then((response) => {
+    //     // Response is a message ID string.
+    //     console.log('Successfully sent message:', response);
+    //   })
+    //   .catch((error) => {
+    //     console.log('Error sending message:', error);
+    //   });
 
 
     Noti.create({
