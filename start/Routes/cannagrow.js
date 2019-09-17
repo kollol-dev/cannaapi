@@ -13,6 +13,7 @@ Route.get('/app/shopAllSearch', 'CannaGrowController.shopAllSearch')
 Route.post('/app/items', 'CannaGrowController.storeItem')
 Route.get('/app/items/:id', 'CannaGrowController.showItem')
 Route.get('/app/itemsbyStore/:id', 'CannaGrowController.showItemByStore')
+Route.get('/app/itemSearchByStore/:id', 'CannaGrowController.itemSearchByStore')
 Route.put('/app/items', 'CannaGrowController.editItem')
 Route.post('/app/itemsDelete', 'CannaGrowController.destroyItem')
 // Tags Routes

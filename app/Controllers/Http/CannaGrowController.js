@@ -168,7 +168,15 @@ class CannaGrowController {
     let price2 = request.input('price2') ? request.input('price2') : ''
     let key = request.input('key') ? request.input('key') : ''
     let itemName = request.input('itemName') ? request.input('itemName') : ''
-    let rawData = Item.query().with('tags').with('store').with('user').with('reviews').withCount('reviews').with('avgRating')
+
+    let rawData = Item.query()
+      .with('tags')
+      .with('store')
+      .with('user')
+      .with('reviews')
+      .withCount('reviews')
+      .with('avgRating')
+
     if (price1 && price2) {
       rawData.where('price', '>=', price1)
       rawData.where('price', '<=', price2)
@@ -324,7 +332,6 @@ class CannaGrowController {
 
   }
   async showItemByStore({ request, response, auth, params }) {
-    //  try {
     let item = await Item.query().where('growId', params.id).with('tags').with('store').with('user').with('reviews').withCount('reviews')
       .with('avgRating')
       .first()
@@ -332,14 +339,23 @@ class CannaGrowController {
       'success': true,
       "item": item
     })
-    //   } catch (error) {
-    //     return response.status(401).json({
-    //         'success': false,
-    //         'message': 'You first need to login first!'
-    //     })
-    //   }
-
   }
+
+  async itemSearchByStore({ request, response, auth, params }) {
+    let keyword = request.input('keyword')
+    let item = await Item.query().where('growId', params.id).with('tags').with('store').with('user').with('reviews').withCount('reviews')
+      .with('avgRating')
+      
+    if(keyword){
+      item.where('name', 'like', '%' + keyword + '%')
+    }
+
+    return response.status(200).json({
+      'success': true,
+      "item": item
+    })
+  }
+
   async storeItem({ request, response, auth }) {
     //  try {
     let data = request.all()
@@ -659,7 +675,7 @@ class CannaGrowController {
         score: '850',
         time: '2:45'
       },
-      notification:{
+      notification: {
         title: data.title,
         body: data.body
       },
