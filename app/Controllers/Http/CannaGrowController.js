@@ -343,16 +343,17 @@ class CannaGrowController {
 
   async itemSearchByStore({ request, response, auth, params }) {
     let keyword = request.input('keyword')
-    let item = await Item.query().where('growId', params.id).with('tags').with('store').with('user').with('reviews').withCount('reviews')
+    let item = Item.query().where('growId', params.id).with('tags').with('store').with('user').with('reviews').withCount('reviews')
       .with('avgRating')
       
     if(keyword){
       item.where('name', 'like', '%' + keyword + '%')
     }
+    let allItems = await item.fetch()
 
     return response.status(200).json({
       'success': true,
-      "item": item
+      "item": allItems
     })
   }
 
