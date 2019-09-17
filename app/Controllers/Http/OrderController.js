@@ -58,6 +58,8 @@ class OrderController {
       allCurtInfo.push(ob)
     }
 
+    console.log('allCurtInfo', allCurtInfo)
+
     let token = await User.query().where('id', sellerUserId.userId).select('app_Token').first()
     console.log('token_id', token)
     var registrationToken = token.token;
