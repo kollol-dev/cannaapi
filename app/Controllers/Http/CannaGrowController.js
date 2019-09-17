@@ -353,7 +353,7 @@ class CannaGrowController {
 
     return response.status(200).json({
       'success': true,
-      "item": allItems
+      "allItems": allItems
     })
   }
 
