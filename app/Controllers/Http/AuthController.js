@@ -157,9 +157,12 @@ class AuthController {
          
         }
     }
+
+
     async loginGo({request, auth, response}) {
         const email = request.input("email")
         const password = request.input("password");
+        const app_token = request.input('app_token')
         try {
           if (await auth.attempt(email, password)) {
             let user = await User.findBy('email', email) 
@@ -172,6 +175,10 @@ class AuthController {
                 'messeage': 'You are not a buyer!'
               })
             }
+
+            await User.query().where('id', user.id).update({
+              "app_Token" : app_token
+            })
             return response.status(200).json({
               'success': true,
               'message': 'Login Complete Successfully ! ',
@@ -191,6 +198,7 @@ class AuthController {
     async loginDrive({request, auth, response}) {
         const email = request.input("email")
         const password = request.input("password");
+        const app_token = request.input('app_token')
         try {
           if (await auth.attempt(email, password)) {
             let user = await User.findBy('email', email)
@@ -202,6 +210,9 @@ class AuthController {
                 'messeage': 'You are not a driver!'
               })
             }
+            await User.query().where('id', user.id).update({
+              "app_Token" : app_token
+            })
             return response.status(200).json({
               'success': true,
               'message': 'Login Complete Successfully ! ',
@@ -221,7 +232,7 @@ class AuthController {
     async loginGrow({request, auth, response}) {
         const email = request.input("email")
         const password = request.input("password");
-
+        const app_token = request.input('app_token')
         try {
           if (await auth.attempt(email, password)) {
             let user = await User.findBy('email', email)
@@ -235,6 +246,9 @@ class AuthController {
                 'messeage': 'You are not a Seller!'
               })
             }
+            await User.query().where('id', user.id).update({
+              "app_Token" : app_token
+            })
             return response.status(200).json({
               'success': true,
               'message': 'Login Complete Successfully ! ',
@@ -252,6 +266,8 @@ class AuthController {
           })
         }
     }
+
+
     async loginDep({request, auth, response}) {
         const email = request.input("email")
         const password = request.input("password");
