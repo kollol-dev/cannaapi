@@ -334,7 +334,7 @@ class CannaGrowController {
   async showItemByStore({ request, response, auth, params }) {
     let item = await Item.query().where('growId', params.id).with('tags').with('store').with('user').with('reviews').withCount('reviews')
       .with('avgRating')
-      .first()
+      .fetch()
     return response.status(200).json({
       'success': true,
       "item": item
