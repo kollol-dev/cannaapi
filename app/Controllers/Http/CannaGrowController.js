@@ -8,6 +8,11 @@ const ItemTag = use('App/Models/ItemTag');
 const ItemReview = use('App/Models/ItemReview');
 const Database = use('Database')
 var _ = require('lodash')
+
+// firebase
+var admin = require('firebase-admin');
+var serviceAccount = require("./FirebaseAdminSDK_PvtKey/cannaapp-87a30-firebase-adminsdk-2zpyz-cbc3a9713e.json");
+
 class CannaGrowController {
 
   async edit({ request, response, auth }) {
@@ -248,7 +253,7 @@ class CannaGrowController {
       rawData.where('deliveryFee', '<=', price2)
     }
 
-    if(delivery){
+    if (delivery) {
       rawData.where('deliver', delivery)
     }
 
@@ -635,6 +640,51 @@ class CannaGrowController {
 
     return data
   }
+
+
+
+  async sendNotificationToSeller({ request, response }) {
+    admin.initializeApp({
+      credential: admin.credential.cert(serviceAccount),
+      databaseURL: "https://cannaapp-87a30.firebaseio.com"
+    });
+
+    let data = request.all()
+
+    var registrationToken = data.token;
+
+    var message = {
+      data: {
+        score: '850',
+        time: '2:45'
+      },
+      token: registrationToken
+    };
+
+    // Send a message to the device corresponding to the provided
+    // registration token.
+    admin.messaging().send(message)
+      .then((response) => {
+        // Response is a message ID string.
+        console.log('Successfully sent message:', response);
+      })
+      .catch((error) => {
+        console.log('Error sending message:', error);
+      });
+
+  }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
   // total days in a month
