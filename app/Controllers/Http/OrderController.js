@@ -24,6 +24,15 @@ class OrderController {
     let user = await auth.getUser()
     data.userId = user.id
     // console.log('data', data)
+
+    let notific = {
+      title: data.title,
+      body: data.body
+    },
+
+    delete data.title
+    delete data.body
+
     let price = 0
     let netPrice = 0
     let curtInfo = await Curt.query().where('userId', user.id).with('item').fetch()
@@ -43,14 +52,6 @@ class OrderController {
       netPrice = netPrice + (d.item.netPrice * d.quantity)
       sellerId = d.item.growId
     }
-
-    let notific = {
-      title: data.title,
-      body: data.body
-    },
-
-    delete data.title
-    delete data.body
 
     const sellerUserId = await Cannagrow.query().where('id', sellerId).first()
     data.price = price
@@ -112,10 +113,10 @@ class OrderController {
       'message': 'response stored successfully !',
       "order": order
     })
-  
+
   }
   async indexOrder({ request, response, auth }) {
-   
+
     let user = await auth.getUser()
 
     let order = await Order.query().where('userId', user.id).with('orderdetails').with('driver').with('orderdetails.item').orderBy('id', 'desc').fetch()
@@ -124,7 +125,7 @@ class OrderController {
       'message': 'requested data returnd  successfully !',
       "order": order
     })
-  
+
 
   }
   async indexOrderSeller({ request, response, auth }) {
@@ -243,7 +244,7 @@ class OrderController {
       'success': true,
       'message': 'response deleted successfully !',
     })
-   
+
 
   }
   async editCurt({ request, response, auth }) {
