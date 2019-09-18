@@ -25,13 +25,13 @@ class OrderController {
     data.userId = user.id
     console.log('data', data)
 
-    let notific = {
-      title: data.title,
-      body: data.body
-    },
+    // let notific = {
+    //   title: data.title,
+    //   body: data.body
+    // },
 
-    delete data.title
-    delete data.body
+    // delete data.title
+    // delete data.body
 
     let price = 0
     let netPrice = 0
