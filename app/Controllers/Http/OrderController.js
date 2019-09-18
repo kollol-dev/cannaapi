@@ -10,12 +10,12 @@ const Database = use('Database')
 
 
 // firebase
-var admin = require('firebase-admin');
-var serviceAccount = require("./FirebaseAdminSDK_PvtKey/cannaapp-87a30-firebase-adminsdk-2zpyz-cbc3a9713e.json");
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-  databaseURL: "https://cannaapp-87a30.firebaseio.com"
-});
+// var admin = require('firebase-admin');
+// var serviceAccount = require("./FirebaseAdminSDK_PvtKey/cannaapp-87a30-firebase-adminsdk-2zpyz-cbc3a9713e.json");
+// admin.initializeApp({
+//   credential: admin.credential.cert(serviceAccount),
+//   databaseURL: "https://cannaapp-87a30.firebaseio.com"
+// });
 
 class OrderController {
   async storeOrder({ request, response, auth }) {
@@ -86,31 +86,31 @@ class OrderController {
       token: registrationToken
     };
 
-    // Send a message to the device corresponding to the provided
-    // registration token.
-    admin.messaging().send(message)
-      .then((response) => {
-        // Response is a message ID string.
-        console.log('Successfully sent message:', response);
-      })
-      .catch((error) => {
-        console.log('Error sending message:', error);
-      });
+    // // Send a message to the device corresponding to the provided
+    // // registration token.
+    // admin.messaging().send(message)
+    //   .then((response) => {
+    //     // Response is a message ID string.
+    //     console.log('Successfully sent message:', response);
+    //   })
+    //   .catch((error) => {
+    //     console.log('Error sending message:', error);
+    //   });
 
 
-    Noti.create({
-      'user_id': sellerUserId.userId,
-      'title': 'New Order',
-      'msg': `You have a new order from ${user.name}`,
-    })
+    // Noti.create({
+    //   'user_id': sellerUserId.userId,
+    //   'title': 'New Order',
+    //   'msg': `You have a new order from ${user.name}`,
+    // })
 
 
-    await OrderDetail.createMany(allCurtInfo);
-    return response.status(200).json({
-      'success': true,
-      'message': 'response stored successfully !',
-      "order": order
-    })
+    // await OrderDetail.createMany(allCurtInfo);
+    // return response.status(200).json({
+    //   'success': true,
+    //   'message': 'response stored successfully !',
+    //   "order": order
+    // })
 
   }
   async indexOrder({ request, response, auth }) {
