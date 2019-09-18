@@ -11,11 +11,11 @@ const Database = use('Database')
 
 // firebase
 var admin = require('firebase-admin');
-// var serviceAccount = require("./FirebaseAdminSDK_PvtKey/cannaapp-87a30-firebase-adminsdk-2zpyz-cbc3a9713e.json");
-// admin.initializeApp({
-//   credential: admin.credential.cert(serviceAccount),
-//   databaseURL: "https://cannaapp-87a30.firebaseio.com"
-// });
+var serviceAccount = require("./FirebaseAdminSDK_PvtKey/cannaapp-87a30-firebase-adminsdk-2zpyz-cbc3a9713e.json");
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: "https://cannaapp-87a30.firebaseio.com"
+});
 
 class OrderController {
   async storeOrder({ request, response, auth }) {
@@ -23,8 +23,6 @@ class OrderController {
     let data = request.all()
     let user = await auth.getUser()
     data.userId = user.id
-    console.log('data', data)
-
     let notific = {
       title: data.title,
       body: data.body
@@ -38,9 +36,6 @@ class OrderController {
     let curtInfo = await Curt.query().where('userId', user.id).with('item').fetch()
     console.log('curt info', curtInfo)
     if (!curtInfo) {
-
-    console.log('curt empty', curtInfo)
-
       return response.status(402).json({
         'success': false,
         'message': "You don't have anything in your Curt"
@@ -62,9 +57,6 @@ class OrderController {
     data.netPrice = netPrice
     data.deliveryFee = sellerUserId.deliveryFee
 
-    console.log('data', data)
-
-
     let order = await Order.create(data)
     console.log('order', order)
     let allCurtInfo = []
@@ -76,7 +68,6 @@ class OrderController {
       }
       allCurtInfo.push(ob)
     }
-
     console.log('allCurtInfo', allCurtInfo)
 
     let token = await User.query().where('id', sellerUserId.userId).select('app_Token').first()
