@@ -23,15 +23,15 @@ class OrderController {
     let data = request.all()
     let user = await auth.getUser()
     data.userId = user.id
-    // console.log('data', data)
+    console.log('data', data)
 
-    // let notific = {
-    //   title: data.title,
-    //   body: data.body
-    // },
+    let notific = {
+      title: data.title,
+      body: data.body
+    },
 
-    // delete data.title
-    // delete data.body
+    delete data.title
+    delete data.body
 
     let price = 0
     let netPrice = 0
