@@ -36,8 +36,11 @@ class OrderController {
     let price = 0
     let netPrice = 0
     let curtInfo = await Curt.query().where('userId', user.id).with('item').fetch()
-    // console.log('curt info', curtInfo)
+    console.log('curt info', curtInfo)
     if (!curtInfo) {
+
+    console.log('curt empty', curtInfo)
+
       return response.status(402).json({
         'success': false,
         'message': "You don't have anything in your Curt"
