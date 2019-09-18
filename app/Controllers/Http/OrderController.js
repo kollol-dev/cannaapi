@@ -10,7 +10,7 @@ const Database = use('Database')
 
 
 // firebase
-// var admin = require('firebase-admin');
+var admin = require('firebase-admin');
 // var serviceAccount = require("./FirebaseAdminSDK_PvtKey/cannaapp-87a30-firebase-adminsdk-2zpyz-cbc3a9713e.json");
 // admin.initializeApp({
 //   credential: admin.credential.cert(serviceAccount),
@@ -23,11 +23,11 @@ class OrderController {
     let data = request.all()
     let user = await auth.getUser()
     data.userId = user.id
-    console.log('data', data)
+    // console.log('data', data)
     let price = 0
     let netPrice = 0
     let curtInfo = await Curt.query().where('userId', user.id).with('item').fetch()
-    console.log('curt info', curtInfo)
+    // console.log('curt info', curtInfo)
     if (!curtInfo) {
       return response.status(402).json({
         'success': false,
@@ -43,6 +43,15 @@ class OrderController {
       netPrice = netPrice + (d.item.netPrice * d.quantity)
       sellerId = d.item.growId
     }
+
+    let notific = {
+      title: data.title,
+      body: data.body
+    },
+
+    delete data.title
+    delete data.body
+
     const sellerUserId = await Cannagrow.query().where('id', sellerId).first()
     data.price = price
     data.sellerId = sellerId
@@ -72,8 +81,8 @@ class OrderController {
         time: '2:45'
       },
       notification: {
-        title: data.title,
-        body: data.body
+        title: notific.title,
+        body: notific.body
       },
       token: registrationToken
     };
