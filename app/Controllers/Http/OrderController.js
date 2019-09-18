@@ -58,6 +58,10 @@ class OrderController {
     data.sellerId = sellerId
     data.netPrice = netPrice
     data.deliveryFee = sellerUserId.deliveryFee
+
+    console.log('data', data)
+
+
     let order = await Order.create(data)
     console.log('order', order)
     let allCurtInfo = []
