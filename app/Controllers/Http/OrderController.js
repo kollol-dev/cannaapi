@@ -86,8 +86,8 @@ class OrderController {
       token: registrationToken
     };
 
-    // // Send a message to the device corresponding to the provided
-    // // registration token.
+    // Send a message to the device corresponding to the provided
+    // registration token.
     // admin.messaging().send(message)
     //   .then((response) => {
     //     // Response is a message ID string.
@@ -98,19 +98,19 @@ class OrderController {
     //   });
 
 
-    // Noti.create({
-    //   'user_id': sellerUserId.userId,
-    //   'title': 'New Order',
-    //   'msg': `You have a new order from ${user.name}`,
-    // })
+    Noti.create({
+      'user_id': sellerUserId.userId,
+      'title': 'New Order',
+      'msg': `You have a new order from ${user.name}`,
+    })
 
 
-    // await OrderDetail.createMany(allCurtInfo);
-    // return response.status(200).json({
-    //   'success': true,
-    //   'message': 'response stored successfully !',
-    //   "order": order
-    // })
+    await OrderDetail.createMany(allCurtInfo);
+    return response.status(200).json({
+      'success': true,
+      'message': 'response stored successfully !',
+      "order": order
+    })
 
   }
   async indexOrder({ request, response, auth }) {
