@@ -28,7 +28,7 @@ class OrderController {
     let notific = {
       title: data.title,
       body: data.body
-    },
+    }
 
     delete data.title
     delete data.body
