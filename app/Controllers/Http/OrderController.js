@@ -44,7 +44,7 @@ class OrderController {
       })
     }
     await Curt.query().where('userId', user.id).delete()
-
+    console.log('curtinfo', curtInfo)
     curtInfo = JSON.parse(JSON.stringify(curtInfo))
     let sellerId = 1
     for (let d of curtInfo) {
