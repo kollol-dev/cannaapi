@@ -10,7 +10,7 @@ const Database = use('Database')
 
 
 // firebase
-var admin = require('firebase-admin');
+// var admin = require('firebase-admin');
 // var serviceAccount = require("./FirebaseAdminSDK_PvtKey/cannaapp-87a30-firebase-adminsdk-2zpyz-cbc3a9713e.json");
 // admin.initializeApp({
 //   credential: admin.credential.cert(serviceAccount),
@@ -25,13 +25,13 @@ class OrderController {
     data.userId = user.id
     // console.log('data', data)
 
-    let notific = {
-      title: data.title,
-      body: data.body
-    },
+    // let notific = {
+    //   title: data.title,
+    //   body: data.body
+    // },
 
-    delete data.title
-    delete data.body
+    // delete data.title
+    // delete data.body
 
     let price = 0
     let netPrice = 0
@@ -76,17 +76,17 @@ class OrderController {
     console.log('token_id', token)
     var registrationToken = token.token;
 
-    var message = {
-      data: {
-        score: '850',
-        time: '2:45'
-      },
-      notification: {
-        title: notific.title,
-        body: notific.body
-      },
-      token: registrationToken
-    };
+    // var message = {
+    //   data: {
+    //     score: '850',
+    //     time: '2:45'
+    //   },
+    //   notification: {
+    //     title: notific.title,
+    //     body: notific.body
+    //   },
+    //   token: registrationToken
+    // };
 
     // Send a message to the device corresponding to the provided
     // registration token.
