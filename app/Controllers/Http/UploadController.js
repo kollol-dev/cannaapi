@@ -21,7 +21,7 @@ class UploadController {
 
         // let buff = new Buffer.from(data.image, 'base64');
         // fs.writeFileSync(name, buff);\
-        fs.writeFile('image.png', base64Image, {encoding: 'base64'}, function(err) {
+        fs.writeFile(name, base64Image, {encoding: 'base64'}, function(err) {
             console.log('File created');
         });
         
