@@ -17,7 +17,7 @@ class UploadController {
         //     size: "2mb"
         // });
         // const name = `${new Date().getTime()}` + "." + uploadImage.subtype;
-        const name = `/uploads/${new Date().getTime()}` + ".png"
+        const name = `/public/uploads${new Date().getTime()}` + ".png"
 
         // let buff = new Buffer.from(data.image, 'base64');
         // fs.writeFileSync(name, buff);\
@@ -30,12 +30,12 @@ class UploadController {
         console.log('Base64 image data converted to file: ' + name);
 
 
-        await uploadImage.move(Helpers.publicPath("uploads"), {
-            name: name
-        });
-        if (!uploadImage.moved()) {
-            return uploadImage.error();
-        }
+        // await uploadImage.move(Helpers.publicPath("uploads"), {
+        //     name: name
+        // });
+        // if (!uploadImage.moved()) {
+        //     return uploadImage.error();
+        // }
 
         return response.status(200).json({
             message: "Image has been uploaded successfully!",
