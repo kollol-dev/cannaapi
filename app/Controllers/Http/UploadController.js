@@ -21,7 +21,7 @@ class UploadController {
         let buff = new Buffer(data.image, 'base64');
         fs.writeFileSync(name, buff);
 
-        console.log('buffer', buff)
+        // console.log('buffer', buff)
         console.log('Base64 image data converted to file: ' + name);
 
 
