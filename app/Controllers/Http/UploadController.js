@@ -39,7 +39,7 @@ class UploadController {
 
         return response.status(200).json({
             message: "Image has been uploaded successfully!",
-            image_path: `/uploads/${name}`
+            image_path: `${name}`
         });
     }
 }
