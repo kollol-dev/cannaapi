@@ -19,8 +19,9 @@ class UploadController {
         const name = `${new Date().getTime()}` + ".png"
 
         let buff = new Buffer(data.image, 'base64');
-        fs.writeFileSync(name, buff);
+        let file = fs.writeFileSync(name, buff);
 
+        console.log('file', file)
         console.log('Base64 image data converted to file: ' + name);
 
 
