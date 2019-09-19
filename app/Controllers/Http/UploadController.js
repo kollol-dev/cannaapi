@@ -9,6 +9,7 @@ class UploadController {
         let data = request.all()
         console.log('data', data)
 
+        let base64Image = data.image.split(';base64,').pop();
 
        
         // const uploadImage = request.file("file", {
@@ -18,8 +19,12 @@ class UploadController {
         // const name = `${new Date().getTime()}` + "." + uploadImage.subtype;
         const name = `/uploads/${new Date().getTime()}` + ".png"
 
-        let buff = new Buffer.from(data.image, 'base64');
-        fs.writeFileSync(name, buff);
+        // let buff = new Buffer.from(data.image, 'base64');
+        // fs.writeFileSync(name, buff);\
+        fs.writeFile('image.png', base64Image, {encoding: 'base64'}, function(err) {
+            console.log('File created');
+        });
+        
 
         // console.log('buffer', buff)
         console.log('Base64 image data converted to file: ' + name);
