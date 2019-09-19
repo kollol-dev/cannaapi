@@ -17,7 +17,7 @@ class UploadController {
         //     size: "2mb"
         // });
         // const name = `${new Date().getTime()}` + "." + uploadImage.subtype;
-        const name = `./public/uploads${new Date().getTime()}` + ".png"
+        const name = `./public/uploads/${new Date().getTime()}` + ".png"
 
         // let buff = new Buffer.from(data.image, 'base64');
         // fs.writeFileSync(name, buff);\
