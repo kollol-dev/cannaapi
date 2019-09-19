@@ -21,7 +21,7 @@ class UploadController {
 
         // let buff = new Buffer.from(data.image, 'base64');
         // fs.writeFileSync(name, buff);\
-        fs.writeFile(name, base64Image, {encoding: 'base64'}, function(err) {
+        await fs.writeFile(name, base64Image, {encoding: 'base64'}, function(err) {
             console.log('File created');
         });
         
@@ -39,7 +39,7 @@ class UploadController {
 
         return response.status(200).json({
             message: "Image has been uploaded successfully!",
-            image_path: `${name}`
+            image_path: `/uploads/${name}`
         });
     }
 }
