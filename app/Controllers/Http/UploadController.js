@@ -18,7 +18,7 @@ class UploadController {
         // });
         // const name = `${new Date().getTime()}` + "." + uploadImage.subtype;
         const name = `${new Date().getTime()}` + ".png"
-        const path = `./public/${name}`
+        const path = `./public/uploads/${name}`
         // let buff = new Buffer.from(data.image, 'base64');
         // fs.writeFileSync(name, buff);\
         await fs.writeFile(path, base64Image, {encoding: 'base64'}, function(err) {
