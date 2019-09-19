@@ -7,7 +7,7 @@ class UploadController {
     async uploadImage({ request, response }) {
 
         let data = request.all()
-        // console.log('data', data)
+        console.log('data', data)
 
 
        
