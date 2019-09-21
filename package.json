@@ -33,7 +33,8 @@
     "firebase-admin": "^8.5.0",
     "lodash": "^4.17.11",
     "mysql": "^2.17.1",
-    "rand-token": "^0.4.0"
+    "rand-token": "^0.4.0",
+    "socket.io": "^2.3.0"
   },
   "devDependencies": {
     "nodemon": "^1.19.1"
