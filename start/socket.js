@@ -1,5 +1,3 @@
-import { isBoolean } from "util"
-
 const Server = use('Server')
 const io = use('socket.io')(Server.getInstance())
 
