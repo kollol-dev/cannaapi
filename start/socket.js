@@ -6,6 +6,6 @@ io.on('connection', function (socket) {
   console.log(socket.id)
 })
 
-// io.on('driver_location', (data) => {
-//   console.log('driver location lat', data.lat, 'lng', data.lng)
-// })
+io.on('driver_location', (data) => {
+  console.log('driver location lat', data.lat, 'lng', data.lng)
+})
