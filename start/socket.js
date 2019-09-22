@@ -9,3 +9,7 @@ io.on('connection', function (socket) {
 io.on('driver_location', (data) => {
   console.log('driver location lat', data.lat, 'lng', data.lng)
 })
+
+io.on('message', (data) => {
+  console.log('data', data)
+})
