@@ -7,6 +7,8 @@ io.on('connection', function (socket) {
   socket.on('driver_location', (data) => {
     console.log('data', data)
     console.log('driver location lat', data.lat, 'lng', data.lng)
+
+    socket.emit('driver_location_from_server', data)
   })
 
 
