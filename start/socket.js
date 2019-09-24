@@ -11,9 +11,11 @@ io.on('connection', function (socket) {
   socket.on(`driver_location_${socket.request._query.driverId}`, (data) => {
     console.log('data', data)
     console.log('driver location lat', data.lat, 'lng', data.lng)
-
-    drivers[socket.request._query.driverId].lat = data.lat
-    drivers[socket.request._query.driverId].lng = data.lng
+    let ob = {
+      lat: data.lat,
+      lng: data.lng,
+    }
+    drivers[socket.request._query.driverId] = ob
 
     io.emit(`driver_location_from_server_${socket.request._query.driverId}`, drivers[socket.request._query.driverId])
     io.emit('news', { hello: 'world' });
