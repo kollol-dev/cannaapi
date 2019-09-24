@@ -33,4 +33,4 @@ io.on('message', (data) => {
 //   })
 
 // });
-nsp.emit('hi', 'everyone!');
+// nsp.emit('hi', 'everyone!');
