@@ -6,13 +6,16 @@ let drivers = []
 io.on('connection', function (socket) {
   console.log('socket id', socket.id)
 
-  console.log('query', socket.request._query)
+  console.log('query', socket.request._query.driverId)
   // console.log('query', socket._query.driverId)
-  socket.on('driver_location', (data) => {
+  socket.on(`driver_location_${socket.request._query.driverId}`, (data) => {
     console.log('data', data)
     console.log('driver location lat', data.lat, 'lng', data.lng)
 
-    io.emit('driver_location_from_server', data)
+    drivers[socket.request._query.driverId].lat = data.lat
+    drivers[socket.request._query.driverId].lng = data.lng
+
+    io.emit(`driver_location_from_server_${socket.request._query.driverId}`, drivers[socket.request._query.driverId])
     io.emit('news', { hello: 'world' });
   })
 })
