@@ -6,7 +6,7 @@ let drivers = []
 io.on('connection', function (socket) {
   console.log('socket id', socket.id)
 
-  console.log('query', socket)
+  console.log('query', socket.request._query)
   // console.log('query', socket._query.driverId)
   socket.on('driver_location', (data) => {
     console.log('data', data)
