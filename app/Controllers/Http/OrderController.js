@@ -299,6 +299,31 @@ class OrderController {
 
   }
 
+  async drivrOrderMapStatus({ request, response, auth }) {
+    let data = request.all()
+    let user = await auth.getUser()
+    const cannadriveId = await Cannadrive.query().where('userId', user.id).first()
+
+    let firstinfo = await Order.query().where('id', data.id).first()
+
+    if (firstinfo.driverId != cannadriveId.id) {
+      return response.status(401).json({
+        'success': false,
+        'message': 'You are not authenticated user!'
+      })
+    }
+
+    let order = await Order.query().where('id', data.id).update({
+      status: data.status
+    })
+
+    return response.status(200).json({
+      'success': true,
+      'message': 'Order Status changed !',
+    })
+
+  }
+
 }
 
 module.exports = OrderController
