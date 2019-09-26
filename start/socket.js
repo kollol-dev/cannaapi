@@ -9,8 +9,7 @@ io.on('connection', function (socket) {
   console.log('query', socket.request._query.driverId)
   // console.log('query', socket._query.driverId)
   socket.on(`driver_location_${socket.request._query.driverId}`, (data) => {
-    console.log('data', data)
-    console.log('driver location lat', data.lat, 'lng', data.lng)
+    console.log(`driver ${socket.request._query.driverId} location lat`, data.lat, 'lng', data.lng)
     let ob = {
       lat: data.lat,
       lng: data.lng,
@@ -20,10 +19,10 @@ io.on('connection', function (socket) {
     io.emit(`driver_location_from_server_${socket.request._query.driverId}`, drivers[socket.request._query.driverId])
     io.emit('news', { hello: 'world' });
   })
-})
 
-io.on('message', (data) => {
-  console.log('data', data)
+  socket.on('disconnect', function(){ 
+    console.log(`${socket.request._query.driverId} no driver has been disconnected!`)
+  });
 })
 
 
