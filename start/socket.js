@@ -6,22 +6,24 @@ let drivers = []
 io.on('connection', function (socket) {
   console.log('socket id', socket.id)
 
-  console.log('query', socket.request._query.driverId)
-  // console.log('query', socket._query.driverId)
-  socket.on(`driver_location_${socket.request._query.driverId}`, (data) => {
-    console.log(`driver ${socket.request._query.driverId} location lat`, data.lat, 'lng', data.lng)
+  console.log('query', socket.request._query.orderId)
+  // console.log('query', socket._query.orderId)
+  socket.on(`driver_location_${socket.request._query.orderId}`, (data) => {
+    console.log(`driver ${socket.request._query.orderId} location lat`, data.lat, 'lng', data.lng)
     let ob = {
       lat: data.lat,
       lng: data.lng,
     }
-    drivers[socket.request._query.driverId] = ob
+    drivers[socket.request._query.orderId] = ob
 
-    io.emit(`driver_location_from_server_${socket.request._query.driverId}`, drivers[socket.request._query.driverId])
+    io.emit(`driver_location_from_server_${socket.request._query.orderId}`, drivers[socket.request._query.orderId])
     io.emit('news', { hello: 'world' });
   })
 
   socket.on('disconnect', function(){ 
-    console.log(`${socket.request._query.driverId} no driver has been disconnected!`)
+    console.log(`${socket.request._query.orderId} no driver has been disconnected!`)
+
+    io.emit(`driver_${socket.request._query.orderId}_disconnected`, `${socket.request._query.orderId} no driver has been disconnected!`)
   });
 })
 
