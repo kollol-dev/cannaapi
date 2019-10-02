@@ -100,7 +100,7 @@ class AuthController {
         })
       }
       data.growerType = 1
-      let cannagrow = await Cannagrow.create(request.all())
+      let cannagrow = await Cannagrow.create(data)
       let accessToken = await auth.generate(user)
       return response.status(200).json({
         'success': true,
