@@ -703,7 +703,7 @@ class CannaGrowController {
   }
 
 
-  async getShopRecomdedPorudcts({ request, response }){
+  async getShopRecomdedPorudcts({ request, response, params }){
 
     const data = request.all()
     console.log('recommend!', data)
