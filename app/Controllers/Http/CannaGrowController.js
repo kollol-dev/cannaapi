@@ -711,6 +711,7 @@ class CannaGrowController {
       .whereNotIn('id', data.itemIds)
       .withCount('reviews')
       .with('avgRating')
+      .orderBy('id', 'desc')
       .fetch()
     return response.status(200).json({
       'success': true,
