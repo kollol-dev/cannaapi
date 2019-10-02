@@ -35,6 +35,7 @@ Route.post('/app/vendorlist','CannaGrowController.vendorlist')
 Route.post('/app/sellerStatuschange','CannaGrowController.sellerStatuschange')
 
 Route.get('app/allShopItems/:id', 'CannaGrowController.getShopPorudcts')
+Route.post('app/allShopRecommendedItems/:id', 'CannaGrowController.getShopRecomdedPorudcts')
 Route.get('app/productReview/:id', 'CannaGrowController.getReviewByProductId')
 
 

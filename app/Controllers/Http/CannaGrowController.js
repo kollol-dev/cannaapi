@@ -703,6 +703,21 @@ class CannaGrowController {
   }
 
 
+  async getShopRecomdedPorudcts({ request, response }){
+
+    const data = request.all()
+    console.log('recommend!', data)
+    let item = await Item.query().where('growId', params.id)
+      .whereNotIn('id', data.itemIds)
+      .withCount('reviews')
+      .with('avgRating')
+      .fetch()
+    return response.status(200).json({
+      'success': true,
+      "allItems": item
+    })
+  }
+
 }
 
 module.exports = CannaGrowController;
