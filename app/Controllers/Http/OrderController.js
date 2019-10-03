@@ -74,7 +74,7 @@ class OrderController {
     console.log('token_id', token)
     let mToken = JSON.parse(JSON.stringify(token))
     console.log('mToken', mToken)
-    var registrationToken = mToken.app_Token;
+    var registrationToken = mToken;
     console.log('reg_token', registrationToken)
     var message = {
       data: {
