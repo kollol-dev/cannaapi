@@ -7,9 +7,9 @@ const Order = use('App/Models/Order');
 const OrderDetail = use('App/Models/OrderDetail');
 const Noti = use('App/Models/Noti');
 const Database = use('Database')
-var admin = require('firebase-admin');
 
-//firebase
+
+// firebase
 // var admin = require('firebase-admin');
 // var serviceAccount = require("./FirebaseAdminSDK_PvtKey/cannaapp-87a30-firebase-adminsdk-2zpyz-cbc3a9713e.json");
 // admin.initializeApp({
@@ -34,6 +34,7 @@ class OrderController {
     let price = 0
     let netPrice = 0
     let curtInfo = await Curt.query().where('userId', user.id).with('item').fetch()
+    console.log('curt info', curtInfo)
     if (!curtInfo) {
       return response.status(402).json({
         'success': false,
@@ -69,12 +70,10 @@ class OrderController {
     }
     console.log('allCurtInfo', allCurtInfo)
 
-    let token = await User.findBy('id', sellerId)
+    let token = await User.query().where('id', sellerUserId.userId).select('app_Token').first()
     console.log('token_id', token)
-    let mToken = JSON.parse(JSON.stringify(token))
-    console.log('mToken', mToken)
-    var registrationToken = mToken.app_Token;
-    console.log('reg_token', registrationToken)
+    var registrationToken = token.token;
+
     var message = {
       data: {
         score: '850',
