@@ -240,13 +240,11 @@ class AuthController {
     const email = request.input("email")
     const password = request.input("password");
     const app_token = request.input('app_token')
+    console.log('app_token', app_token)
     try {
       if (await auth.attempt(email, password)) {
         let user = await User.findBy('email', email)
         let accessToken = await auth.generate(user)
-        await User.query().where('id', user.id).update({
-          "app_Token": app_token
-        })
         let cannagrow = await Cannagrow.query().where('userId', user.id).first()
 
         // cannagrow = JSON.parse(JSON.stringify(cannagrow))
@@ -256,7 +254,9 @@ class AuthController {
             'messeage': 'You are not a Seller!'
           })
         }
-        
+        await User.query().where('id', user.id).update({
+          "app_Token": app_token
+        })
         return response.status(200).json({
           'success': true,
           'message': 'Login Complete Successfully ! ',
