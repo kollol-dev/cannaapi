@@ -22,12 +22,12 @@ class UploadController {
         await fs.writeFile(path, base64Image, {encoding: 'base64'}, function(err) {
             console.log('File created');
 
-            if(err){
-                return response.status(413).json({
-                    success: false,
-                    message: 'Image size is too large!'
-                })
-            }
+            // if(err){
+            //     return response.status(413).json({
+            //         success: false,
+            //         message: 'Image size is too large!'
+            //     })
+            // }
         });
         
 
