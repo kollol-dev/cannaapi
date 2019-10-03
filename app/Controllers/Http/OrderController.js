@@ -69,6 +69,8 @@ class OrderController {
       allCurtInfo.push(ob)
     }
 
+    console.log('allCurtInfo', allCurtInfo)
+
     let token = await User.query().where('id', sellerId).first()
     console.log('token_id', token)
     let mToken = JSON.parse(JSON.stringify(token))
