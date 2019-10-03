@@ -169,7 +169,7 @@ class AuthController {
   async loginGo({ request, auth, response }) {
     const email = request.input("email")
     const password = request.input("password");
-    const app_token = request.input('app_token')
+    const app_token = request.input('app_Token')
     try {
       if (await auth.attempt(email, password)) {
         let user = await User.findBy('email', email)
@@ -205,7 +205,7 @@ class AuthController {
   async loginDrive({ request, auth, response }) {
     const email = request.input("email")
     const password = request.input("password");
-    const app_token = request.input('app_token')
+    const app_token = request.input('app_Token')
     try {
       if (await auth.attempt(email, password)) {
         let user = await User.findBy('email', email)
@@ -239,8 +239,7 @@ class AuthController {
   async loginGrow({ request, auth, response }) {
     const email = request.input("email")
     const password = request.input("password");
-    const app_token = request.input('app_token')
-    console.log('app_token', app_token)
+    const app_token = request.input('app_Token')
     try {
       if (await auth.attempt(email, password)) {
         let user = await User.findBy('email', email)
