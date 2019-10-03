@@ -70,11 +70,11 @@ class OrderController {
     }
     console.log('allCurtInfo', allCurtInfo)
 
-    let token = await User.query().where('id', sellerUserId.userId).select('app_Token').first()
+    let token = await User.query().where('id', sellerUserId.userId).first()
     console.log('token_id', token)
     let mToken = JSON.parse(JSON.stringify(token))
     console.log('mToken', mToken)
-    var registrationToken = mToken;
+    var registrationToken = mToken.app_Token;
     console.log('reg_token', registrationToken)
     var message = {
       data: {
@@ -90,14 +90,14 @@ class OrderController {
 
     // Send a message to the device corresponding to the provided
     // registration token.
-    admin.messaging().send(message)
-      .then((response) => {
-        // Response is a message ID string.
-        console.log('Successfully sent message:', response);
-      })
-      .catch((error) => {
-        console.log('Error sending message:', error);
-      });
+    // admin.messaging().send(message)
+    //   .then((response) => {
+    //     // Response is a message ID string.
+    //     console.log('Successfully sent message:', response);
+    //   })
+    //   .catch((error) => {
+    //     console.log('Error sending message:', error);
+    //   });
 
 
     Noti.create({
