@@ -69,7 +69,7 @@ class OrderController {
     }
     console.log('allCurtInfo', allCurtInfo)
 
-    let token = await User.query().where('id', sellerId).first()
+    let token = await User.findBy('id', sellerId)
     console.log('token_id', token)
     let mToken = JSON.parse(JSON.stringify(token))
     console.log('mToken', mToken)
