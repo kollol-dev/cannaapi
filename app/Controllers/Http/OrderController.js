@@ -7,15 +7,15 @@ const Order = use('App/Models/Order');
 const OrderDetail = use('App/Models/OrderDetail');
 const Noti = use('App/Models/Noti');
 const Database = use('Database')
-
+var admin = require('firebase-admin');
 
 //firebase
-var admin = require('firebase-admin');
-var serviceAccount = require("./FirebaseAdminSDK_PvtKey/cannaapp-87a30-firebase-adminsdk-2zpyz-cbc3a9713e.json");
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-  databaseURL: "https://cannaapp-87a30.firebaseio.com"
-});
+// var admin = require('firebase-admin');
+// var serviceAccount = require("./FirebaseAdminSDK_PvtKey/cannaapp-87a30-firebase-adminsdk-2zpyz-cbc3a9713e.json");
+// admin.initializeApp({
+//   credential: admin.credential.cert(serviceAccount),
+//   databaseURL: "https://cannaapp-87a30.firebaseio.com"
+// });
 
 class OrderController {
   async storeOrder({ request, response, auth }) {
