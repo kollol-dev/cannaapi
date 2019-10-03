@@ -72,9 +72,7 @@ class OrderController {
 
     let token = await User.query().where('id', sellerUserId.userId).select('app_Token').first()
     console.log('token_id', token)
-    // token = JSON.parse(token)
     var registrationToken = token.token;
-    console.log('reg_token', registrationToken)
 
     var message = {
       data: {
