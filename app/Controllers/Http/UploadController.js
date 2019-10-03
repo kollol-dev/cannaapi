@@ -19,10 +19,15 @@ class UploadController {
         // const name = `${new Date().getTime()}` + "." + uploadImage.subtype;
         const name = `${new Date().getTime()}` + ".png"
         const path = `./public/uploads/${name}`
-        // let buff = new Buffer.from(data.image, 'base64');
-        // fs.writeFileSync(name, buff);\
         await fs.writeFile(path, base64Image, {encoding: 'base64'}, function(err) {
             console.log('File created');
+
+            if(err){
+                return response.status(413).json({
+                    success: false,
+                    message: 'Image size is too large!'
+                })
+            }
         });
         
 
@@ -38,9 +43,17 @@ class UploadController {
         // }
 
         return response.status(200).json({
+            success: true,
             message: "Image has been uploaded successfully!",
             image_path: `/uploads/${name}`
         });
+    }
+
+
+    getFilesizeInBytes(filename) {
+        var stats = fs.statSync(filename)
+        var fileSizeInBytes = stats["size"]
+        return fileSizeInBytes
     }
 }
 
