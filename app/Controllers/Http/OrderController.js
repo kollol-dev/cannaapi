@@ -34,7 +34,7 @@ class OrderController {
     let price = 0
     let netPrice = 0
     let curtInfo = await Curt.query().where('userId', user.id).with('item').fetch()
-    console.log('curt info', curtInfo)
+    
     if (!curtInfo) {
       return response.status(402).json({
         'success': false,
@@ -42,7 +42,7 @@ class OrderController {
       })
     }
     await Curt.query().where('userId', user.id).delete()
-    console.log('curtinfo', curtInfo)
+    
     curtInfo = JSON.parse(JSON.stringify(curtInfo))
     let sellerId = 1
     for (let d of curtInfo) {
@@ -58,7 +58,7 @@ class OrderController {
     data.deliveryFee = sellerUserId.deliveryFee
 
     let order = await Order.create(data)
-    console.log('order', order)
+
     let allCurtInfo = []
     for (let d of curtInfo) {
       let ob = {
@@ -68,9 +68,8 @@ class OrderController {
       }
       allCurtInfo.push(ob)
     }
-    console.log('allCurtInfo', allCurtInfo)
 
-    let token = await User.query().where('id', sellerUserId.userId).first()
+    let token = await User.query().where('id', sellerId).first()
     console.log('token_id', token)
     let mToken = JSON.parse(JSON.stringify(token))
     console.log('mToken', mToken)
