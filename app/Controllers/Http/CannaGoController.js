@@ -6,6 +6,8 @@ const Cannago = use('App/Models/Cannago');
 const Noti = use('App/Models/Noti');
 const User = use('App/Models/User');
 
+const firebase = require('../../../start/firebase')
+
 // braintree 
 const braintree = require("braintree");
 const gateway = braintree.connect({
@@ -134,7 +136,8 @@ class CannaGoController {
     let itemReview = await ItemReview.query().where('growId', params.id).with('item').with('store').with('user').fetch()
     return response.status(200).json({
       'success': true,
-      "itemReview": itemReview
+      "itemReview": itemReview,
+      "averageReview": await ItemReview.query().where('growId', params.id).avg('rating as avgRating')
     })
     //   } catch (error) {
     //     return response.status(401).json({
@@ -190,14 +193,27 @@ class CannaGoController {
 
   }
   async storeItemReview({ request, response, auth }) {
-    //  try {
+
     let data = request.all()
     let user = await auth.getUser()
     data.userId = user.id
 
+    let notific = {
+      title: data.title,
+      body: data.body,
+      click_action: data.click_action
+    }
+
+    delete data.title
+    delete data.body
+    delete data.click_action
+
     let itemReview = await ItemReview.create(data)
 
-    let userId = await Item.query().select('userId').where('id', itemReview.itemId).first()
+    let userId = await Item.query().where('id', itemReview.itemId).first()
+    userId = JSON.parse(JSON.stringify(userId))
+
+    let seller_token = await User.query().where('id', userId.userId).first()
 
     await Noti.create({
       'user_id': userId.userId,
@@ -205,17 +221,32 @@ class CannaGoController {
       'msg': `You got new review!`,
     })
 
+    var registrationToken = seller_token.app_Token;
+
+    var message = {
+      data: {
+        click_action: notific.click_action
+      },
+      notification: {
+        title: notific.title,
+        body: notific.body
+      },
+      token: registrationToken
+    };
+
+    firebase.admin.messaging().send(message)
+      .then((response) => {
+        console.log('Successfully sent message:', response);
+      })
+      .catch((error) => {
+        console.log('Error sending message:', error);
+      });
+
     return response.status(200).json({
       'success': true,
       'message': 'response stored successfully !',
       "itemReview": itemReview
     })
-    //   } catch (error) {
-    //     return response.status(401).json({
-    //         'success': false,
-    //         'message': 'You first need to login first!'
-    //     })
-    //   }
 
   }
   async editItemReview({ request, response, auth }) {

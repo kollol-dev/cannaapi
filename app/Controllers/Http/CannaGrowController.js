@@ -9,13 +9,15 @@ const ItemReview = use('App/Models/ItemReview');
 const Database = use('Database')
 var _ = require('lodash')
 
+const firebase = require('../../../start/firebase')
+
 // firebase
-var admin = require('firebase-admin');
-var serviceAccount = require("./FirebaseAdminSDK_PvtKey/cannaapp-87a30-firebase-adminsdk-2zpyz-cbc3a9713e.json");
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-  databaseURL: "https://cannaapp-87a30.firebaseio.com"
-});
+// var admin = require('firebase-admin');
+// var serviceAccount = require("./FirebaseAdminSDK_PvtKey/cannaapp-87a30-firebase-adminsdk-2zpyz-cbc3a9713e.json");
+// admin.initializeApp({
+//   credential: admin.credential.cert(serviceAccount),
+//   databaseURL: "https://cannaapp-87a30.firebaseio.com"
+// });
 
 
 class CannaGrowController {
@@ -345,8 +347,8 @@ class CannaGrowController {
     let keyword = request.input('keyword')
     let item = Item.query().where('growId', params.id).with('tags').with('store').with('user').with('reviews').withCount('reviews')
       .with('avgRating')
-      
-    if(keyword){
+
+    if (keyword) {
       item.where('name', 'like', '%' + keyword + '%')
     }
     let allItems = await item.fetch()
@@ -364,8 +366,16 @@ class CannaGrowController {
     data.userId = user.id
     let tags = data.tags
     delete data.tags
+    console.log("item", data)
+    if (data.img == null) {
+      data.img = `/uploads/1570693240110.png`
+    }
     let item = await Item.create(data)
     let allTags = []
+
+    if (data.image) {
+
+    }
     if (tags) {
       for (let d of tags) {
         let tag = {
@@ -507,6 +517,24 @@ class CannaGrowController {
   async sellerStatuschange({ request, response, auth }) {
     let data = request.all()
     let user = await auth.getUser()
+
+    let notific = {
+      titleBuyer: data.titleBuyer,
+      bodyBuyer: data.bodyBuyer,
+
+      titleDriver: data.titleDriver,
+      bodyDriver: data.bodyDriver,
+
+      click_action: data.click_action
+    }
+
+    delete data.titleBuyer
+    delete data.bodyBuyer
+    delete data.titleDriver
+    delete data.bodyDriver
+    delete data.click_action
+
+
     const sellerUserId = await Cannagrow.query().where('userId', user.id).first()
 
     let firstinfo = await Order.query().where('id', data.id).first()
@@ -517,15 +545,95 @@ class CannaGrowController {
         'message': 'You are not authenticated user!'
       })
     }
-
     let order = await Order.query().where('id', data.id).update(data)
 
+    firstinfo = JSON.parse(JSON.stringify(firstinfo))
+    let buyer = await User.query().select('app_Token').where('id', firstinfo.userId).first()
+
+    buyer = JSON.parse(JSON.stringify(buyer))
+
+    var buyerRegistrationTokens = ''
+    var driverRegistrationTokens = []
+
+    buyerRegistrationTokens = buyer.app_Token
 
     Noti.create({
       'user_id': firstinfo.userId,
       'title': 'Status Changed',
       'msg': `${sellerUserId.name} change the status to  '${data.status}'! `,
+      'isAll': 0,
+      'notiType': ''
     })
+    if (data.status == 'Request for Driver') {
+
+      let drivers = await User.query().select('app_Token').where('userType', 2).fetch()
+
+
+      drivers = JSON.parse(JSON.stringify(drivers))
+
+      for (let i of drivers) {
+        driverRegistrationTokens.push(i.app_Token)
+      }
+      Noti.create({
+        'user_id': 0,
+        'title': notific.titleDriver,
+        'msg': notific.bodyDriver,
+        'isAll': 1,
+        'notiType': 'driver'
+      })
+    }
+    const messages = [];
+    messages.push({
+      data: {
+        click_action: notific.click_action
+      },
+      notification: { 
+        title: notific.titleBuyer,
+        body: notific.bodyBuyer,
+      },
+      token: buyerRegistrationTokens,
+    })
+
+    for(let i of driverRegistrationTokens){
+      messages.push({
+        data: {
+          click_action: notific.click_action
+        },
+        notification: {
+          title: notific.titleDriver,
+          body: notific.bodyDriver
+        },
+        token: i,
+      })
+    }
+
+    firebase.admin.messaging().sendAll(messages)
+      .then((response) => {
+        // if (response.failureCount > 0) {
+        //   let failedTokens = [];
+        //   response.responses.forEach((resp, idx) => {
+        //     if (!resp.success) {
+        //       failedTokens.push(registrationTokens[idx]);
+        //     }
+        //   });
+        //   console.log('List of tokens that caused failures: ' + failedTokens);
+        // }
+        console.log(response.successCount + ' messages were sent successfully');
+        console.log(response.failureCount + ' messages were not sent');
+        // let failedTokens = [];
+        // response.responses.forEach((resp, idx) => {
+        //   if (resp.success) {
+        //     failedTokens.push(registrationTokens[idx]);
+        //     failedTokens.push('\n');
+
+        //   }
+        // });
+        // console.log('List of tokens that caused success: ' + failedTokens);
+
+      })
+      .catch((error) => {
+        console.log('Error sending message:', error);
+      })
 
     return response.status(200).json({
       'success': true,
@@ -703,7 +811,7 @@ class CannaGrowController {
   }
 
 
-  async getShopRecomdedPorudcts({ request, response, params }){
+  async getShopRecomdedPorudcts({ request, response, params }) {
 
     const data = request.all()
     console.log('recommend!', data)

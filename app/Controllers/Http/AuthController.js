@@ -9,19 +9,21 @@ const Hash = use('Hash')
 const suid = require('rand-token').suid;
 const Database = use('Database')
 class AuthController {
-  async test() {
-    return 'dfsdfsdfsfsd'
-  }
+
   async register({ request, auth, response }) {
     const data = request.all()
 
+    console.log('sob or lagi same', data)
     // for buyer and driver profile picture
-    if (data.userType == 1 || data.userType == 2) {
-      data.img = `/uploads/1570001800812.png`
-    } // for seller profile picture
-    else {
-      data.img = `/uploads/1570001964365.png`
+    if(data.img == null){
+      if (data.userType == 1 || data.userType == 2) {
+        data.img = `/uploads/1570001800812.png`
+      } // for seller profile picture
+      else {
+        data.img = `/uploads/1570001964365.png`
+      }
     }
+    
     let user = await User.create(data)
     let accessToken = await auth.generate(user)
     return response.status(200).json({

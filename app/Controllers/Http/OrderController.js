@@ -8,13 +8,15 @@ const OrderDetail = use('App/Models/OrderDetail');
 const Noti = use('App/Models/Noti');
 const Database = use('Database')
 
+const firebase = require('../../../start/firebase')
 
-// firebase
+
+// // firebase
 // var admin = require('firebase-admin');
 // var serviceAccount = require("./FirebaseAdminSDK_PvtKey/cannaapp-87a30-firebase-adminsdk-2zpyz-cbc3a9713e.json");
 // admin.initializeApp({
 //   credential: admin.credential.cert(serviceAccount),
-//   databaseURL: "https://cannaapp-87a30.firebaseio.com"
+//   databaseURL: "https://cannaapp-87a30.firebaseio.com",
 // });
 
 class OrderController {
@@ -25,11 +27,13 @@ class OrderController {
     data.userId = user.id
     let notific = {
       title: data.title,
-      body: data.body
+      body: data.body,
+      click_action: data.click_action
     }
 
     delete data.title
     delete data.body
+    delete data.click_action
 
     let price = 0
     let netPrice = 0
@@ -70,14 +74,13 @@ class OrderController {
     }
     console.log('allCurtInfo', allCurtInfo)
 
-    let token = await User.query().where('id', sellerUserId.userId).select('app_Token').first()
-    console.log('token_id', token)
-    var registrationToken = token.token;
+    let seller = await User.query().where('id', sellerUserId.userId).first()
+    console.log('token_id', seller)
+    var registrationToken = seller.app_Token;
 
     var message = {
       data: {
-        score: '850',
-        time: '2:45'
+        click_action: notific.click_action
       },
       notification: {
         title: notific.title,
@@ -88,21 +91,24 @@ class OrderController {
 
     // Send a message to the device corresponding to the provided
     // registration token.
-    // admin.messaging().send(message)
-    //   .then((response) => {
-    //     // Response is a message ID string.
-    //     console.log('Successfully sent message:', response);
-    //   })
-    //   .catch((error) => {
-    //     console.log('Error sending message:', error);
-    //   });
+    firebase.admin.messaging().send(message)
+      .then((response) => {
+        // Response is a message ID string.
+        console.log('Successfully sent message:', response);
+      })
+      .catch((error) => {
+        console.log('Error sending message:', error);
+      });
 
 
     Noti.create({
       'user_id': sellerUserId.userId,
       'title': 'New Order',
       'msg': `You have a new order from ${user.name}`,
+      'isAll': 1,
+      'notiType': 'driver'
     })
+
 
 
     await OrderDetail.createMany(allCurtInfo);
@@ -131,7 +137,6 @@ class OrderController {
     let user = await auth.getUser()
     let seller = await User.query().where('id', user.id).with('sellerProfile').first()
     seller = seller.toJSON();
-
     let order = await Order.query().where('sellerId', seller.sellerProfile.id).with('driver.user').with('driver.avgRating').with('orderdetails').with('orderdetails.item').with('buyer').with('buyer.buyerProfile').orderBy('id', 'desc').fetch()
     return response.status(200).json({
       'success': true,
@@ -262,9 +267,33 @@ class OrderController {
   async drivrOrderComplete({ request, response, auth }) {
     let data = request.all()
     let user = await auth.getUser()
+
+    let notific = {
+      title: data.title,
+      body: data.body,
+      click_action: data.click_action
+    }
+
+    delete data.title
+    delete data.body
+    delete data.click_action
+
     const cannadriveId = await Cannadrive.query().where('userId', user.id).first()
 
     let firstinfo = await Order.query().where('id', data.id).first()
+    firstinfo = JSON.parse(JSON.stringify(firstinfo))
+
+    let buyer = await User.query().where('id', firstinfo.userId).first()
+    let seller = await Order.query().where('sellerId', firstinfo.sellerId).with('seller').first()
+
+    seller = JSON.parse(JSON.stringify(seller))
+    console.log('seller', seller)
+
+
+    let sellerToken = await User.query().where('id', seller.seller.userId).first()
+
+    console.log('seller', seller)
+    console.log('buyer', buyer)
 
     if (firstinfo.driverId != cannadriveId.id) {
       return response.status(401).json({
@@ -281,7 +310,7 @@ class OrderController {
     Noti.create({
       'user_id': firstinfo.userId,
       'title': 'Order Completed',
-      'msg': `${user.name} Completed Your order ! `,
+      'msg': `${user.name} Completed Your order ! `
     })
 
     const sellerUserId = await Cannagrow.query().where('id', firstinfo.sellerId).first()
@@ -289,12 +318,59 @@ class OrderController {
     Noti.create({
       'user_id': sellerUserId.userId,
       'title': 'Order Completed',
-      'msg': `${user.name} Completed the Order No ${firstinfo.id}`,
+      'msg': `${user.name} Completed the Order No ${firstinfo.id}`
     })
+
+    var registrationTokens = []
+    registrationTokens.push(buyer.app_Token) 
+    registrationTokens.push(sellerToken.app_Token) 
+
+    console.log('tokens', registrationTokens)
+    var message = {
+      data: {
+        click_action: notific.click_action
+      },
+      notification: {
+        title: notific.title,
+        body: notific.body
+      },
+      tokens: registrationTokens
+    };
+
+    // Send a message to the device corresponding to the provided
+    // registration token.
+    firebase.admin.messaging().sendMulticast(message)
+    .then((response) => {
+      if (response.failureCount > 0) {
+        let failedTokens = [];
+        response.responses.forEach((resp, idx) => {
+          if (!resp.success) {
+            failedTokens.push(registrationTokens[idx]);
+          }
+        });
+        console.log('List of tokens that caused failures: ' + failedTokens);
+      }
+      console.log(response.successCount + ' messages were sent successfully');
+
+     
+        let failedTokens = [];
+        response.responses.forEach((resp, idx) => {
+          if (resp.success) {
+            failedTokens.push(registrationTokens[idx]);
+            failedTokens.push('\n');
+
+          }
+        });
+        console.log('List of tokens that caused success: ' + failedTokens);
+   
+    })
+    .catch((error) => {
+      console.log('Error sending message:', error);
+    });
 
     return response.status(200).json({
       'success': true,
-      'message': 'Order Status changed !',
+      'message': 'Order is accepted!'
     })
 
   }

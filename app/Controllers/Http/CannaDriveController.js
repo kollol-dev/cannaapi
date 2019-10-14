@@ -4,7 +4,20 @@ const DriverReview = use('App/Models/DriverReview');
 const Noti = use('App/Models/Noti');
 const Cannagrow = use('App/Models/Cannagrow');
 const Order = use('App/Models/Order');
+const User = use('App/Models/User');
 const Database = use('Database')
+
+const firebase = require('../../../start/firebase')
+
+// firebase
+// var admin = require('firebase-admin');
+// var serviceAccount = require("./FirebaseAdminSDK_PvtKey/cannaapp-87a30-firebase-adminsdk-2zpyz-cbc3a9713e.json");
+// admin.initializeApp({
+//   credential: admin.credential.cert(serviceAccount),
+//   databaseURL: "https://cannaapp-87a30.firebaseio.com",
+// }, 'driverApp');
+
+
 class CannaDriveController {
   async edit({ request, response, auth }) {
     //  try {
@@ -83,32 +96,62 @@ class CannaDriveController {
 
   }
   async storeDriverReview({ request, response, auth }) {
-    //  try {
+
     let data = request.all()
     let user = await auth.getUser()
     data.userId = user.id
 
+    let notific = {
+      title: data.title,
+      body: data.body,
+      click_action: data.click_action
+    }
+
+    delete data.title
+    delete data.body
+    delete data.click_action
+
+
     let driverreview = await DriverReview.create(data)
 
-    let driverId = await Cannadrive.query().select('userId').where('id', driverreview.driverId).first()
+    let driverId = await Cannadrive.query().where('id', driverreview.driverId).first()
+
+    let driverToken = await User.query().where('id', driverId.userId).first()
+
+    driverId = JSON.parse(JSON.stringify(driverId))
 
     await Noti.create({
       'user_id': driverId.userId,
       'title': 'New Review Created!',
       'msg': `You got a new review'! `,
     })
+    var registrationToken = driverToken.app_Token;
+
+    var message = {
+      data: {
+        click_action: notific.click_action
+      },
+      notification: {
+        title: notific.title,
+        body: notific.body
+      },
+      token: registrationToken
+    };
+
+    firebase.admin.messaging().send(message)
+      .then((response) => {
+        console.log('Successfully sent message:', response);
+      })
+      .catch((error) => {
+        console.log('Error sending message:', error);
+      });
+
 
     return response.status(200).json({
       'success': true,
       'message': 'response stored successfully !',
       "driverreview": driverreview
     })
-    //   } catch (error) {
-    //     return response.status(401).json({
-    //         'success': false,
-    //         'message': 'You first need to login first!'
-    //     })
-    //   }
 
   }
   async editDriverReview({ request, response, auth }) {
@@ -166,11 +209,25 @@ class CannaDriveController {
     let data = request.all()
     let user = await auth.getUser()
 
+    let notific = {
+      title: data.title,
+      body: data.body,
+      click_action: data.click_action
+    }
+
+    delete data.title
+    delete data.body
+    delete data.click_action
 
     let firstinfo = await Order.query().where('id', data.id).first()
     if (firstinfo.driverId == null) {
       let order = await Order.query().where('id', data.id).update(data)
-      const sellerUserId = await Cannagrow.query().where('id', firstinfo.sellerId).first()
+      var sellerUserId = await Cannagrow.query().where('id', firstinfo.sellerId).first()
+
+      console.log('sellerUserId', sellerUserId)
+
+      let buyer = await User.query().where('id', firstinfo.userId).first()
+      let sellerToken = await User.query().where('id', sellerUserId.userId).first()
 
       Noti.create({
         'user_id': sellerUserId.userId,
@@ -182,18 +239,71 @@ class CannaDriveController {
         'title': 'Driver found',
         'msg': `${user.name} will drive this order! `,
       })
+
+
+
+      var registrationTokens = []
+      registrationTokens.push(buyer.app_Token)
+      registrationTokens.push(sellerToken.app_Token)
+
+      console.log('wrwerw', registrationTokens)
+
+      const message = {
+        data: {
+          click_action: notific.click_action
+        },
+        notification: {
+          title: notific.title,
+          body: notific.body
+        },
+        tokens: registrationTokens,
+      }
+
+      firebase.admin.messaging().sendMulticast(message)
+        .then((response) => {
+          if (response.failureCount > 0) {
+            let failedTokens = [];
+            response.responses.forEach((resp, idx) => {
+              if (!resp.success) {
+                failedTokens.push(registrationTokens[idx]);
+              }
+            });
+            console.log('List of tokens that caused failures: ' + failedTokens);
+          }
+          console.log(response.successCount + ' messages were sent successfully');
+
+
+          let failedTokens = [];
+          response.responses.forEach((resp, idx) => {
+            if (resp.success) {
+              failedTokens.push(registrationTokens[idx]);
+              failedTokens.push('\n');
+
+            }
+          });
+          console.log('List of tokens that caused success: ' + failedTokens);
+
+        })
+        .catch((error) => {
+          console.log('Error sending message:', error);
+        });
+
+
+
+
       return response.status(200).json({
         'success': true,
         'message': 'Order Accepted !',
       })
     }
-
     return response.status(200).json({
       'success': false,
       'message': 'Order is accepted by other driver !',
     })
 
   }
+
+
   async getNewOrder({ request, response, auth }) {
 
     let order = await Order.query().where('status', 'Request for Driver').with('orderdetails.item').with('buyer').with('seller').fetch();
