@@ -56,6 +56,8 @@ class OrderController {
     }
 
     const sellerUserId = await Cannagrow.query().where('id', sellerId).first()
+
+    console.log('or', data)
     data.price = price
     data.sellerId = sellerId
     data.netPrice = netPrice
@@ -101,12 +103,13 @@ class OrderController {
       });
 
 
-    Noti.create({
+    await Noti.create({
       'user_id': sellerUserId.userId,
       'title': 'New Order',
       'msg': `You have a new order from ${user.name}`,
-      'isAll': 1,
-      'notiType': 'driver'
+      // 'isAll': 0,
+      // 'notiType': '',
+      // 'seen': 0
     })
 
 

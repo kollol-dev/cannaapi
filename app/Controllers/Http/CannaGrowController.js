@@ -517,6 +517,7 @@ class CannaGrowController {
   async sellerStatuschange({ request, response, auth }) {
     let data = request.all()
     let user = await auth.getUser()
+    console.log('data', data)
 
     let notific = {
       titleBuyer: data.titleBuyer,
@@ -557,14 +558,16 @@ class CannaGrowController {
 
     buyerRegistrationTokens = buyer.app_Token
 
-    Noti.create({
+    await Noti.create({
       'user_id': firstinfo.userId,
       'title': 'Status Changed',
-      'msg': `${sellerUserId.name} change the status to  '${data.status}'! `,
-      'isAll': 0,
-      'notiType': ''
+      'msg': `${sellerUserId.name} change the status to  '${data.status}'! `
     })
+
+    console.log('dataStatus', data.status)
+
     if (data.status == 'Request for Driver') {
+      console.log('dataStatusRq', data.status)
 
       let drivers = await User.query().select('app_Token').where('userType', 2).fetch()
 
@@ -574,7 +577,7 @@ class CannaGrowController {
       for (let i of drivers) {
         driverRegistrationTokens.push(i.app_Token)
       }
-      Noti.create({
+      await Noti.create({
         'user_id': 0,
         'title': notific.titleDriver,
         'msg': notific.bodyDriver,
@@ -587,14 +590,14 @@ class CannaGrowController {
       data: {
         click_action: notific.click_action
       },
-      notification: { 
+      notification: {
         title: notific.titleBuyer,
         body: notific.bodyBuyer,
       },
       token: buyerRegistrationTokens,
     })
 
-    for(let i of driverRegistrationTokens){
+    for (let i of driverRegistrationTokens) {
       messages.push({
         data: {
           click_action: notific.click_action
