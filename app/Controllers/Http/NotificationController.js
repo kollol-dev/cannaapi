@@ -9,14 +9,14 @@ class NotificationController {
             let noti = Noti.query()
                 .where('user_id', user.id)
 
-            await noti.whereRaw('isAll = ? and notiType = ? and seen = ?', [1, 'driver', 0]).fetch()
+            return await noti.whereRaw('isAll = ? and notiType = ? and seen = ?', [1, 'driver', 0]).fetch()
             
             // let noti = await Noti.query().where('user_id', user.id).orWhere('isAll', 1).where('notiType', 'driver').andWhere('seen', 0).count('id as count').first();
-            return response.status(200).json({
-                'success': true,
-                "notification": noti[0]
-            })
-        }
+        //     return response.status(200).json({
+        //         'success': true,
+        //         "notification": noti[0]
+        //     })
+        // }
 
         let noti = await Noti.query().where('user_id', user.id).where('seen', 0).count('id as count').first();
         return response.status(200).json({
