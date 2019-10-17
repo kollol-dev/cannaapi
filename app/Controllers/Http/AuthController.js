@@ -8,6 +8,7 @@ const Order = use('App/Models/Order');
 const Hash = use('Hash')
 const suid = require('rand-token').suid;
 const Database = use('Database')
+const Mail = use('Mail')
 class AuthController {
 
   async register({ request, auth, response }) {
@@ -364,7 +365,7 @@ class AuthController {
     // await Mail.send('emails.forgotpassword', data, (message) => {
     //   message
     //     .to(email)
-    //     .from('Support@worldtradebuddy.com', 'Support @ WorldTradeBuddy')
+    //     .from('support@worldtradebuddy.com', 'Support @ WorldTradeBuddy')
     //     .subject('Reset Password')
     // })
     await User.query().where('email', email).update({ 'passwordToken': token })

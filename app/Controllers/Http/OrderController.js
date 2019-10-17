@@ -24,6 +24,7 @@ class OrderController {
     //  try {
     let data = request.all()
     let user = await auth.getUser()
+    // console.log('curt data', data)
     data.userId = user.id
     let notific = {
       title: data.title,
