@@ -17,6 +17,7 @@ class NotificationController {
         //         "notification": noti[0]
         //     })
         // }
+        }
 
         let noti = await Noti.query().where('user_id', user.id).where('seen', 0).count('id as count').first();
         return response.status(200).json({
