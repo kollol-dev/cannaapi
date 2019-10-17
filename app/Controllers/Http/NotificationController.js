@@ -14,7 +14,7 @@ class NotificationController {
             // let noti = await Noti.query().where('user_id', user.id).orWhere('isAll', 1).where('notiType', 'driver').andWhere('seen', 0).count('id as count').first();
             return response.status(200).json({
                 'success': true,
-                "notification": noti
+                "notification": noti[0]
             })
         }
 
