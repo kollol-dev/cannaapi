@@ -368,7 +368,7 @@ class CannaGrowController {
     delete data.tags
     console.log("item", data)
     if (data.img == null) {
-      data.img = `/uploads/1570693240110.png`
+      data.img = `/uploads/1571297604724.png`
     }
     let item = await Item.create(data)
     let allTags = []

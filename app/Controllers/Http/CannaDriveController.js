@@ -306,22 +306,22 @@ class CannaDriveController {
 
   async getNewOrder({ request, response, auth }) {
 
-    let order = await Order.query().where('status', 'Request for Driver').with('orderdetails.item').with('buyer').with('seller').fetch();
+    let order = await Order.query().where('status', 'Request for Driver').with('orderdetails.item').with('buyer').with('seller').orderBy('id', 'desc').fetch();
     return response.status(200).json({
       'success': true,
       "orders": order
     })
 
   }
-  async getNewOrder({ request, response, auth }) {
+  // async getNewOrder({ request, response, auth }) {
 
-    let order = await Order.query().where('status', 'Request for Driver').with('orderdetails.item').with('buyer').with('seller').fetch();
-    return response.status(200).json({
-      'success': true,
-      "orders": order
-    })
+  //   let order = await Order.query().where('status', 'Request for Driver').with('orderdetails.item').with('buyer').with('seller').fetch();
+  //   return response.status(200).json({
+  //     'success': true,
+  //     "orders": order
+  //   })
 
-  }
+  // }
   // Driver weekly income 
   async driverWeeklyIncome({ params }) {
     let d = new Date();
