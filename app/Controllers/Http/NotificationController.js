@@ -6,7 +6,8 @@ class NotificationController {
         let user = await auth.getUser()
 
         if (user.userType == 2) {
-            let noti = await Noti.query().where('user_id', user.id).orWhere('isAll', 1).where('notiType', 'driver').andWhere('seen', 0).count('id as count').first();
+            let noti = await Noti.query().where('user_id', user.id).orWhere('isAll', 1).where('notiType', 'driver').andWhere('seen', 0).fetch();
+            // let noti = await Noti.query().where('user_id', user.id).orWhere('isAll', 1).where('notiType', 'driver').andWhere('seen', 0).count('id as count').first();
             return response.status(200).json({
                 'success': true,
                 "notification": noti
