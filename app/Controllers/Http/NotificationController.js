@@ -15,6 +15,7 @@ class NotificationController {
                 'notiType': 'driver',
                 'seen': 0
             })
+            .where('created_at', '>', user.created_at)
             .count('id as count')
             .first();
             // let noti = await Noti.query().where('user_id', user.id).orWhere('isAll', 1).where('notiType', 'driver').andWhere('seen', 0).count('id as count').first();
