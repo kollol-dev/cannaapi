@@ -41,6 +41,7 @@ class NotificationController {
                     'isAll': 1,
                     'notiType': 'driver',
                 })
+                .where('created_at', '>', user.created_at)
                 .limit(10)
                 .orderBy('id', 'desc')
                 .fetch();
