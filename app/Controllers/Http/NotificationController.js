@@ -6,11 +6,17 @@ class NotificationController {
         let user = await auth.getUser()
 
         if (user.userType == 2) {
-            let noti = await Noti.query().where('user_id', user.id).where('created_at', '>', user.created_at).where('seen', 0).orWhere({
+            let noti = await Noti.query()
+            .where('user_id', user.id)
+            .where('created_at', '>', user.created_at)
+            .where('seen', 0)
+            .orWhere({
                 'isAll': 1,
                 'notiType': 'driver',
                 'seen': 0
-            }).count('id as count').first();
+            })
+            .count('id as count')
+            .first();
             // let noti = await Noti.query().where('user_id', user.id).orWhere('isAll', 1).where('notiType', 'driver').andWhere('seen', 0).count('id as count').first();
             return response.status(200).json({
                 'success': true,
@@ -28,7 +34,18 @@ class NotificationController {
         let user = await auth.getUser()
 
         if (user.userType == 2) {
-            let noti = await Noti.query().where('user_id', user.id).orWhere('isAll', 1).where('notiType', 'driver').limit(10).orderBy('id', 'desc').fetch();
+            let noti = await Noti.query()
+                .where('user_id', user.id)
+                .where('created_at', '>', user.created_at)
+                .where('seen', 0)
+                .orWhere({
+                    'isAll': 1,
+                    'notiType': 'driver',
+                    'seen': 0
+                })
+                .limit(10)
+                .orderBy('id', 'desc')
+                .fetch();
             return response.status(200).json({
                 'success': true,
                 "notification": noti
