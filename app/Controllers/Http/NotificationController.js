@@ -8,7 +8,7 @@ class NotificationController {
         if (user.userType == 2) {
             let noti = await Noti.query()
             .where('user_id', user.id)
-            .whereRaw('created_at', '>', user.created_at)
+            .whereRaw('created_at' + '>' + user.created_at)
             .where('seen', 0)
             .orWhere({
                 'isAll': 1,
@@ -35,7 +35,7 @@ class NotificationController {
         if (user.userType == 2) {
             let noti = await Noti.query()
                 .where('user_id', user.id)
-                .whereRaw('created_at', '>', user.created_at)
+                .whereRaw('created_at' + '>' + user.created_at)
                 .where('seen', 0)
                 .orWhere({
                     'isAll': 1,
