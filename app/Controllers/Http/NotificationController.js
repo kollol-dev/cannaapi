@@ -37,16 +37,14 @@ class NotificationController {
                 .where('user_id', user.id)
                 .where('created_at', '>', user.created_at)
                 .where('seen', 0)
-                .orWhere({
-                    'isAll': 1,
-                    'notiType': 'driver',
-                    'seen': 0
-                })
+                // .orWhere({
+                //     'isAll': 1,
+                //     'notiType': 'driver',
+                //     'seen': 0
+                // })
                 .limit(10)
                 .orderBy('id', 'desc')
                 .fetch();
-            
-            noti = JSON.parse(JSON.stringify(noti))
             console.log('noti', noti)
             return response.status(200).json({
                 'success': true,
