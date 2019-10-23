@@ -46,6 +46,12 @@ class NotificationController {
                 .limit(10)
                 .orderBy('id', 'desc')
                 .fetch();
+            
+            noti = JSON.parse(JSON.stringify(noti))
+
+            if(!noti){
+                noti = null
+            }
             return response.status(200).json({
                 'success': true,
                 "notification": noti
