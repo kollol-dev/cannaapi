@@ -40,7 +40,6 @@ class NotificationController {
                 .orWhere({
                     'isAll': 1,
                     'notiType': 'driver',
-                    'seen': 0
                 })
                 .limit(10)
                 .orderBy('id', 'desc')
