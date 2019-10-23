@@ -32,7 +32,6 @@ class NotificationController {
     }
     async getUnseenNotiDetails({ request, response, auth }) {
         let user = await auth.getUser()
-
         if (user.userType == 2) {
             let noti = await Noti.query()
                 .where('user_id', user.id)
@@ -48,7 +47,7 @@ class NotificationController {
                 .fetch();
             
             noti = JSON.parse(JSON.stringify(noti))
-
+            console.log('noti', noti)
             return response.status(200).json({
                 'success': true,
                 "notification": noti
