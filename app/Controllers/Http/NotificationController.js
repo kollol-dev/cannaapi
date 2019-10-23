@@ -35,13 +35,13 @@ class NotificationController {
         if (user.userType == 2) {
             let noti = await Noti.query()
                 .where('user_id', user.id)
-                .where('created_at', '>', user.created_at)
+                // .where('created_at', '>', user.created_at)
                 .where('seen', 0)
-                // .orWhere({
-                //     'isAll': 1,
-                //     'notiType': 'driver',
-                //     'seen': 0
-                // })
+                .orWhere({
+                    'isAll': 1,
+                    'notiType': 'driver',
+                    'seen': 0
+                })
                 .limit(10)
                 .orderBy('id', 'desc')
                 .fetch();
