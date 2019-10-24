@@ -569,21 +569,25 @@ class CannaGrowController {
     if (data.status == 'Request for Driver') {
       console.log('dataStatusRq', data.status)
 
-      let drivers = await User.query().select('app_Token').where('userType', 2).fetch()
+      let drivers = await User.query().select('id', 'app_Token').where('userType', 2).fetch()
 
 
       drivers = JSON.parse(JSON.stringify(drivers))
 
+      let promiseArray = []
+
       for (let i of drivers) {
         driverRegistrationTokens.push(i.app_Token)
+        promiseArray.push(this.createManyNotfication({
+          'user_id': i.id,
+          'title': notific.titleDriver,
+          'msg': notific.bodyDriver,
+          'isAll': 1,
+          'notiType': 'driver'
+        }))
       }
-      await Noti.create({
-        'user_id': 0,
-        'title': notific.titleDriver,
-        'msg': notific.bodyDriver,
-        'isAll': 1,
-        'notiType': 'driver'
-      })
+
+      await Promise.all(promiseArray)
     }
     const messages = [];
     messages.push({
@@ -612,27 +616,8 @@ class CannaGrowController {
 
     firebase.admin.messaging().sendAll(messages)
       .then((response) => {
-        // if (response.failureCount > 0) {
-        //   let failedTokens = [];
-        //   response.responses.forEach((resp, idx) => {
-        //     if (!resp.success) {
-        //       failedTokens.push(registrationTokens[idx]);
-        //     }
-        //   });
-        //   console.log('List of tokens that caused failures: ' + failedTokens);
-        // }
         console.log(response.successCount + ' messages were sent successfully');
         console.log(response.failureCount + ' messages were not sent');
-        // let failedTokens = [];
-        // response.responses.forEach((resp, idx) => {
-        //   if (resp.success) {
-        //     failedTokens.push(registrationTokens[idx]);
-        //     failedTokens.push('\n');
-
-        //   }
-        // });
-        // console.log('List of tokens that caused success: ' + failedTokens);
-
       })
       .catch((error) => {
         console.log('Error sending message:', error);
@@ -643,6 +628,12 @@ class CannaGrowController {
       'message': 'Order Status changed !',
     })
 
+  }
+
+  // create many notification for driver
+
+  createManyNotfication(data) {
+    return Noti.create(data)
   }
 
   // Seller Weekly Income

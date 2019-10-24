@@ -10,12 +10,12 @@ class NotificationController {
             .where('user_id', user.id)
             .where('created_at', '>', user.created_at)
             .where('seen', 0)
-            .orWhere({
-                'isAll': 1,
-                'notiType': 'driver',
-                'seen': 0
-            })
-            .where('created_at', '>', user.created_at)
+            // .orWhere({
+            //     'isAll': 1,
+            //     'notiType': 'driver',
+            //     'seen': 0
+            // })
+            // .where('created_at', '>', user.created_at)
             .count('id as count')
             .first();
             // let noti = await Noti.query().where('user_id', user.id).orWhere('isAll', 1).where('notiType', 'driver').andWhere('seen', 0).count('id as count').first();
@@ -38,15 +38,14 @@ class NotificationController {
                 .where('user_id', user.id)
                 .where('created_at', '>', user.created_at)
                 .where('seen', 0)
-                .orWhere({
-                    'isAll': 1,
-                    'notiType': 'driver',
-                })
-                .where('created_at', '>', user.created_at)
+                // .orWhere({
+                //     'isAll': 1,
+                //     'notiType': 'driver',
+                // })
+                // .where('created_at', '>', user.created_at)
                 .limit(10)
                 .orderBy('id', 'desc')
                 .fetch();
-            console.log('noti', noti)
             return response.status(200).json({
                 'success': true,
                 "notification": noti
@@ -67,18 +66,6 @@ class NotificationController {
         await Noti.query().where('user_id', user.id).update({
             seen: 1
         });
-
-        if(user.userType == 2){
-            await Noti.query().where('user_id', user.id)
-            // .orWhere({
-            //     'user_id': 0,
-            //     'isAll': 1,
-            //     'notiType': 'driver',
-            // })
-            .update({
-                seen: 1
-            })
-        }
 
         return response.status(200).json({
             'success': true,
