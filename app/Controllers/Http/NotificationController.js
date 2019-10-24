@@ -69,7 +69,13 @@ class NotificationController {
         });
 
         if(user.userType == 2){
-            await Noti.query().where('notiType', 'driver').update({
+            await Noti.query().where('user_id', user.id)
+            .orWhere({
+                'user_id': 0,
+                'isAll': 1,
+                'notiType': 'driver',
+            })
+            .update({
                 seen: 1
             })
         }
